@@ -1,0 +1,50 @@
+$sidebar-bg-color: linear-gradient(180deg, #61b3ff 0%, #0659a7 100%);
+$sidebar-color: #eeecee;
+$submenu-bg-color: rgba(136, 199, 241, 0.404);
+$icon-bg-color: rgba(214, 216, 226, 0.144);
+$sidebar-width: 235px;
+$submenu-bg-color-collapsed: rgba(136, 199, 241, 0.404);
+
+.nav-bar {
+  height: 100vh;
+  font-weight: bold;
+}
+
+.menu-icons {
+  height: 80%;
+  width: 80%;
+}
+
+.footer {
+  text-align: center;
+}
+
+.pro-sidebar-layout::-webkit-scrollbar {
+  width: 8px;
+}
+
+.pro-sidebar-layout::-webkit-scrollbar-track {
+  background: rgba(136, 199, 241, 0.404);
+  border-radius: 4px;
+}
+
+.pro-sidebar-layout::-webkit-scrollbar-thumb:active {
+  background-color: #5d76bd;
+}
+
+.pro-sidebar-layout::-webkit-scrollbar-thumb {
+  background: rgba(136, 199, 241, 0.404);
+  border-radius: 4px;
+}
+
+.pro-sidebar-layout::-webkit-scrollbar-thumb:hover {
+  background: #0659a7;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.pro-sidebar-layout::-webkit-scrollbar-track:hover,
+.pro-sidebar-layout::-webkit-scrollbar-track:active {
+  background: #5d76bd;
+}
+
+@import "~react-pro-sidebar/dist/scss/styles.scss";
