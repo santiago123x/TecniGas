@@ -12,13 +12,13 @@ import {
 import "react-pro-sidebar/dist/css/styles.css";
 import {
   FcStatistics,
-  FcSettings,
   FcCalendar,
   FcFeedback,
   FcPortraitMode,
   FcShop,
   FcFilingCabinet,
   FcAlarmClock,
+  FcEngineering,
 } from "react-icons/fc";
 
 import "./Nav.scss";
@@ -75,7 +75,7 @@ const Nav = () => {
             </MenuItem>
             <SubMenu
               title="Gestion"
-              icon={<FcSettings className="menu-icons" />}
+              icon={<FcEngineering className="menu-icons" />}
             >
               <MenuItem>
                 Clientes <Link to="/clientes-proveedores" />
