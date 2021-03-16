@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const useAxios = (API, metodo, body) => {
-  const [peticion, setPeticion] = useState([]);
-
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const axConfig = async () => {
     try {
       const response = await axios({
@@ -12,17 +13,19 @@ const useAxios = (API, metodo, body) => {
         data: body,
       });
       if (metodo === "get" || !metodo) {
-        setPeticion(response.data);
+        setData(response.data);
+        setLoading(false);
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      setError(err);
+      setLoading(!loading);
     }
   };
 
   useEffect(() => {
     axConfig();
   }, []);
-  return peticion;
+  return { data, error, loading };
 };
 
 export default useAxios;
