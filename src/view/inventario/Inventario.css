@@ -1,0 +1,48 @@
+.conteiner {
+  margin: 2%;
+
+  height: inherit;
+  width: 100%;
+}
+
+.linea-h2 {
+  width: 90%;
+  align-items: center;
+  border: solid 2px black;
+}
+.cont__lista {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 3%;
+  background-color: rgba(114, 183, 230, 0.295);
+  border: solid 2px rgba(176, 196, 222, 0.699);
+  height: 90%;
+}
+
+.cont__lista-titulo {
+  color: #eeecee;
+}
+
+.cont__lista-tabla {
+  margin-top: 2.5%;
+  margin-bottom: 2%;
+  width: 85%;
+}
+
+.cont__lista-tabla {
+  width: 80%;
+}
+
+.cont__lista-input {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  width: 65%;
+}
+
+.buscar-icono {
+  width: 27px;
+  height: 27px;
+}

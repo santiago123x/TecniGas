@@ -1,0 +1,47 @@
+.MuiTableContainer-root {
+  height: inherit;
+  display: flex;
+  max-height: 350px;
+  border: solid 2px lightsteelblue;
+  box-shadow: lightblue;
+}
+
+@media (max-width: 600px) {
+  .MuiTableContainer-root {
+    max-height: 200px;
+  }
+}
+
+.table-container {
+  height: 100%;
+  max-height: 300px;
+  display: flex;
+}
+
+.MuiTableContainer-root::-webkit-scrollbar {
+  width: 8px;
+}
+
+.MuiTableContainer-root::-webkit-scrollbar-track {
+  background: rgba(136, 199, 241, 0.404);
+  border-radius: 4px;
+}
+
+.MuiTableContainer-root::-webkit-scrollbar-thumb:active {
+  background-color: #5d76bd;
+}
+
+.MuiTableContainer-root::-webkit-scrollbar-thumb {
+  background: rgba(136, 199, 241, 0.404);
+  border-radius: 4px;
+}
+
+.MuiTableContainer-root::-webkit-scrollbar-thumb:hover {
+  background: #0659a7;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.MuiTableContainer-root::-webkit-scrollbar-track:hover,
+.MuiTableContainer-root::-webkit-scrollbar-track:active {
+  background: #5d76bd;
+}
