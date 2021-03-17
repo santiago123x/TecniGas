@@ -11,9 +11,12 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import React from "react";
 
-export default function Modal({ filtro, setFiltro }) {
+export default function Modal({ filtro, setFiltro, value, setValue }) {
   const dialog = useDialog();
-
+  const cancelar = () => {
+    setFiltro(!filtro);
+    setValue(10);
+  };
   return (
     <>
       <Dialog
@@ -29,7 +32,15 @@ export default function Modal({ filtro, setFiltro }) {
               <InputLabel htmlFor="demo-dialog-native">
                 Tipo de Filtro
               </InputLabel>
-              <Select native input={<Input id="demo-dialog-native" />}>
+              <Select
+                native
+                input={<Input id="demo-dialog-native" />}
+                value={value}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                  console.log(value);
+                }}
+              >
                 <option
                   style={{ background: "#2965aa77" }}
                   aria-label="None"
@@ -49,7 +60,7 @@ export default function Modal({ filtro, setFiltro }) {
           </form>
         </DialogContent>
         <DialogActions className={dialog.scrollPaper}>
-          <Button onClick={() => setFiltro(!filtro)} color="primary">
+          <Button onClick={() => cancelar()} color="primary">
             Cancelar
           </Button>
           <Button onClick={() => setFiltro(!filtro)} color="primary">

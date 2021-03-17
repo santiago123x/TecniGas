@@ -18,6 +18,12 @@
   display: flex;
 }
 
+.noHayDatos {
+  text-align: center;
+  justify-self: center;
+  width: 100%;
+}
+
 .MuiTableContainer-root::-webkit-scrollbar {
   width: 8px;
 }

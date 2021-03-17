@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Inventario.css";
 import CollapsibleTable from "./Componentes/Table/Table";
 import Modal from "./Componentes/Modal/Modal";
@@ -8,11 +8,27 @@ import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import { FcSearch, FcViewDetails } from "react-icons/fc";
+import useAxios from "../Hooks/useAxios";
 
 const Inventario = () => {
   const [filtro, setFiltro] = useState(false);
+  const [valueInp, setValueInp] = useState("");
+  const [valueSel, setValueSel] = useState(10);
+  const [url, setUrl] = useState(`/producto/`);
+  const [metodo, setMetodo] = useState("");
+  const [body, setBody] = useState(null);
   const classes = useStyles();
+  const { data, error, loading } = useAxios(url);
 
+  const filtrar = () => {
+    if (valueSel == 10 && valueInp !== "") {
+      setUrl(`/producto/cod/${valueInp}`);
+    } else if (valueSel == 20 && valueInp !== "") {
+      setUrl(`/producto/nom/${valueInp}`);
+    } else if (valueSel == 30 && valueInp !== "") {
+      setUrl(`/producto/cat/${valueInp}`);
+    }
+  };
   return (
     <>
       <div className="conteiner">
@@ -35,23 +51,44 @@ const Inventario = () => {
             <InputBase
               className={classes.input}
               placeholder="Filtrar Productos"
-              inputProps={{ "aria-label": "search google maps" }}
+              inputProps={{ "aria-label": "Filtrar Productos" }}
+              value={valueInp}
+              onChange={(e) => {
+                setValueInp(e.target.value);
+              }}
             />
             <Tooltip title="Buscar" placement="top">
               <IconButton
-                type="submit"
+                type="button"
                 className={classes.iconButton}
                 aria-label="search"
+                onClick={() => {
+                  valueInp === "" ? setUrl(`/producto/`) : filtrar();
+                  console.log(valueInp);
+                  console.log(valueSel);
+                }}
               >
                 <FcSearch className="buscar-icono" />
               </IconButton>
             </Tooltip>
           </Paper>
+
           <div className="cont__lista-tabla">
-            <CollapsibleTable />
+            {loading ? (
+              <h2>Cargando ...</h2>
+            ) : error ? (
+              <h3>Error: {error}</h3>
+            ) : (
+              <CollapsibleTable data={data} />
+            )}
           </div>
         </div>
-        <Modal filtro={filtro} setFiltro={setFiltro} />
+        <Modal
+          filtro={filtro}
+          setFiltro={setFiltro}
+          value={valueSel}
+          setValue={setValueSel}
+        />
       </div>
     </>
   );

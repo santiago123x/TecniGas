@@ -2,20 +2,22 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const useAxios = (API, metodo, body) => {
+  const uri = "http://localhost:5000";
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const axConfig = async () => {
     try {
       const response = await axios({
         method: metodo,
-        url: API,
+        url: uri + API,
         data: body,
       });
       if (metodo === "get" || !metodo) {
         setData(response.data);
-        setLoading(false);
       }
+      setLoading(false);
     } catch (err) {
       setError(err);
       setLoading(!loading);
@@ -24,7 +26,8 @@ const useAxios = (API, metodo, body) => {
 
   useEffect(() => {
     axConfig();
-  }, []);
+  }, [API]);
+
   return { data, error, loading };
 };
 

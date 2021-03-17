@@ -9,14 +9,14 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
-import TablePagination from "@material-ui/core/TablePagination";
+
 import TableFooter from "@material-ui/core/TableFooter";
 import Paper from "@material-ui/core/Paper";
 import PropTypes from "prop-types";
 import { FcCollapse, FcExpand } from "react-icons/fc";
 import "./Table.css";
 
-import { useState } from "react";
+import { useState, usseEffect } from "react";
 
 const useRowStyles = makeStyles({
   root: {
@@ -42,20 +42,6 @@ const useSub = makeStyles({
     },
   },
 });
-function createData(name, calories, fat, carbs, protein, price) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      { date: "2020-01-05", customerId: "11091700", amount: 3 },
-      { date: "2020-01-02", customerId: "Anonymous", amount: 1 },
-    ],
-  };
-}
 
 function Row(props) {
   const { row } = props;
@@ -75,12 +61,12 @@ function Row(props) {
             {open ? <FcCollapse /> : <FcExpand />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
+        <TableCell align="center" component="th" scope="row">
+          {row.codigo_pro}
         </TableCell>
-        <TableCell align="center">{row.calories}</TableCell>
-        <TableCell align="center">{row.fat}</TableCell>
-        <TableCell align="center">{row.carbs}</TableCell>
+        <TableCell align="center">{row.nombre_pro}</TableCell>
+        <TableCell align="center">{row.cantidad_pro}</TableCell>
+        <TableCell align="center">{row.nombre_catg}</TableCell>
       </TableRow>
       <TableRow className={classes.root}>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -102,19 +88,25 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Precio Publico</TableCell>
-                    <TableCell>Precio Mayorista</TableCell>
-                    <TableCell align="center">Cantidad Minima</TableCell>
+                    <TableCell align="center">
+                      <strong>Precio Publico</strong>
+                    </TableCell>
+                    <TableCell align="center">
+                      <strong>Precio Mayorista</strong>
+                    </TableCell>
+                    <TableCell align="center">
+                      <strong>Cantidad Minima</strong>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row"></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell align="center"></TableCell>
-                    </TableRow>
-                  ))}
+                  <TableRow>
+                    <TableCell align="center" component="th" scope="row">
+                      {row.precio_uni} $
+                    </TableCell>
+                    <TableCell align="center">{row.precio_may} $</TableCell>
+                    <TableCell align="center">{row.stock_min}</TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </Box>
@@ -143,14 +135,6 @@ Row.propTypes = {
   }).isRequired,
 };
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0, 3.99),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3, 4.99),
-  createData("Eclair", 262, 16.0, 24, 6.0, 3.79),
-  createData("Cupcake", 305, 3.7, 67, 4.3, 2.5),
-  createData("Gingerbread", 356, 16.0, 49, 3.9, 1.5),
-];
-
 const useHeader = makeStyles({
   root: {
     "& > *": {
@@ -162,8 +146,9 @@ const useHeader = makeStyles({
   },
 });
 
-export default function CollapsibleTable() {
+export default function CollapsibleTable({ data }) {
   const styleHead = useHeader();
+
   return (
     <div className="table-container">
       <TableContainer component={Paper}>
@@ -171,7 +156,7 @@ export default function CollapsibleTable() {
           <TableHead>
             <TableRow className={styleHead.root} selected hover>
               <TableCell />
-              <TableCell>Codigo del Producto</TableCell>
+              <TableCell align="center">Codigo del Producto</TableCell>
               <TableCell size="small" align="center">
                 Nombre del Producto
               </TableCell>
@@ -180,9 +165,11 @@ export default function CollapsibleTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
+            {data.length === 0 ? (
+              <TableRow align="center">No Hay Datos</TableRow>
+            ) : (
+              data.map((row, index) => <Row key={index} row={row} />)
+            )}
           </TableBody>
           <TableFooter></TableFooter>
         </Table>
@@ -190,3 +177,10 @@ export default function CollapsibleTable() {
     </div>
   );
 }
+
+/*
+{loading1 ? (
+  <h2>Cargando ...</h2>
+) : error1 ? (
+  <h3>Error: {error1}</h3>
+) : ()}*/
