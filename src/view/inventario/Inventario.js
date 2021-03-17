@@ -8,6 +8,8 @@ import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import { FcSearch, FcViewDetails } from "react-icons/fc";
+import Loading from "../Componentes/Loading/Loading";
+import Error404 from "../Componentes/Error/Error";
 import useAxios from "../Hooks/useAxios";
 
 const Inventario = () => {
@@ -75,9 +77,12 @@ const Inventario = () => {
 
           <div className="cont__lista-tabla">
             {loading ? (
-              <h2>Cargando ...</h2>
+              <Loading />
             ) : error ? (
-              <h3>Error: {error}</h3>
+              <Error404
+                ancho={200}
+                error="Se ha producido un problema, Recargue la pagina."
+              />
             ) : (
               <CollapsibleTable data={data} />
             )}
