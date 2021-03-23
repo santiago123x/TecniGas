@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Ventas from "./ventas/Ventas";
 import Inventario from "./inventario/Inventario";
+import Compra from "./inventario/Compra";
 import Cli_Prov from "./cli-prov/Cli_Prov";
 import Login from "./login/Login";
 import Layout from "./Componentes/Layout/Layout";
@@ -32,6 +33,11 @@ function Rutas() {
           <Route path="/clientes-proveedores">
             <Layout>
               <Cli_Prov />
+            </Layout>
+          </Route>
+          <Route path="/compra">
+            <Layout>
+              <Compra />
             </Layout>
           </Route>
 
