@@ -1,0 +1,74 @@
+.principal-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+}
+
+.flex-container-superior {
+    
+    
+    height: 25vh;
+    width: 95%;    
+    padding: 10px;
+    margin: 10px;
+    background-color:rgba(40, 176, 255, 0.548);
+    border: 1px solid rgb(0, 153, 255);
+    border-radius: 10px;
+}
+
+.form {
+    display: flex;
+    flex-wrap: wrap;   
+}
+
+.flex-container-intermedio {
+    height: 15vh;
+    width: 95%;
+    padding: 10px;
+    margin: 10px;
+    background-color:rgba(40, 176, 255, 0.548);
+    border: 1px solid rgb(0, 153, 255);
+    border-radius: 10px;
+}
+
+.flex-container-tabla {
+    height: 50vh;
+    width: 69%;
+    padding: 10px;
+    margin: 10px;
+    background-color:rgba(40, 176, 255, 0.548);
+    border: 1px solid rgb(0, 153, 255);
+    border-radius: 10px;
+}
+
+.flex-container-derecho {
+    display: flex;
+    height: 50vh;
+    width: 25%;
+    padding: 10px;
+    margin: 10px;
+    
+    
+}
+
+.flex-container-derecho__form {
+    margin: auto;
+    height: 45vh;
+    width: 80%;
+    background-color:rgba(40, 176, 255, 0.548);
+    border: 1px solid rgb(0, 153, 255);
+    border-radius: 10px;
+}
+
+.form__section {
+    margin: 10px;
+    padding: 10px;
+}
+
+
+.form__section:first-child {
+    margin-top: 22px;
+}
