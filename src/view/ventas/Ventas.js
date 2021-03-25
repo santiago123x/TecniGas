@@ -12,7 +12,39 @@ import React from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputBase from '@material-ui/core/InputBase';
+import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import { FaUserPlus } from "react-icons/fa";
+import { normalizeUnits } from "moment";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: "0 4px",
+    display: "flex",
+    alignItems: "center",
+   
+    marginTop: "1%",
+    background: "rgba(40, 176, 255, 0)",
+    boxShadow: 'none'
+    
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+    
+  },
+  iconButton: {
+    marginLeft:'2px',
+    padding: 7,
+    background: "#0e7e4a28",
+    border: 'solid 2px rgba(11, 69, 134, 0.747)'
+  
+  },
+  divider: {
+    height: 26,
+    margin: 2,
+  },
+}));
 
 const MiInput = withStyles({
   root: {
@@ -110,6 +142,7 @@ const Ventas = () => {
   const [selectedDate, handleDateChange] = useState(new Date());
   const [date, changeDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
+  const classes = useStyles();
 
 
 
@@ -121,17 +154,22 @@ const Ventas = () => {
         <div className="flex-container-superior">
           <form className="form">
             <div className="form__section">
-              <Select
-                defaultValue={0}
-                input={<BootstrapInput />}
-              >
-                <MenuItem default value={0} >Cliente</MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
+              <Paper className={classes.root}>
+                <Select
+                  defaultValue={0}
+                  input={<BootstrapInput />}
+                >
+                  <MenuItem default value={0} >Cliente</MenuItem>
+                  <MenuItem value={10}>Ten</MenuItem>
+                  <MenuItem value={20}>Twenty</MenuItem>
+                  <MenuItem value={30}>Thirty</MenuItem>
+                </Select>
+                <IconButton aria-label="menu" className={classes.iconButton}>
+                  <FaUserPlus/>
+                </IconButton>
+              </Paper>
 
-              <Button variant="contained" size="large" color="primary">Agregar</Button>
+              {/* <Button variant="contained" size="large" color="primary">Agregar</Button> */}
             </div>
             <div className="form__section">
               <MiInput
@@ -184,11 +222,11 @@ const Ventas = () => {
                 id="outlined-textarea"
                 label="Nota"
                 placeholder="Digite su Nota o detalle de Venta"
-                rows={3}
+                rows={2}
                 multiline
                 variant="outlined"
               />
-              
+
             </div>
           </form>
         </div>

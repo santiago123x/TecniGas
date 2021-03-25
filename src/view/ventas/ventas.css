@@ -16,15 +16,17 @@
     background-color:rgba(40, 176, 255, 0.548);
     border: 1px solid rgb(0, 153, 255);
     border-radius: 10px;
+    
+  
 }
 
 .form {
+    padding: 0 2%;
     display: flex;
     flex-wrap: wrap; 
-   height: 100%;
+    height: 100%;    
+    justify-content: space-between;
     
-    justify-content: center;
-    align-items: center  
 }
 
 .flex-container-intermedio {
