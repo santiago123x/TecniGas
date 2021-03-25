@@ -14,7 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import { FaUserPlus } from "react-icons/fa";
+import { FaUserPlus, FaCartPlus } from "react-icons/fa";
 import { normalizeUnits } from "moment";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,23 +22,25 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 4px",
     display: "flex",
     alignItems: "center",
-   
+
     marginTop: "1%",
     background: "rgba(40, 176, 255, 0)",
     boxShadow: 'none'
-    
+
   },
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,
-    
+
   },
   iconButton: {
-    marginLeft:'2px',
+    marginLeft: '4px',
     padding: 7,
     background: "#0e7e4a28",
-    border: 'solid 2px rgba(11, 69, 134, 0.747)'
-  
+    border: 'solid 2px rgba(11, 69, 134, 0.747)',
+    borderRadius: '10px',
+    color: '#eeecee'
+
   },
   divider: {
     height: 26,
@@ -104,7 +106,7 @@ const BootstrapInput = withStyles((theme) => ({
     },
   },
   input: {
-    width: '8vw',
+    width: '12vw',
     borderRadius: 4,
     position: 'relative',
     backgroundColor: 'rgba(114, 183, 230, 0.295)',
@@ -152,7 +154,7 @@ const Ventas = () => {
 
       <div className="principal-container">
         <div className="flex-container-superior">
-          <form className="form">
+          <form className="formsuperior">
             <div className="form__section">
               <Paper className={classes.root}>
                 <Select
@@ -165,7 +167,7 @@ const Ventas = () => {
                   <MenuItem value={30}>Thirty</MenuItem>
                 </Select>
                 <IconButton aria-label="menu" className={classes.iconButton}>
-                  <FaUserPlus/>
+                  <FaUserPlus />
                 </IconButton>
               </Paper>
 
@@ -218,19 +220,35 @@ const Ventas = () => {
 
             </div>
             <div className="form__section">
-              <TextField
-                id="outlined-textarea"
-                label="Nota"
-                placeholder="Digite su Nota o detalle de Venta"
-                rows={2}
-                multiline
-                variant="outlined"
-              />
-
+              <BootstrapInput
+              label="Nota"
+              placeholder="Digite su Nota"
+              rows={2}
+              multiline/>
+              
+              
             </div>
           </form>
         </div>
         <div className="flex-container-intermedio">
+          <form className="formintermedio">
+            <div className="form__section">
+              <Paper className={classes.root}>
+                <Select
+                  defaultValue={0}
+                  input={<BootstrapInput />}
+                >
+                  <MenuItem default value={0} >Producto</MenuItem>
+                  <MenuItem value={10}>Ten</MenuItem>
+                  <MenuItem value={20}>Twenty</MenuItem>
+                  <MenuItem value={30}>Thirty</MenuItem>
+                </Select>
+                <IconButton aria-label="menu" className={classes.iconButton}>
+                  <FaCartPlus />
+                </IconButton>
+              </Paper>
+            </div>
+          </form>
 
         </div>
         <div className="flex-container-tabla">

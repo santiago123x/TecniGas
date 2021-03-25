@@ -13,14 +13,16 @@
     width: 95%;    
     padding: 3px;
     margin: 10px;
-    background-color:rgba(40, 176, 255, 0.548);
+    
+    /* background-color:rgba(40, 176, 255, 0.548); */
+    background: linear-gradient(0deg, rgba(40,176,255,0.5) 32%, rgba(255,255,255,0) 87%);
     border: 1px solid rgb(0, 153, 255);
     border-radius: 10px;
     
   
 }
 
-.form {
+.formsuperior {
     padding: 0 2%;
     display: flex;
     flex-wrap: wrap; 
@@ -86,6 +88,5 @@
     margin-top: 16px;
     
 } 
-.form__section:nth-child(6), .form__section:nth-child(7) {
-}
+
 
