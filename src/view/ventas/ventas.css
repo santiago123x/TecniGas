@@ -7,12 +7,11 @@
     
 }
 
-.flex-container-superior {
-    
+.flex-container-superior {   
     
     height: 25vh;
     width: 95%;    
-    padding: 10px;
+    padding: 3px;
     margin: 10px;
     background-color:rgba(40, 176, 255, 0.548);
     border: 1px solid rgb(0, 153, 255);
@@ -21,7 +20,11 @@
 
 .form {
     display: flex;
-    flex-wrap: wrap;   
+    flex-wrap: wrap; 
+   height: 100%;
+    
+    justify-content: center;
+    align-items: center  
 }
 
 .flex-container-intermedio {
@@ -64,11 +67,20 @@
 }
 
 .form__section {
-    margin: 10px;
-    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   padding-left: 8px;
+   padding-right: 8px;
 }
 
 
-.form__section:first-child {
-    margin-top: 22px;
+ .form__section:first-child {
+    margin-top: 16px;
 }
+
+.form__section:nth-child(5), .form__section:nth-child(6){
+    margin-top: 16px;
+    
+} 
+

@@ -21,6 +21,9 @@ const MiInput = withStyles({
     },
     '& .MuiFormLabel-root': {
       color: 'black',
+      marginLeft: '10px',
+      padding: '2%'
+
     },
     '& .PrivateNotchedOutline-root-2': {
       top: '0px',
@@ -44,7 +47,7 @@ const MiInput = withStyles({
     },
     '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
       backgroundColor: 'rgb(72 147 210)',
-
+      marginLeft: '10px'
     }
   },
 })(TextField);
@@ -69,7 +72,7 @@ const BootstrapInput = withStyles((theme) => ({
     },
   },
   input: {
-    width: '100px',
+    width: '8vw',
     borderRadius: 4,
     position: 'relative',
     backgroundColor: 'rgba(114, 183, 230, 0.295)',
@@ -117,7 +120,7 @@ const Ventas = () => {
       <div className="principal-container">
         <div className="flex-container-superior">
           <form className="form">
-            <div className="form__section primera">
+            <div className="form__section">
               <Select
                 defaultValue={0}
                 input={<BootstrapInput />}
@@ -144,7 +147,7 @@ const Ventas = () => {
             <div className="form__section">
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
-                  label="Basic example"
+                  label="Fecha de Venta"
                   value={selectedDate}
                   onChange={handleDateChange}
                   animateYearScrolling
@@ -175,6 +178,17 @@ const Ventas = () => {
                 <MenuItem value={30}>Thirty</MenuItem>
               </Select>
 
+            </div>
+            <div className="form__section">
+              <TextField
+                id="outlined-textarea"
+                label="Nota"
+                placeholder="Digite su Nota o detalle de Venta"
+                rows={3}
+                multiline
+                variant="outlined"
+              />
+              
             </div>
           </form>
         </div>
