@@ -102,9 +102,9 @@ function Row(props) {
                 <TableBody>
                   <TableRow>
                     <TableCell align="center" component="th" scope="row">
-                      {row.precio_uni} $
+                      $ {row.precio_uni}
                     </TableCell>
-                    <TableCell align="center">{row.precio_may} $</TableCell>
+                    <TableCell align="center">$ {row.precio_may}</TableCell>
                     <TableCell align="center">{row.stock_min}</TableCell>
                   </TableRow>
                 </TableBody>
