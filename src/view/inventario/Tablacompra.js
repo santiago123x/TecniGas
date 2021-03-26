@@ -7,6 +7,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import moneda from '../utilidades/moneda'
+import { IconButton } from '@material-ui/core';
+import {FcDeleteRow} from 'react-icons/fc'
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -14,32 +18,38 @@ const StyledTableCell = withStyles((theme) => ({
     color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14,
+    fontSize: 17,
   },
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     '&:nth-of-type(odd)': {
-      backgroundColor: "#0659a7",
+      backgroundColor: "#5aacf8",
     },
+    '& .MuiIconButton-root':{
+      padding: '0%',
+      margin: '0 10%'
+    }
   },
 }))(TableRow);
 
 const useStyles = makeStyles({
   table: {
     minWidth: 400,
-    //maxWidth: 800,
   },
   container: {
-    maxHeight: 322,
+    //maxHeight: 322,
+    height: '100%',
   }
 });
 
-const rows = [];
-
-const Tablacompra = () =>  {
+const Tablacompra = ({compraDet, setCompraDet}) =>  {
   const classes = useStyles();
+
+  const eliminarDet = (det) =>{
+    setCompraDet(compraDet.filter(d => d !== det))
+  }
 
   return (
     <TableContainer component={Paper} className={classes.container}>
@@ -54,17 +64,33 @@ const Tablacompra = () =>  {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.idprodu}>
-              <StyledTableCell component="th" scope="row">
-                {row.producto}
+          { compraDet.length === 0 ? ( <StyledTableRow />):
+          (compraDet.map((det, index) => (
+            <StyledTableRow key={index}>
+              <StyledTableCell component="th" scope="row">{det.nombre_pro}</StyledTableCell>
+              <StyledTableCell align="center" fontSize="bold">{det.cantidad}</StyledTableCell>
+              <StyledTableCell align="center">{moneda(det.precio)}</StyledTableCell>
+              <StyledTableCell align="center">{moneda(det.totalDet)}</StyledTableCell>
+              <StyledTableCell align="center">
+              <IconButton
+                  type="button"
+                  aria-label="Editar"
+                  
+                >
+                  <FaEdit className="icono" />
+                </IconButton>
+                <IconButton
+                  type="button"
+                  aria-label="Eliminar"
+                  onClick={() =>{
+                    eliminarDet(det);
+                  }}
+                >
+                  <FaTrashAlt className="icono" />
+                </IconButton>
               </StyledTableCell>
-              <StyledTableCell align="center">{row.cantidad}</StyledTableCell>
-              <StyledTableCell align="center">{row.precio}</StyledTableCell>
-              <StyledTableCell align="center">{row.cantidad * row.precio}</StyledTableCell>
-              <StyledTableCell align="center"></StyledTableCell>
             </StyledTableRow>
-          ))}
+          )))}
         </TableBody>
       </Table>
     </TableContainer>

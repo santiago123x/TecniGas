@@ -16,12 +16,14 @@
     width: 100%; 
 }
 
-.info {
-    height: 11px;
+.icono {
+    width: 15px;
+    height: 15px;
 }
 
 .produ {
-    margin-top: 5%;
+    margin-top: 1%;
+    align-items: center;
 }
 
 .form {
@@ -70,7 +72,7 @@
 
 .conten-tabla {    
     margin: 2% 10% 1%;
-    padding: 3%;
+    padding: 2%;
     display: flex;
     outline: 0;
     position: relative;
@@ -84,5 +86,5 @@
 .conten-button-compra {
     display: flex;
     justify-content: center;
-
 }
+
