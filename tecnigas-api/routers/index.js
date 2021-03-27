@@ -37,7 +37,7 @@ router.post("/listado/:id/:tp", postCliente_Prov);
 router.delete("/listado/:id", delCliente_Prov);
 
 
-// routes productos
+// Rutas de productos
 
 router.get("/producto", getProducto);
 router.post("/producto", postProducto);
