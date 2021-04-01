@@ -8,19 +8,27 @@ import { purple } from '@material-ui/core/colors';
 import useAxios from "../Hooks/useAxios";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import moneda from '../utilidades/moneda';
-import {matchSorter} from 'match-sorter';
+import { matchSorter } from 'match-sorter';
 
 const Compra = () => {
   const productos = useAxios(`/producto/`);
+  const proveedores = [];
+  const date = new Date();
+  const fechaActu = new Date(date.getFullYear(), date.getMonth(), date.getDate())
 
   const datap = [
     { producto_id: 1, id_categoria: 1, nombre_pro: "Martillo", precio_uni: 7000, precio_may: 580, codigo_pro: 101 },
     { producto_id: 2, id_categoria: 2, nombre_pro: "Estufa de Gas", precio_uni: 60000, precio_may: 5000, codigo_pro: 201 }
   ]
-  
+
+  const datapro = [
+    { proveedor_id: 1, nombre_pro: "Martin Rojas", codigo_pro: 101 },
+    { proveedor_id: 2, nombre_pro: "Gases de Occiedente", codigo_pro: 201 }
+  ]
+
   const [compraVacia, setCompraVacia] = useState(true)
-  const [proveedor, setProveedor] = useState();
-  const [fecha, setFecha] = useState();
+  const [proveedor, setProveedor] = useState(null);
+  const [fecha, setFecha] = useState(fechaActu.toISOString().substr(0,10));
   const [observacion, setObservacion] = useState();
   const [compraDet, setCompraDet] = useState([]);
   const [produ, setProdu] = useState(null);
@@ -33,7 +41,7 @@ const Compra = () => {
     setTotalDet(cantidad * precio);
   }
 
-  const calcularTotalCompra = () =>{
+  const calcularTotalCompra = () => {
     let suma = 0;
     compraDet.map(det => (
       suma = det.totalDet + suma
@@ -42,7 +50,7 @@ const Compra = () => {
   }
 
   const verificaCompra = () => {
-    if (compraDet.length > 0)
+    if (compraDet.length > 0 && proveedor != null)
       setCompraVacia(false);
     else
       setCompraVacia(true);
@@ -55,9 +63,10 @@ const Compra = () => {
   useEffect(() => {
     calcularTotalCompra();
     verificaCompra();
-  }, [compraDet])
-  
-  const registrarDet = () => {
+  }, [compraDet, proveedor])
+
+  const registrarDet = e => {
+    e.preventDefault();
     const nuevoDet = {
       producto_id: produ.producto_id,
       nombre_pro: produ.nombre_pro,
@@ -67,24 +76,38 @@ const Compra = () => {
     };
     const detalles = [...compraDet, nuevoDet];
     setCompraDet(detalles);
-    setCantidad("");
     setPrecio("");
+    setCantidad("");
     setProdu(null);
   }
 
-  const filterOptions = (options, { inputValue }) =>
-  matchSorter(options, inputValue, {keys: ['nombre_pro', 'codigo_pro'], threshold: matchSorter.rankings.CONTAINS});
+  const filterProduc = (options, { inputValue }) =>
+    matchSorter(options, inputValue, { keys: ['nombre_pro', 'codigo_pro'], threshold: matchSorter.rankings.CONTAINS });
 
   return (
-    <div className="conten-compras">
+    <div className="conten-compras" id="compra">
       <div className="formularios">
         <div className="conten-form info">
           <form className="form" id="form-info">
-            <MiInput
+            <MiFilter
               id="proveedor"
-              label="Provedor"
-              variant="outlined"
-              size="small"
+              style={{ width: 200 }}
+              options={datapro}
+              value={proveedor}
+              //filterOptions={filterOptions}
+              getOptionLabel={option => option.nombre_pro}
+              onChange={(event, newValue) => {                
+                setProveedor(newValue) 
+              }}
+              renderInput={params => (
+                <MiInput
+                  {...params}
+                  id="inputproveedor"
+                  label="Proveedor"
+                  variant="outlined"
+                  size="small"
+                />)
+              }
             />
             <MiInput
               id="total"
@@ -93,41 +116,48 @@ const Compra = () => {
               size="small"
               disabled
               value={moneda(totalCompra)}
-              />
+            />
             <MiInput
               id="date"
               label="Fecha"
               type="date"
               value={fecha}
-              defaultValue={new Date().toLocaleDateString()}
               variant="outlined"
               size="small"
               InputLabelProps={{
                 shrink: true,
               }}
+              onChange={(evento) => {
+                setFecha(evento.target.value)
+              }}
             />
             <MiInput
               id="observacion"
               label="Observacion"
-              multiline rows={4}
+              multiline
+              rows={4}
               value={observacion}
               variant="outlined"
-              size="small" />
+              size="small"
+              onChange={(evento) => {
+                setObservacion(evento.target.value)
+              }}
+            />
           </form>
         </div>
         <div className="conten-form produ">
-          <form className="form" id="form-produc">
+          <form className="form" id="form-produc" onSubmit={(e) => registrarDet(e) }>
             <MiFilter
               id="producto"
-              style={{ width: 200}}
-              options={productos.data}
+              style={{ width: 200 }}
+              options={datap}
               value={produ}
-              filterOptions={filterOptions}
+              filterOptions={filterProduc}
               getOptionLabel={option => option.nombre_pro}
               onChange={(event, newValue) => {
                 //newValue !== null ?
-                  setProdu(newValue) //:
-                  //setProdu(null)
+                setProdu(newValue) //:
+                //setProdu(null)
               }}
               renderInput={params => (
                 <MiInput
@@ -162,7 +192,7 @@ const Compra = () => {
                 setPrecio(parseInt(evento.target.value))
               }}
             />
-            <MiButton variant="contained" color="primary" onClick={() => { registrarDet() }}>
+            <MiButton variant="contained" color="primary" type="submit" /*onClick={() => { registrarDet() }}*/>
               Agregar
           </MiButton>
           </form>
@@ -170,7 +200,7 @@ const Compra = () => {
       </div>
 
       <div className="conten-tabla">
-        <Tablacompra  compraDet={compraDet} setCompraDet={setCompraDet}/>
+        <Tablacompra compraDet={compraDet} setCompraDet={setCompraDet} />
       </div>
       <div className="conten-button-compra">
         <MiButton variant="contained" color="primary" disabled={compraVacia} >
@@ -202,9 +232,6 @@ const MiInput = withStyles({
     '& .MuiFormLabel-root': {
       color: 'black',
     },
-    '& .PrivateNotchedOutline-root-2': {
-      top: '0px',
-    },
     '& .MuiInputBase-input': {
       backgroundColor: 'rgba(114, 183, 230, 0.295);',
       borderRadius: '4px'
@@ -218,28 +245,25 @@ const MiInput = withStyles({
     },
     '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
       backgroundColor: 'rgb(72 147 210)',
+    },   
+    '& .PrivateNotchedOutline-root-3': {
+      top: '0px',
     },
-    '& .MuiAutocomplete-inputRoot': {
-      padding: '0%',
-    }
   },
 })(TextField);
 
 const MiFilter = withStyles({
   root: {
-    '& .MuiAutocomplete-hasPopupIcon': {
-      padding: '4px',
+
+    '& .MuiFormControl-fullWidth': {
+      backgroundColor: 'rgba(114, 183, 230, 0.295)',
+      borderRadius: '4px',
     },
-    '& .MuiAutocomplete-hasClearIcon': {
-      padding: '4px',
+    '& .MuiInputBase-input': {
+      backgroundColor: 'rgba(0, 0, 0, 0);',
+    },
+    '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"] .MuiAutocomplete-input': {
+      padding: '2.5px',
     }
   },
 })(Autocomplete);
-
-
-/*
-class="MuiInputBase-root MuiOutlinedInput-root MuiAutocomplete-inputRoot 
-MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd 
-MuiOutlinedInput-adornedEnd MuiInputBase-marginDense MuiOutlinedInput-marginDense"
-
-*/
