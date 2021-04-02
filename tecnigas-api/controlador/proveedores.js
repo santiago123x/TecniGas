@@ -3,7 +3,7 @@ const pool = require("./conexion");
 const getProveedor = async (req, res) => {
   try {
     const response = await pool.query(
-      `select * from  proveedores natural join personas `
+      `select * from "cliente-proveedor" natural join persona where tipo_clpr = 'proveedor'`
     );
     res.send(response.rows);
   } catch (e) {
@@ -12,6 +12,5 @@ const getProveedor = async (req, res) => {
 };
 
 module.exports = {
-    getProveedor,
-    
+    getProveedor,    
   };
