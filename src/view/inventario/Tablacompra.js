@@ -45,11 +45,12 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    minWidth: 400,
+    minWidth: '100%',
   },
   container: {
     //maxHeight: 322,
     height: '100%',
+    backgroundColor: "#dee2e6"
   },
   scrollPaper: {
     background: "#2965aa77",
@@ -77,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Tablacompra = ({ compraDet, setCompraDet }) => {
   const classes = useStyles();
-  const [modal, setModal] = useState(false);  
+  const [modal, setModal] = useState(false);
   const [cantidad, setCantidad] = useState();
   const [precio, setPrecio] = useState();
   const [indexDet, setIndexDet] = useState();
@@ -87,7 +88,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
     setCompraDet(compraDet.filter(d => d !== det))
   }
 
-  const modalEdit = (det, index) =>{
+  const modalEdit = (det, index) => {
     setPrecio(det.precio);
     setCantidad(det.cantidad);
     setProduSelec(det)
@@ -95,7 +96,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
     setModal(!modal);
   }
 
-  const editDetalle = ()=>{
+  const editDetalle = () => {
     const totalDet = precio * cantidad;
     const nuevoDet = {
       producto_id: produSelec.producto_id,
@@ -136,7 +137,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
                       type="button"
                       aria-label="Editar"
                       onClick={() => {
-                        modalEdit( det, index);
+                        modalEdit(det, index);
                       }}
                     >
                       <FaEdit className="icono" />
@@ -163,9 +164,9 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
         open={modal}
       >
         <DialogTitle className={classes.scrollPaper}>{
-        produSelec !== null?
-        produSelec.nombre_pro:
-        ""}</DialogTitle>
+          produSelec !== null ?
+            produSelec.nombre_pro :
+            ""}</DialogTitle>
         <DialogContent className={classes.scrollPaper}>
           <form className={classes.formControl}>
             <TextField
@@ -191,7 +192,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
           </form>
         </DialogContent>
         <DialogActions className={classes.scrollPaper}>
-          <Button onClick={() => editDetalle() } color="primary">
+          <Button onClick={() => editDetalle()} color="primary">
             Terminar
           </Button>
         </DialogActions>

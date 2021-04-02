@@ -12,7 +12,7 @@ import { matchSorter } from 'match-sorter';
 
 const Compra = () => {
   const productos = useAxios(`/producto/`);
-  const proveedores = [];
+  const proveedores = useAxios(`/proveedor/`);
   const date = new Date();
   const fechaActu = new Date(date.getFullYear(), date.getMonth(), date.getDate())
 
@@ -22,13 +22,33 @@ const Compra = () => {
   ]
 
   const datapro = [
-    { proveedor_id: 1, nombre_pro: "Martin Rojas", codigo_pro: 101 },
-    { proveedor_id: 2, nombre_pro: "Gases de Occiedente", codigo_pro: 201 }
+    {
+      apellido: "Martinez",
+      direccion: "calle 72v#28e16",
+      email: "juanmartinez10@gmail.com",
+      id_clipro: 1,
+      identificacion: 1006167598,
+      nombre_pe: "Juan",
+      persona_id: 1,
+      telefono: "3122889686",
+      tipo_clpr: "proveedor"
+    },
+    {
+      apellido: "Rodriguez",
+      direccion: "calle 72v#28e16",
+      email: "mariarod10@gmail.com",
+      id_clipro: 2,
+      identificacion: 1006112314,
+      nombre_pe: "Maria del carmen",
+      persona_id: 2,
+      telefono: "3122889686",
+      tipo_clpr: "proveedor"
+    },
   ]
 
   const [compraVacia, setCompraVacia] = useState(true)
   const [proveedor, setProveedor] = useState(null);
-  const [fecha, setFecha] = useState(fechaActu.toISOString().substr(0,10));
+  const [fecha, setFecha] = useState(fechaActu.toISOString().substr(0, 10));
   const [observacion, setObservacion] = useState();
   const [compraDet, setCompraDet] = useState([]);
   const [produ, setProdu] = useState(null);
@@ -82,7 +102,19 @@ const Compra = () => {
   }
 
   const filterProduc = (options, { inputValue }) =>
-    matchSorter(options, inputValue, { keys: ['nombre_pro', 'codigo_pro'], threshold: matchSorter.rankings.CONTAINS });
+    matchSorter(options, inputValue,
+      {
+        keys: ['nombre_pro', 'codigo_pro'],
+        threshold: matchSorter.rankings.CONTAINS
+      });
+
+
+  const filterProvee = (options, { inputValue }) =>
+    matchSorter(options, inputValue,
+      {
+        keys: ['nombre_pe', 'identificacion', 'apellido'],
+        threshold: matchSorter.rankings.CONTAINS
+      });
 
   return (
     <div className="conten-compras" id="compra">
@@ -92,12 +124,12 @@ const Compra = () => {
             <MiFilter
               id="proveedor"
               style={{ width: 200 }}
-              options={datapro}
+              options={proveedores.data}
               value={proveedor}
-              //filterOptions={filterOptions}
-              getOptionLabel={option => option.nombre_pro}
-              onChange={(event, newValue) => {                
-                setProveedor(newValue) 
+              filterOptions={filterProvee}
+              getOptionLabel={option => `${option.nombre_pe} ${option.apellido}`}
+              onChange={(event, newValue) => {
+                setProveedor(newValue)
               }}
               renderInput={params => (
                 <MiInput
@@ -142,11 +174,15 @@ const Compra = () => {
               onChange={(evento) => {
                 setObservacion(evento.target.value)
               }}
+              inputProps={{
+                maxLength: 150
+              }}
             />
           </form>
         </div>
+
         <div className="conten-form produ">
-          <form className="form" id="form-produc" onSubmit={(e) => registrarDet(e) }>
+          <form className="form" id="form-produc" onSubmit={(e) => registrarDet(e)}>
             <MiFilter
               id="producto"
               style={{ width: 200 }}
@@ -202,6 +238,7 @@ const Compra = () => {
       <div className="conten-tabla">
         <Tablacompra compraDet={compraDet} setCompraDet={setCompraDet} />
       </div>
+
       <div className="conten-button-compra">
         <MiButton variant="contained" color="primary" disabled={compraVacia} >
           Terminar Compra
@@ -233,7 +270,7 @@ const MiInput = withStyles({
       color: 'black',
     },
     '& .MuiInputBase-input': {
-      backgroundColor: 'rgba(114, 183, 230, 0.295);',
+      backgroundColor: 'rgba(255, 255, 255, 0.25);',
       borderRadius: '4px'
     },
     '& .MuiOutlinedInput-multiline': {
@@ -245,7 +282,7 @@ const MiInput = withStyles({
     },
     '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
       backgroundColor: 'rgb(72 147 210)',
-    },   
+    },
     '& .PrivateNotchedOutline-root-3': {
       top: '0px',
     },
@@ -256,7 +293,7 @@ const MiFilter = withStyles({
   root: {
 
     '& .MuiFormControl-fullWidth': {
-      backgroundColor: 'rgba(114, 183, 230, 0.295)',
+      backgroundColor: 'rgba(255, 255, 255, 0.25)',
       borderRadius: '4px',
     },
     '& .MuiInputBase-input': {

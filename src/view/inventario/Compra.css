@@ -7,13 +7,17 @@
 .formularios {
     width: 93%;
     margin: 1% auto;
-    padding: 1%; 
-    background-color: rgba(136, 199, 241, 0.404);
     border-radius: 10px;
+    display: flexbox;
+    position: relative;
+    justify-content: center;
 }
 
 .conten-form {
+    background-color: rgba(136, 199, 241, 0.404);
+    padding: 1%;
     width: 100%; 
+    border-radius: 10px;
 }
 
 .icono {
@@ -22,7 +26,8 @@
 }
 
 .produ {
-    margin-top: 1%;
+    width: 80%;
+    margin: 1% auto;
     align-items: center;
 }
 
@@ -71,15 +76,15 @@
 }
 
 .conten-tabla {    
-    margin: 2% 10% 1%;
-    padding: 2%;
+    margin: 1% 10% 1%;
+    padding: 1%;
     display: flex;
     outline: 0;
     position: relative;
     justify-content: center;
-    background-color: rgba(114, 183, 230, 0.295);
+    background-color: rgba(255, 255, 255, 0.25);
     border-radius: 10px;
-    height: 60%;
+    height: 57%;
 
 }
 
