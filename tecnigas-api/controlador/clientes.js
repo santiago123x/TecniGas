@@ -1,5 +1,15 @@
 const pool = require('./conexion');
 
+const getClientes = async (req, res) => {
+  try {
+    const response = await pool.query(
+      "SELECT * FROM persona ORDER BY idpersona"
+    );
+    res.send(response.rows);
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const getCliente_Prov = async (req, res) =>{
   try{
@@ -34,9 +44,13 @@ const delCliente_Prov = async (req, res) =>{
     }
 };
 
+
+
 module.exports = {
     getCliente_Prov,
     postCliente_Prov,
     delCliente_Prov,
+    getClientes,
     
 };
+

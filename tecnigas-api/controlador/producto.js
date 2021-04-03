@@ -3,7 +3,64 @@ const pool = require("./conexion");
 const getProducto = async (req, res) => {
   try {
     const response = await pool.query(
-      "SELECT * FROM Producto ORDER BY producto_id"
+      `select * from producto join  categoria 
+      on categoria.id_categoria = producto.id_categoria order by codigo_pro`
+    );
+    res.send(response.rows);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const getProductoId = async (req, res) => {
+  try {
+    const { producto_id } = req.params;
+    const response = await pool.query(
+      `select * from producto join  categoria 
+      on categoria.id_categoria = producto.id_categoria 
+      where producto_id = ${producto_id}  order by codigo_pro`
+    );
+    res.send(response.rows);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const getProductoNom = async (req, res) => {
+  try {
+    const { nombre_pro } = req.params;
+    const response = await pool.query(
+      `select * from producto join  categoria 
+      on categoria.id_categoria = producto.id_categoria 
+      where nombre_pro = '${nombre_pro}'  order by codigo_pro`
+    );
+    res.send(response.rows);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const getProductoCod = async (req, res) => {
+  try {
+    const { codigo_pro } = req.params;
+    const response = await pool.query(
+      `select * from producto join  categoria 
+      on categoria.id_categoria = producto.id_categoria 
+      where codigo_pro = ${codigo_pro}  order by codigo_pro`
+    );
+    res.send(response.rows);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const getProductoCat = async (req, res) => {
+  try {
+    const { nombre_catg } = req.params;
+    const response = await pool.query(
+      `select * from producto join  categoria 
+      on categoria.id_categoria = producto.id_categoria 
+      where nombre_catg = '${nombre_catg}'  order by codigo_pro`
     );
     res.send(response.rows);
   } catch (e) {
@@ -70,6 +127,10 @@ const delProducto = async (req, res) => {
 
 module.exports = {
   getProducto,
+  getProductoCod,
+  getProductoId,
+  getProductoNom,
+  getProductoCat,
   putProducto,
   postProducto,
   delProducto,

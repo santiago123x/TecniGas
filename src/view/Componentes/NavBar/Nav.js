@@ -19,6 +19,7 @@ import {
   FcFilingCabinet,
   FcAlarmClock,
   FcEngineering,
+  FcLeft,
 } from "react-icons/fc";
 
 import "./Nav.scss";
@@ -29,9 +30,30 @@ const Img = () => {
   return <img src={Logo} />;
 };
 
-const Nav = () => {
+const inicial = {
+  ventas: null,
+  perfil: null,
+  inv: null,
+  agenda: null,
+  dev: null,
+  client: null,
+  prov: null,
+  info: null,
+};
+
+const Nav = ({ tipo }) => {
   let menu = null;
   const [collap, setCollap] = useState(false);
+  const [active, setActive] = useState({
+    ventas: tipo === "vent" ? <FcLeft /> : null,
+    perfil: tipo === "perf" ? <FcLeft /> : null,
+    inv: tipo === "inv" ? <FcLeft /> : null,
+    agenda: tipo === "agen" ? <FcLeft /> : null,
+    dev: tipo === "dev" ? <FcLeft /> : null,
+    client: tipo === "cli" ? <FcLeft /> : null,
+    prov: tipo === "prov" ? <FcLeft /> : null,
+    info: tipo === "info" ? <FcLeft /> : null,
+  });
 
   useEffect(() => {
     menu = document.getElementById("menu");
@@ -57,43 +79,80 @@ const Nav = () => {
 
         <SidebarContent>
           <Menu iconShape="circle">
-            <MenuItem icon={<FcShop className="menu-icons" />}>
+            <MenuItem
+              suffix={active.ventas}
+              onClick={() => {
+                setActive({ ...inicial, ventas: <FcLeft /> });
+              }}
+              icon={<FcShop className="menu-icons" />}
+            >
               Ventas
               <Link to="/ventas" />
             </MenuItem>
-            <MenuItem icon={<FcPortraitMode className="menu-icons" />}>
+            <MenuItem
+              onClick={() => {
+                setActive({ ...inicial, perfil: <FcLeft /> });
+              }}
+              suffix={active.perfil}
+              icon={<FcPortraitMode className="menu-icons" />}
+            >
               Perfil <Link to="/" />
             </MenuItem>
-            <MenuItem icon={<FcFilingCabinet className="menu-icons" />}>
+            <MenuItem
+              onClick={() => {
+                setActive({ ...inicial, inv: <FcLeft /> });
+              }}
+              suffix={active.inv}
+              icon={<FcFilingCabinet className="menu-icons" />}
+            >
               Inventario <Link to="/inventario" />
             </MenuItem>
-            <MenuItem icon={<FcCalendar className="menu-icons" />}>
+            <MenuItem
+              onClick={() => {
+                setActive({ ...inicial, agenda: <FcLeft /> });
+              }}
+              suffix={active.agenda}
+              icon={<FcCalendar className="menu-icons" />}
+            >
               Agenda <Link to="/" />
             </MenuItem>
-            <MenuItem icon={<FcFeedback className="menu-icons" />}>
+            <MenuItem
+              onClick={() => {
+                setActive({ ...inicial, dev: <FcLeft /> });
+              }}
+              suffix={active.dev}
+              icon={<FcFeedback className="menu-icons" />}
+            >
               Devoluciones <Link to="/" />
             </MenuItem>
             <SubMenu
               title="Gestion"
               icon={<FcEngineering className="menu-icons" />}
             >
-              <MenuItem>
-                Clientes <Link to="/clientes-proveedores" />
+              <MenuItem
+                onClick={() => {
+                  setActive({ ...inicial, client: <FcLeft /> });
+                }}
+                suffix={active.client}
+              >
+                Clientes <Link to="/clientes" />
               </MenuItem>
-              <MenuItem>
-                Proveedores <Link to="/clientes-proveedores" />
-              </MenuItem>
-              <MenuItem>
-                Proveedores <Link to="/clientes-proveedores" />
-              </MenuItem>
-              <MenuItem>
-                Proveedores <Link to="/clientes-proveedores" />
-              </MenuItem>
-              <MenuItem>
-                Proveedores <Link to="/clientes-proveedores" />
+              <MenuItem
+                onClick={() => {
+                  setActive({ ...inicial, prov: <FcLeft /> });
+                }}
+                suffix={active.prov}
+              >
+                Proveedores <Link to="/proveedores" />
               </MenuItem>
             </SubMenu>
-            <MenuItem icon={<FcStatistics className="menu-icons" />}>
+            <MenuItem
+              onClick={() => {
+                setActive({ ...inicial, info: <FcLeft /> });
+              }}
+              suffix={active.info}
+              icon={<FcStatistics className="menu-icons" />}
+            >
               Informes <Link to="/ventas" />
             </MenuItem>
           </Menu>
