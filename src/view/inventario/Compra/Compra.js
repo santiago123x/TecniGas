@@ -59,15 +59,13 @@ const Compra = () => {
 
   const calcularTotalDetalle = () => {
     setTotalDet(cantidad * precio);
-  }
+  };
 
   const calcularTotalCompra = () => {
     let suma = 0;
-    compraDet.map(det => (
-      suma = det.totalDet + suma
-    ));
+    compraDet.map((det) => (suma = det.totalDet + suma));
     setTotalCompra(suma);
-  }
+  };
 
   const verificaCompra = () => {
     if (compraDet.length > 0 && proveedor != null)
@@ -78,12 +76,12 @@ const Compra = () => {
 
   useEffect(() => {
     calcularTotalDetalle();
-  }, [precio, cantidad])
+  }, [precio, cantidad]);
 
   useEffect(() => {
     calcularTotalCompra();
     verificaCompra();
-  }, [compraDet, proveedor])
+  }, [compraDet, proveedor]);
 
   const registrarDet = e => {
     e.preventDefault();
@@ -92,14 +90,14 @@ const Compra = () => {
       nombre_pro: produ.nombre_pro,
       precio: precio,
       cantidad: cantidad,
-      totalDet: totalDet
+      totalDet: totalDet,
     };
     const detalles = [...compraDet, nuevoDet];
     setCompraDet(detalles);
     setPrecio("");
     setCantidad("");
     setProdu(null);
-  }
+  };
 
   const filterProduc = (options, { inputValue }) =>
     matchSorter(options, inputValue,
@@ -191,20 +189,17 @@ const Compra = () => {
               filterOptions={filterProduc}
               getOptionLabel={option => option.nombre_pro}
               onChange={(event, newValue) => {
-                //newValue !== null ?
-                setProdu(newValue) //:
-                //setProdu(null)
+                setProdu(newValue) 
               }}
-              renderInput={params => (
+              renderInput={(params) => (
                 <MiInput
                   {...params}
                   id="inputproduc"
                   label="Producto"
                   variant="outlined"
                   size="small"
-                //onChange={handleChangeDet('producto')}
-                />)
-              }
+                />
+              )}
             />
             <MiInput
               id="cantidad"
@@ -214,7 +209,7 @@ const Compra = () => {
               type="number"
               value={cantidad}
               onChange={(evento) => {
-                setCantidad(parseInt(evento.target.value))
+                setCantidad(parseInt(evento.target.value));
               }}
             />
             <MiInput
@@ -225,12 +220,12 @@ const Compra = () => {
               type="number"
               value={precio}
               onChange={(evento) => {
-                setPrecio(parseInt(evento.target.value))
+                setPrecio(parseInt(evento.target.value));
               }}
             />
             <MiButton variant="contained" color="primary" type="submit" /*onClick={() => { registrarDet() }}*/>
               Agregar
-          </MiButton>
+            </MiButton>
           </form>
         </div>
       </div>
@@ -240,9 +235,9 @@ const Compra = () => {
       </div>
 
       <div className="conten-button-compra">
-        <MiButton variant="contained" color="primary" disabled={compraVacia} >
+        <MiButton variant="contained" color="primary" disabled={compraVacia}>
           Terminar Compra
-          </MiButton>
+        </MiButton>
       </div>
     </div>
   );
@@ -257,41 +252,43 @@ const MiButton = withStyles((theme) => ({
     '&:hover': {
       backgroundColor: purple[700],
     },*/
-    height: '30px',
+    height: "30px",
   },
 }))(Button);
 
 const MiInput = withStyles({
   root: {
-    '& .MuiOutlinedInput-inputMarginDense': {
-      padding: '8.5px ',
+    "& .MuiOutlinedInput-inputMarginDense": {
+      padding: "8.5px ",
     },
-    '& .MuiFormLabel-root': {
-      color: 'black',
+    "& .MuiFormLabel-root": {
+      color: "black",
+    },
+    "& .PrivateNotchedOutline-root-2": {
+      top: "0px",
     },
     '& .MuiInputBase-input': {
-      backgroundColor: 'rgba(255, 255, 255, 0.25);',
-      borderRadius: '4px'
+      backgroundColor: "rgba(255, 255, 255, 0.25);",
+      borderRadius: "4px",
     },
-    '& .MuiOutlinedInput-multiline': {
-      padding: '0px',
+    "& .MuiTypography-colorTextSecondary": {
+      color: "rgba(0, 0, 0, 0.6)",
+      fontWeight: "bold",
     },
-    '& .MuiTypography-colorTextSecondary': {
-      color: 'rgba(0, 0, 0, 0.6)',
-      fontWeight: 'bold',
+    "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
+      backgroundColor: "rgb(72 147 210)",
     },
-    '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
-      backgroundColor: 'rgb(72 147 210)',
+    "& .MuiAutocomplete-inputRoot": {
+      padding: "0%",
     },
     '& .PrivateNotchedOutline-root-3': {
-      top: '0px',
+      top: "0px",
     },
   },
 })(TextField);
 
 const MiFilter = withStyles({
   root: {
-
     '& .MuiFormControl-fullWidth': {
       backgroundColor: 'rgba(255, 255, 255, 0.25)',
       borderRadius: '4px',
