@@ -1,12 +1,12 @@
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Ventas from "./ventas/Ventas";
-import Inventario from "./inventario/Inventario";
+import Inventario from "./inventario/Inv/Inventario";
 
 import Clientes from "./cli-prov/Clientes";
 import Proveedores from "./cli-prov/Proveedores";
 
-import Compra from "./inventario/Compra";
+import Compra from "./inventario/Compra/Compra";
 
 import Login from "./login/Login";
 import Layout from "./Componentes/Layout/Layout";

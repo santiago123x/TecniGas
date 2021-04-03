@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "./Inventario.css";
-import CollapsibleTable from "../Componentes/Table/Table";
-import Loading from "../Componentes/Loading/Loading";
-import Error404 from "../Componentes/Error/Error";
-import useAxios from "../Hooks/useAxios";
-import Search from "../Componentes/Search";
+import CollapsibleTable from "../../Componentes/Table/Table";
+import Loading from "../../Componentes/Loading/Loading";
+import Error404 from "../../Componentes/Error/Error";
+import useAxios from "../../Hooks/useAxios";
+import Search from "../../Componentes/Search";
 
 const Inventario = () => {
   const [valueInp, setValueInp] = useState("");
