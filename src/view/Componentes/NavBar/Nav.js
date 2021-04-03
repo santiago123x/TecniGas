@@ -19,8 +19,8 @@ import {
   FcFilingCabinet,
   FcAlarmClock,
   FcEngineering,
-  FcLeft,
 } from "react-icons/fc";
+import { RiMapPinUserFill } from "react-icons/ri";
 
 import "./Nav.scss";
 import Logo from "./log_tecnigas_40x40.ico";
@@ -45,14 +45,14 @@ const Nav = ({ tipo }) => {
   let menu = null;
   const [collap, setCollap] = useState(false);
   const [active, setActive] = useState({
-    ventas: tipo === "vent" ? <FcLeft /> : null,
-    perfil: tipo === "perf" ? <FcLeft /> : null,
-    inv: tipo === "inv" ? <FcLeft /> : null,
-    agenda: tipo === "agen" ? <FcLeft /> : null,
-    dev: tipo === "dev" ? <FcLeft /> : null,
-    client: tipo === "cli" ? <FcLeft /> : null,
-    prov: tipo === "prov" ? <FcLeft /> : null,
-    info: tipo === "info" ? <FcLeft /> : null,
+    ventas: tipo === "vent" ? <RiMapPinUserFill /> : null,
+    perfil: tipo === "perf" ? <RiMapPinUserFill /> : null,
+    inv: tipo === "inv" ? <RiMapPinUserFill /> : null,
+    agenda: tipo === "agen" ? <RiMapPinUserFill /> : null,
+    dev: tipo === "dev" ? <RiMapPinUserFill /> : null,
+    client: tipo === "cli" ? <RiMapPinUserFill /> : null,
+    prov: tipo === "prov" ? <RiMapPinUserFill /> : null,
+    info: tipo === "info" ? <RiMapPinUserFill /> : null,
   });
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const Nav = ({ tipo }) => {
             <MenuItem
               suffix={active.ventas}
               onClick={() => {
-                setActive({ ...inicial, ventas: <FcLeft /> });
+                setActive({ ...inicial, ventas: <RiMapPinUserFill /> });
               }}
               icon={<FcShop className="menu-icons" />}
             >
@@ -91,7 +91,7 @@ const Nav = ({ tipo }) => {
             </MenuItem>
             <MenuItem
               onClick={() => {
-                setActive({ ...inicial, perfil: <FcLeft /> });
+                setActive({ ...inicial, perfil: <RiMapPinUserFill /> });
               }}
               suffix={active.perfil}
               icon={<FcPortraitMode className="menu-icons" />}
@@ -100,7 +100,7 @@ const Nav = ({ tipo }) => {
             </MenuItem>
             <MenuItem
               onClick={() => {
-                setActive({ ...inicial, inv: <FcLeft /> });
+                setActive({ ...inicial, inv: <RiMapPinUserFill /> });
               }}
               suffix={active.inv}
               icon={<FcFilingCabinet className="menu-icons" />}
@@ -109,7 +109,7 @@ const Nav = ({ tipo }) => {
             </MenuItem>
             <MenuItem
               onClick={() => {
-                setActive({ ...inicial, agenda: <FcLeft /> });
+                setActive({ ...inicial, agenda: <RiMapPinUserFill /> });
               }}
               suffix={active.agenda}
               icon={<FcCalendar className="menu-icons" />}
@@ -118,7 +118,7 @@ const Nav = ({ tipo }) => {
             </MenuItem>
             <MenuItem
               onClick={() => {
-                setActive({ ...inicial, dev: <FcLeft /> });
+                setActive({ ...inicial, dev: <RiMapPinUserFill /> });
               }}
               suffix={active.dev}
               icon={<FcFeedback className="menu-icons" />}
@@ -131,7 +131,7 @@ const Nav = ({ tipo }) => {
             >
               <MenuItem
                 onClick={() => {
-                  setActive({ ...inicial, client: <FcLeft /> });
+                  setActive({ ...inicial, client: <RiMapPinUserFill /> });
                 }}
                 suffix={active.client}
               >
@@ -139,7 +139,7 @@ const Nav = ({ tipo }) => {
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  setActive({ ...inicial, prov: <FcLeft /> });
+                  setActive({ ...inicial, prov: <RiMapPinUserFill /> });
                 }}
                 suffix={active.prov}
               >
@@ -148,7 +148,7 @@ const Nav = ({ tipo }) => {
             </SubMenu>
             <MenuItem
               onClick={() => {
-                setActive({ ...inicial, info: <FcLeft /> });
+                setActive({ ...inicial, info: <RiMapPinUserFill /> });
               }}
               suffix={active.info}
               icon={<FcStatistics className="menu-icons" />}
