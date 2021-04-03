@@ -2,8 +2,12 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Ventas from "./ventas/Ventas";
 import Inventario from "./inventario/Inventario";
+
 import Clientes from "./cli-prov/Clientes";
 import Proveedores from "./cli-prov/Proveedores";
+
+import Compra from "./inventario/Compra";
+
 import Login from "./login/Login";
 import Layout from "./Componentes/Layout/Layout";
 import Error404 from "./Componentes/Error/Error";
@@ -36,6 +40,11 @@ function Rutas() {
           <Route path="/proveedores">
             <Layout tipo="prov">
               <Proveedores />
+            </Layout>
+          </Route>
+          <Route path="/compra">
+            <Layout>
+              <Compra />
             </Layout>
           </Route>
 
