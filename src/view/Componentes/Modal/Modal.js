@@ -5,13 +5,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
-import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Options from "./Options";
 import FormLabel from "@material-ui/core/FormLabel";
 import React from "react";
 
-export default function Modal({ filtro, setFiltro, value, setValue }) {
+export default function Modal({ filtro, setFiltro, value, setValue, options }) {
   const dialog = useDialog();
   return (
     <>
@@ -35,21 +34,16 @@ export default function Modal({ filtro, setFiltro, value, setValue }) {
                   console.log(value);
                 }}
               >
-                <FormControlLabel
-                  value={10}
-                  control={<Radio checked={value == 10} color="default" />}
-                  label="Codigo"
-                />
-                <FormControlLabel
-                  value={20}
-                  control={<Radio checked={value == 20} color="default" />}
-                  label="Nombre"
-                />
-                <FormControlLabel
-                  value={30}
-                  control={<Radio checked={value == 30} color="default" />}
-                  label="Categoria"
-                />
+                {options.map((op, index) => {
+                  return (
+                    <Options
+                      key={index}
+                      values={op.value}
+                      label={op.label}
+                      value={value}
+                    />
+                  );
+                })}
               </RadioGroup>
             </FormControl>
           </form>

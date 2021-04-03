@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import "./Inventario.css";
-import CollapsibleTable from "./Componentes/Table/Table";
-import Modal from "./Componentes/Modal/Modal";
+import CollapsibleTable from "../../Componentes/Table/Table";
+import Modal from "../../Componentes/Modal/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import { FcSearch, FcViewDetails } from "react-icons/fc";
-import Loading from "../Componentes/Loading/Loading";
-import Error404 from "../Componentes/Error/Error";
-import useAxios from "../Hooks/useAxios";
+import Loading from "../../Componentes/Loading/Loading";
+import Error404 from "../../Componentes/Error/Error";
+import useAxios from "../../Hooks/useAxios";
 
 const Inventario = () => {
   const [filtro, setFiltro] = useState(false);

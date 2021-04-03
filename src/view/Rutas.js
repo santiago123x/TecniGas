@@ -1,14 +1,13 @@
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Ventas from "./ventas/Ventas";
-import Inventario from "./inventario/Inventario";
-import Compra from "./inventario/Compra";
-import Cli_Prov from "./cli-prov/Cli_Prov";
+import Inventario from "./inventario/Inv/Inventario";
+
+import Clientes from "./cli-prov/Clientes";
+import Proveedores from "./cli-prov/Proveedores";
+
+import Compra from "./inventario/Compra/Compra";
+
 import Login from "./login/Login";
 import Layout from "./Componentes/Layout/Layout";
 import Error404 from "./Componentes/Error/Error";
@@ -21,18 +20,26 @@ function Rutas() {
           <Route exact path="/" component={Login} />
 
           <Route path="/ventas">
-            <Layout>
+            <Layout tipo="vent">
               <Ventas />
             </Layout>
           </Route>
+
           <Route path="/inventario">
-            <Layout>
+            <Layout tipo="inv">
               <Inventario />
             </Layout>
           </Route>
-          <Route path="/clientes-proveedores">
-            <Layout>
-              <Cli_Prov />
+
+          <Route path="/clientes">
+            <Layout tipo="cli">
+              <Clientes />
+            </Layout>
+          </Route>
+
+          <Route path="/proveedores">
+            <Layout tipo="prov">
+              <Proveedores />
             </Layout>
           </Route>
           <Route path="/compra">

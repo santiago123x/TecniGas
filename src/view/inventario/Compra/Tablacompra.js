@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,11 +7,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import moneda from '../utilidades/moneda'
+import moneda from '../../utilidades/moneda'
 import { IconButton } from '@material-ui/core';
-import { FcDeleteRow } from 'react-icons/fc'
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import Modal from './ModalEditDetCompra'
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -39,7 +36,7 @@ const StyledTableRow = withStyles((theme) => ({
     '& .MuiIconButton-root': {
       padding: '0%',
       margin: '0 10%'
-    }
+    },
   },
 }))(TableRow);
 
@@ -50,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     //maxHeight: 322,
     height: '100%',
-    backgroundColor: "#dee2e6"
+    backgroundColor: "#dee2e6",
   },
   scrollPaper: {
     background: "#2965aa77",
@@ -64,25 +61,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-/*const editDetalle = (modal, setModal, det) => {
-  ReactDOM.render(
-    <Modal
-      modal={modal}
-      setModal={setModal}
-      det={det}
-    />,
-    document.getElementById('modal')
-  )
-  setModal(true)
-}*/
-
 const Tablacompra = ({ compraDet, setCompraDet }) => {
   const classes = useStyles();
   const [modal, setModal] = useState(false);
   const [cantidad, setCantidad] = useState();
   const [precio, setPrecio] = useState();
   const [indexDet, setIndexDet] = useState();
-  const [produSelec, setProduSelec] = useState(null)
+  const [produSelec, setProduSelec] = useState(null);
 
   const eliminarDet = det => {
     setCompraDet(compraDet.filter(d => d !== det))
@@ -91,7 +76,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
   const modalEdit = (det, index) => {
     setPrecio(det.precio);
     setCantidad(det.cantidad);
-    setProduSelec(det)
+    setProduSelec(det);
     setIndexDet(index);
     setModal(!modal);
   }
@@ -103,7 +88,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
       nombre_pro: produSelec.nombre_pro,
       precio: precio,
       cantidad: cantidad,
-      totalDet: totalDet
+      totalDet: totalDet,
     };
     const nuevoCompraDet = compraDet.slice();
     nuevoCompraDet.splice(indexDet, 1, nuevoDet);
