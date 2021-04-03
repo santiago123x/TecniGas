@@ -83,15 +83,7 @@ const Nav = () => {
               <MenuItem>
                 Proveedores <Link to="/clientes-proveedores" />
               </MenuItem>
-              <MenuItem>
-                Proveedores <Link to="/clientes-proveedores" />
-              </MenuItem>
-              <MenuItem>
-                Proveedores <Link to="/clientes-proveedores" />
-              </MenuItem>
-              <MenuItem>
-                Proveedores <Link to="/clientes-proveedores" />
-              </MenuItem>
+              
             </SubMenu>
             <MenuItem icon={<FcStatistics className="menu-icons" />}>
               Informes <Link to="/ventas" />
