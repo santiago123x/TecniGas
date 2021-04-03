@@ -1,0 +1,90 @@
+.conten-compras {
+    width: 100%;
+    height: inherit;
+    justify-content: center;
+}
+
+.formularios {
+    width: 93%;
+    margin: 1% auto;
+    padding: 1%; 
+    background-color: rgba(136, 199, 241, 0.404);
+    border-radius: 10px;
+}
+
+.conten-form {
+    width: 100%; 
+}
+
+.icono {
+    width: 15px;
+    height: 15px;
+}
+
+.produ {
+    margin-top: 1%;
+    align-items: center;
+}
+
+.form {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.MuiInputBase-input::-webkit-scrollbar {
+    width: 5px;
+}
+
+.MuiPaper-root::-webkit-scrollbar {
+    width: 8px;;
+}
+  
+.MuiInputBase-input::-webkit-scrollbar-track,
+.MuiPaper-root::-webkit-scrollbar-track {
+    background: rgba(136, 199, 241, 0.404);
+    border-radius: 4px;
+}
+  
+.MuiInputBase-input::-webkit-scrollbar-thumb:active,
+.MuiPaper-root::-webkit-scrollbar-thumb:active {
+    background-color: #5d76bd;
+}
+  
+.MuiInputBase-input::-webkit-scrollbar-thumb,
+.MuiPaper-root::-webkit-scrollbar-thumb {
+    background: rgba(136, 199, 241, 0.404);
+    border-radius: 4px;
+}
+  
+.MuiInputBase-input::-webkit-scrollbar-thumb:hover,
+.MuiPaper-root::-webkit-scrollbar-thumb:hover {
+    background: #0659a7;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+  
+.MuiInputBase-input::-webkit-scrollbar-track:hover,
+.MuiInputBase-input::-webkit-scrollbar-track:active,
+.MuiPaper-root::-webkit-scrollbar-track:hover,
+.MuiPaper-root::-webkit-scrollbar-track:active {
+    background: #5d76bd;
+}
+
+.conten-tabla {    
+    margin: 2% 10% 1%;
+    padding: 2%;
+    display: flex;
+    outline: 0;
+    position: relative;
+    justify-content: center;
+    background-color: rgba(114, 183, 230, 0.295);
+    border-radius: 10px;
+    height: 60%;
+
+}
+
+.conten-button-compra {
+    display: flex;
+    justify-content: center;
+}
+
