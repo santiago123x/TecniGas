@@ -1,7 +1,23 @@
 const Router = require("express-promise-router");
 const router = new Router();
+/*
+const {
+  getPersona,
+  getPersById,
+  postPersona,
+  upPersona,
+  delPersona,
+} = require("../controlador/persona");
+*/
+const {
+  getCliente_Prov,
+  postCliente_Prov,
+  delCliente_Prov,
+  getClientePer,
+} = require("../controlador/clientes");
 
-const { getClientes } = require("../controlador/clientes");
+const { getProveedor } = require("../controlador/proveedores");
+
 const {
   getProducto,
   getProductoId,
@@ -13,9 +29,26 @@ const {
   delProducto,
 } = require("../controlador/producto.js");
 
-//router.get("/", getClientes);
+// Rutas de Proveedor
 
-// routes Productos
+router.get("/provpers", getProveedor);
+
+// Rutas de personas
+/*
+router.get("/persona", getPersona);
+router.get("/persona/:id", getPersById);
+router.post("/persona", postPersona);
+router.put("/persona/:id", upPersona);
+router.delete("/persona/:id", delPersona);
+*/
+// Rutas de clientes-proveedores
+
+router.get("/clipers", getClientePer);
+router.get("/listado/", getCliente_Prov);
+router.post("/listado/:id/:tp", postCliente_Prov);
+router.delete("/listado/:id", delCliente_Prov);
+
+// Rutas de productos
 
 router.get("/producto", getProducto);
 router.get("/producto/id/:producto_id", getProductoId);

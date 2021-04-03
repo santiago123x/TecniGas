@@ -72,18 +72,52 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
         });
       }
 
-    case "prod":
+    case "prov":
       if (filtro !== "") {
-        return "epa";
-      } else {
-        return "lul";
-      }
+        arreglo = data.filter((dat) => {
+          const nombreC = dat.nombre_pe + " " + dat.apellido;
+          return (
+            nombreC
+              .toLowerCase()
+              .trim()
+              .includes(filtro.toString().toLowerCase().trim()) ||
+            dat.identificacion
+              .toString()
+              .toLowerCase()
+              .trim()
+              .includes(filtro.toString().toLowerCase().trim())
+          );
+        });
 
-    case "clien":
-      if (filtro !== "") {
-        return "epa";
+        return arreglo.map((row, index) => {
+          const nombreC = row.nombre_pe + " " + row.apellido;
+          const firstData = [nombreC, row.identificacion, row.telefono];
+          const secondData = [row.email, row.direccion];
+
+          return (
+            <Row
+              key={index}
+              firstData={firstData}
+              secondData={secondData}
+              titulosDetalles={titulosDetalle}
+            />
+          );
+        });
       } else {
-        return "lul";
+        return data.map((row, index) => {
+          const nombreC = row.nombre_pe + " " + row.apellido;
+          const firstData = [nombreC, row.identificacion, row.telefono];
+          const secondData = [row.email, row.direccion];
+
+          return (
+            <Row
+              key={index}
+              titulosDetalles={titulosDetalle}
+              firstData={firstData}
+              secondData={secondData}
+            />
+          );
+        });
       }
   }
 };

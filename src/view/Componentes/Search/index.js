@@ -25,16 +25,15 @@ const Search = ({ valueInp, setValueInp, titulo, tooltip }) => {
           setValueInp(e.target.value);
         }}
       />
-      <Tooltip title="Buscar" placement="top">
-        <IconButton
-          type="button"
-          className={classes.iconButton}
-          aria-label="search"
-          disabled
-        >
-          <FcSearch className="buscar-icono" />
-        </IconButton>
-      </Tooltip>
+
+      <IconButton
+        type="button"
+        className={classes.iconButton}
+        aria-label="search"
+        disabled
+      >
+        <FcSearch className="buscar-icono" />
+      </IconButton>
     </Paper>
   );
 };

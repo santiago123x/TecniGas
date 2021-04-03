@@ -29,7 +29,6 @@ export default function CollapsibleTable({
       noHayDatos[i] = "";
     }
   }
-  console.log(filter(tipo, data, filtro, titulosDetalles));
   return (
     <div className="table-container">
       <TableContainer component={Paper}>
