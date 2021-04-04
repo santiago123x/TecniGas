@@ -24,7 +24,7 @@ const useAxios = (API, validar, metodo, body) => {
 
   useEffect(() => {
     if (
-      (metodo === "post" || metodo === "put" || metodo === " delete") &&
+      (metodo === "post" || metodo === "put" || metodo === "delete") &&
       validar
     ) {
       axConfig();
