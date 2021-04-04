@@ -72,18 +72,20 @@ const postProducto = async (req, res) => {
   try {
     const {
       id_categoria,
-      nombre,
+      nombre_pro,
       precio_uni,
       precio_may,
-      cantidad,
+      cantidad_pro,
       stock_min,
       codigo_pro,
     } = req.body;
     const response = await pool.query(
-      `INSERT INTO producto(id_categoria, nombre,precio_uni,precio_may,cantidad,stock_min, codigo_pro)
-       VALUES(${id_categoria},'${nombre}',${precio_uni},${precio_may},${cantidad},${stock_min},${codigo_pro})`
+      `INSERT INTO producto(id_categoria, nombre_pro,precio_uni,precio_may,cantidad_pro,stock_min, codigo_pro)
+       VALUES(${id_categoria},'${nombre_pro}',${precio_uni},${precio_may},${cantidad_pro},${stock_min},${codigo_pro})
+       returning producto_id`
     );
-    res.json("Se Agrego el Producto");
+    res.send(response.rows);
+    //res.json("Se Agrego el Producto");
   } catch (e) {
     console.error(e);
   }
