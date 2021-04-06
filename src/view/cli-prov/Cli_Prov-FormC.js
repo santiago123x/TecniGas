@@ -1,9 +1,9 @@
 import React, {Fragment, useState} from "react";
-import Formulario from "./componentes/formulario";
+import Formulario from "./formulario/formulario";
 
 const Cli_Prov_FormC = () => {
     return(
-     <Formulario/>
+     <Formulario titulo="Cliente" imagen="cli"/>
     );
   };
   
