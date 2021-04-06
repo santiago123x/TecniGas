@@ -10,7 +10,7 @@ const Proveedores = () => {
   const [url, setUrl] = useState(`/provpers/`);
   const { data, error, loading } = useAxios(url);
 
-  const title = ["Nombre", "Cedula", "Telefono"];
+  const title = ["Nombre - Empresa", "Cedula - NIT", "Telefono"];
   const titleDetails = ["Email", "Dirección"];
 
   return (

@@ -14,6 +14,7 @@ const useAxios = (API, validar, metodo, body) => {
         url: uri + API,
         data: body,
       });
+      console.log(response.data);
       setData(response.data);
       setLoading(false);
     } catch (err) {
