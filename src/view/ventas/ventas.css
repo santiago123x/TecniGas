@@ -89,4 +89,20 @@
     
 } 
 
+.formintermedio{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;    
+    align-content: center;
+    justify-content: space-around;
+}
 
+.formintermedio > .form__section{
+padding-top: 0;
+margin-top: 0;
+}
+
+.formintermedio > .form__section:first-child, .form__section:nth-child(5){
+    padding-top: 1.5%;
+} 

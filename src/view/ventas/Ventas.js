@@ -221,12 +221,12 @@ const Ventas = () => {
             </div>
             <div className="form__section">
               <BootstrapInput
-              label="Nota"
-              placeholder="Digite su Nota"
-              rows={2}
-              multiline/>
-              
-              
+                label="Nota"
+                placeholder="Digite su Nota"
+                rows={2}
+                multiline />
+
+
             </div>
           </form>
         </div>
@@ -247,6 +247,26 @@ const Ventas = () => {
                   <FaCartPlus />
                 </IconButton>
               </Paper>
+            </div>
+            <div className="form__section">
+              <MiInput
+                label="Cantidad"
+              />
+            </div>
+            <div className="form__section">
+              <MiInput
+                label="Precio Venta"
+              />
+            </div>
+            <div className="form__section">
+              <MiInput
+                label="Descuento"
+              />
+            </div>
+            <div className="form__section">
+              <Button variant="contained" color="primary">
+                Agregar
+              </Button>
             </div>
           </form>
 
