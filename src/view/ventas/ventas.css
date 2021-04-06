@@ -68,6 +68,7 @@
     background-color:rgba(40, 176, 255, 0.548);
     border: 1px solid rgb(0, 153, 255);
     border-radius: 10px;
+    
 }
 
 .form__section {
@@ -106,3 +107,16 @@ margin-top: 0;
 .formintermedio > .form__section:first-child, .form__section:nth-child(5){
     padding-top: 1.5%;
 } 
+
+.flex-container-derecho__form > .form__section{
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.flex-container-derecho__form > .form__section:nth-child(4){
+    margin-top: 20%;
+}
+
+.flex-container-derecho__form > .form__section:first-child{
+    margin-top: 15%;
+}

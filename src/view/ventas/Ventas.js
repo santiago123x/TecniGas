@@ -15,7 +15,10 @@ import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import { FaUserPlus, FaCartPlus } from "react-icons/fa";
-import { normalizeUnits } from "moment";
+
+
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -149,6 +152,7 @@ const Ventas = () => {
 
 
 
+
   return (
     <>
 
@@ -273,10 +277,31 @@ const Ventas = () => {
         </div>
         <div className="flex-container-tabla">
 
+
         </div>
         <div className="flex-container-derecho">
           <div className="flex-container-derecho__form">
-
+            
+            <div className="form__section">
+              <MiInput
+                label="Total a Pagar"
+              />
+            </div>
+            <div className="form__section">
+              <MiInput
+                label="Recibido"
+              />
+            </div>
+            <div className="form__section">
+              <MiInput
+                label="Cambio"
+              />
+            </div>
+            <div className="form__section">
+              <Button variant="contained" color="primary">
+                Realizar Pago
+              </Button>
+            </div>
           </div>
         </div>
 
