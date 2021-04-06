@@ -15,6 +15,8 @@ import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import { FaUserPlus, FaCartPlus } from "react-icons/fa";
+import DenseTable from "./tabla_ventas.js";
+
 
 
 
@@ -148,6 +150,7 @@ const Ventas = () => {
   const [date, changeDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const classes = useStyles();
+  const tabla = DenseTable();
 
 
 
@@ -276,8 +279,7 @@ const Ventas = () => {
 
         </div>
         <div className="flex-container-tabla">
-
-
+          <DenseTable/> 
         </div>
         <div className="flex-container-derecho">
           <div className="flex-container-derecho__form">

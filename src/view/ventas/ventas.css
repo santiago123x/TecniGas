@@ -81,14 +81,16 @@
 }
 
 
- .form__section:first-child {
+.flex-container-superior > .form__section:first-child {
     margin-top: 16px;
 }
 
-.form__section:nth-child(5), .form__section:nth-child(6){
+.flex-container-superior > .form__section:nth-child(5){
     margin-top: 16px;
     
 } 
+
+
 
 .formintermedio{
     height: 100%;
