@@ -4,6 +4,7 @@ import Loading from "../../Componentes/Loading/Loading";
 import Error404 from "../../Componentes/Error/Error";
 import useAxios from "../../Hooks/useAxios";
 import Search from "../../Componentes/Search";
+import Formulario from "../formulario/formulario";
 
 const Cliente = () => {
   const [valueInp, setValueInp] = useState("");
@@ -18,6 +19,7 @@ const Cliente = () => {
       <div className="conteiner">
         <div className="cont__lista">
           <h2 className="cont__lista-titulo">Listado de Clientes</h2>
+          <Formulario titulo="Cliente" imagen="cli"/>
 
           <hr className="linea-h2" />
           <div className="cont__lista-input"></div>

@@ -1,6 +1,6 @@
 const Router = require("express-promise-router");
 const router = new Router();
-/*
+
 const {
   getPersona,
   getPersById,
@@ -8,7 +8,7 @@ const {
   upPersona,
   delPersona,
 } = require("../controlador/persona");
-*/
+
 const {
   getCliente_Prov,
   postCliente_Prov,
@@ -34,13 +34,13 @@ const {
 router.get("/provpers", getProveedor);
 
 // Rutas de personas
-/*
+
 router.get("/persona", getPersona);
 router.get("/persona/:id", getPersById);
 router.post("/persona", postPersona);
 router.put("/persona/:id", upPersona);
 router.delete("/persona/:id", delPersona);
-*/
+
 // Rutas de clientes-proveedores
 
 router.get("/clipers", getClientePer);

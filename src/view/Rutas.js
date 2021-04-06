@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Ventas from "./ventas/Ventas";
 import Inventario from "./inventario/Inv/Inventario";
+import Cli_Prov_FormC from "./cli-prov/Cli_Prov-FormC";
 import Clientes from "./cli-prov/Clientes";
 import Proveedores from "./cli-prov/Proveedores";
 import Compra from "./inventario/Compra/Compra";
@@ -28,6 +29,8 @@ function Rutas() {
               <Inventario />
             </Layout>
           </Route>
+
+          <Route path="/formulario-clientes" component={Cli_Prov_FormC} />
 
           <Route path="/clientes">
             <Layout tipo="cli">

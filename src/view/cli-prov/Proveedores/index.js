@@ -19,6 +19,7 @@ const Proveedores = () => {
         <div className="cont__lista">
           <h2 className="cont__lista-titulo">Listado de Proveedores</h2>
 
+
           <hr className="linea-h2" />
           <div className="cont__lista-input"></div>
           <Search
