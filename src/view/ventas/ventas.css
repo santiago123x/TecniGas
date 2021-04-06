@@ -15,7 +15,8 @@
     margin: 10px;
     
     /* background-color:rgba(40, 176, 255, 0.548); */
-    background: linear-gradient(0deg, rgba(40,176,255,0.5) 32%, rgba(255,255,255,0) 87%);
+    /* background: linear-gradient(0deg, rgba(40,176,255,0.5) 32%, rgba(255,255,255,0) 87%); */
+    background-color: rgba(114, 183, 230, 0.295);
     border: 1px solid rgb(0, 153, 255);
     border-radius: 10px;
     
@@ -36,7 +37,8 @@
     width: 95%;
     padding: 10px;
     margin: 10px;
-    background-color:rgba(40, 176, 255, 0.548);
+    /* background-color:rgba(40, 176, 255, 0.548); */
+    background-color: rgba(114, 183, 230, 0.295);
     border: 1px solid rgb(0, 153, 255);
     border-radius: 10px;
 }
@@ -46,7 +48,8 @@
     width: 69%;
     padding: 10px;
     margin: 10px;
-    background-color:rgba(40, 176, 255, 0.548);
+    /* background-color:rgba(40, 176, 255, 0.548); */
+    background-color: rgba(114, 183, 230, 0.295);
     border: 1px solid rgb(0, 153, 255);
     border-radius: 10px;
 }
@@ -65,7 +68,8 @@
     margin: auto;
     height: 45vh;
     width: 80%;
-    background-color:rgba(40, 176, 255, 0.548);
+    /* background-color:rgba(40, 176, 255, 0.548); */
+    background-color: rgba(114, 183, 230, 0.295);
     border: 1px solid rgb(0, 153, 255);
     border-radius: 10px;
     
