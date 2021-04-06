@@ -4,6 +4,7 @@ const router = new Router();
 const {
   getPersona,
   getPersById,
+  getPersonaCedula,
   postPersona,
   upPersona,
   delPersona,
@@ -11,6 +12,7 @@ const {
 
 const {
   getCliente_Prov,
+  getCliProIdP,
   postCliente_Prov,
   delCliente_Prov,
   getClientePer,
@@ -37,6 +39,7 @@ router.get("/provpers", getProveedor);
 
 router.get("/persona", getPersona);
 router.get("/persona/:id", getPersById);
+router.get("/personac/:cedula", getPersonaCedula);
 router.post("/persona", postPersona);
 router.put("/persona/:id", upPersona);
 router.delete("/persona/:id", delPersona);
@@ -47,6 +50,7 @@ router.get("/clipers", getClientePer);
 router.get("/listado/", getCliente_Prov);
 router.post("/listado/:id/:tp", postCliente_Prov);
 router.delete("/listado/:id", delCliente_Prov);
+router.get("/cliproidp/:idper/:tipo", getCliProIdP);
 
 // Rutas de productos
 

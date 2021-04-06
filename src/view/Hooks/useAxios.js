@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const useAxios = (API, validar, metodo, body) => {
+const useAxios = (API, recarga, validar, metodo, body) => {
   const uri = "http://localhost:5000";
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
@@ -14,7 +14,6 @@ const useAxios = (API, validar, metodo, body) => {
         url: uri + API,
         data: body,
       });
-      console.log(response.data);
       setData(response.data);
       setLoading(false);
     } catch (err) {
@@ -34,7 +33,7 @@ const useAxios = (API, validar, metodo, body) => {
     } else {
       setLoading(!loading);
     }
-  }, [API, metodo, body]);
+  }, [API, recarga, metodo, body]);
 
   return { data, error, loading };
 };

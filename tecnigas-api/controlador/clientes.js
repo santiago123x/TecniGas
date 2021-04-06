@@ -22,6 +22,19 @@ const getCliente_Prov = async (req, res) => {
   }
 };
 
+const getCliProIdP = async (req, res) => {
+  try {
+    const persona_id = req.params.idper;
+    const tipo = req.params.tipo;
+    const response = await pool.query(
+      `SELECT * FROM "cliente-proveedor" where persona_id = ${persona_id} and tipo_clpr = '${tipo}'`
+    );
+    res.send(response.rows[0]);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const postCliente_Prov = async (req, res) => {
   try {
     const id = req.params.id;
@@ -65,6 +78,7 @@ const getClientePer = async (req, res) => {
 
 module.exports = {
   getCliente_Prov,
+  getCliProIdP,
   postCliente_Prov,
   delCliente_Prov,
   getClientes,

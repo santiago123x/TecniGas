@@ -9,9 +9,10 @@ import Formulario from "../formulario/formulario";
 const Cliente = () => {
   const [valueInp, setValueInp] = useState("");
   const [url, setUrl] = useState(`/clipers/`);
-  const { data, error, loading } = useAxios(url);
+  const [recarga, setRecarga] = useState(false);
+  const { data, error, loading } = useAxios(url, recarga);
 
-  const title = ["Nombre", "Cedula", "Telefono"];
+  const title = ["Nombre - Empresa", "Cedula - NIT", "Telefono"];
   const titleDetails = ["Email", "Dirección"];
 
   return (
@@ -19,7 +20,14 @@ const Cliente = () => {
       <div className="conteiner">
         <div className="cont__lista">
           <h2 className="cont__lista-titulo">Listado de Clientes</h2>
-          <Formulario titulo="Cliente" imagen="cli"/>
+          <Formulario
+            recarga={recarga}
+            setRecarga={setRecarga}
+            tipo="cliente"
+            metodo="post"
+            titulo="Crear Cliente"
+            imagen="cli"
+          />
 
           <hr className="linea-h2" />
           <div className="cont__lista-input"></div>
