@@ -11,7 +11,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
 
-function Row({ firstData, secondData, titulosDetalles }) {
+function Row({ firstData, secondData, titulosDetalles, opciones }) {
   const [open, setOpen] = useState(false);
   const classes = useRowStyles();
   const classes2 = useRowStyles2();
@@ -38,6 +38,9 @@ function Row({ firstData, secondData, titulosDetalles }) {
               </TableCell>
             );
           })}
+        <TableCell align="center">
+          <strong>{opciones}</strong>
+        </TableCell>
       </TableRow>
       <TableRow className={classes.root}>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

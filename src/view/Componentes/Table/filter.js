@@ -1,6 +1,27 @@
 import Row from "./TableRow";
 import TableCell from "@material-ui/core/TableCell";
 
+const Opciones = (cedula) => {
+  return (
+    <>
+      <button
+        onClick={() => {
+          alert(cedula);
+        }}
+      >
+        Modificar
+      </button>
+      <button
+        onClick={() => {
+          alert(cedula);
+        }}
+      >
+        borrar
+      </button>
+    </>
+  );
+};
+
 const filter = (tipo, data, filtro, titulosDetalle) => {
   let arreglo = [];
 
@@ -44,6 +65,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               firstData={firstData}
               secondData={secondData}
               titulosDetalles={titulosDetalle}
+              opciones={Opciones(row.codigo_pro)}
             />
           );
         });
@@ -67,6 +89,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               titulosDetalles={titulosDetalle}
               firstData={firstData}
               secondData={secondData}
+              opciones={Opciones(row.codigo_pro)}
             />
           );
         });
@@ -75,9 +98,8 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
     case "prov":
       if (filtro !== "") {
         arreglo = data.filter((dat) => {
-          const nombreC = dat.nombre_pe + " " + dat.apellido;
           return (
-            nombreC
+            dat.nombre_pe
               .toLowerCase()
               .trim()
               .includes(filtro.toString().toLowerCase().trim()) ||
@@ -90,8 +112,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
         });
 
         return arreglo.map((row, index) => {
-          const nombreC = row.nombre_pe + " " + row.apellido;
-          const firstData = [nombreC, row.identificacion, row.telefono];
+          const firstData = [row.nombre_pe, row.identificacion, row.telefono];
           const secondData = [row.email, row.direccion];
 
           return (
@@ -100,13 +121,13 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               firstData={firstData}
               secondData={secondData}
               titulosDetalles={titulosDetalle}
+              opciones={Opciones(row.identificacion)}
             />
           );
         });
       } else {
         return data.map((row, index) => {
-          const nombreC = row.nombre_pe + " " + row.apellido;
-          const firstData = [nombreC, row.identificacion, row.telefono];
+          const firstData = [row.nombre_pe, row.identificacion, row.telefono];
           const secondData = [row.email, row.direccion];
 
           return (
@@ -115,6 +136,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               titulosDetalles={titulosDetalle}
               firstData={firstData}
               secondData={secondData}
+              opciones={Opciones(row.identificacion)}
             />
           );
         });

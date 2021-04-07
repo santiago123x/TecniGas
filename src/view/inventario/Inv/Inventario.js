@@ -16,6 +16,7 @@ const Inventario = () => {
     "Nombre del Producto",
     "Cantidad",
     "Categoria",
+    "Opciones",
   ];
   const titleDetails = [
     "Precio Publico",

@@ -12,7 +12,7 @@ const Cliente = () => {
   const [recarga, setRecarga] = useState(false);
   const { data, error, loading } = useAxios(url, recarga);
 
-  const title = ["Nombre - Empresa", "Cedula - NIT", "Telefono"];
+  const title = ["Nombre - Empresa", "Cedula - NIT", "Telefono", "Opciones"];
   const titleDetails = ["Email", "Dirección"];
 
   return (
@@ -35,7 +35,7 @@ const Cliente = () => {
             valueInp={valueInp}
             setValueInp={setValueInp}
             titulo="Filtrar Clientes"
-            tooltip={`Tipos de Filtro: - Nombre - Cedula`}
+            tooltip={`Tipos de Filtro:  Nombre - Empresa, Cedula - NIT`}
           />
 
           <div className="cont__lista-tabla">

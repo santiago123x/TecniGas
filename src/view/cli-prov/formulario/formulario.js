@@ -6,6 +6,8 @@ import logoP from "./proveedor.ico";
 import { Modal, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { validarCliente, post, postCliPro } from "./Validacion";
 
 const URL = "http://localhost:5000";
@@ -19,6 +21,14 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
     direccion: "",
     telefono: "",
   });
+  const alertasucces =
+    tipo === "cliente"
+      ? "Se ha creado el cliente: "
+      : "Se ha creado el proveedor: ";
+  const alertaerror =
+    tipo === "cliente"
+      ? "Este cliente ya existe: "
+      : "Este proveedor ya existe: ";
 
   // Función de escucha que obtiene el valor de los campos de texto
   const handleInputChange = (prop) => (event) => {
@@ -36,12 +46,12 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
     const valida = await validarCliente(data.identificacion, tipo);
     const body = {
       nombre_pe: data.nombre,
-      apellido: "DavidGay",
       identificacion: data.identificacion,
       email: data.correo,
       direccion: data.direccion,
       telefono: data.telefono,
     };
+
     switch (metodo) {
       case "post":
         if (!valida || (valida > 0 && valida !== true)) {
@@ -50,17 +60,41 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
             await postCliPro(idPersona, tipo);
             reset(e);
             setRecarga(!recarga);
-            alert("Se creo persona y cli");
+            notify(alertasucces, data.nombre, "info");
           } else {
             await postCliPro(valida, tipo);
             reset(e);
             setRecarga(!recarga);
-            alert("Se creo cli");
+            notify(alertasucces, data.nombre, "info");
           }
         } else {
-          alert("YA ESTA CREADO");
+          notify(alertaerror, data.nombre, "error");
         }
         break;
+    }
+  };
+
+  const notify = (suffix, nombre = "", tipo) => {
+    if (tipo === "info") {
+      toast.info(`${suffix} ${nombre}`, {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      toast.error(`${suffix} ${nombre}`, {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
@@ -173,8 +207,8 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
               <MiInput
                 variant="outlined"
                 size="small"
-                label="Identificación - Nit"
-                type="number"
+                label="Identificación - NIT"
+                type="text"
                 name="identificacion"
                 onChange={handleInputChange}
                 inputRef={register({
@@ -285,20 +319,6 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
     </div>
   );
 
-  const crearCliente = async (API, body) => {
-    /*
-    try {
-      const response = await axios({
-        method: metodo,
-        url: URL + API,
-        data: body,
-      });
-    } catch (err) {
-      setError(err);
-    }
-  ;*/
-  };
-
   return (
     <div className={styles.container}>
       <Button
@@ -312,6 +332,7 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
       <Modal open={modal} onClose={abrirCerrarModal}>
         {body}
       </Modal>
+      <ToastContainer />
     </div>
   );
 };
