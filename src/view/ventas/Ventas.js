@@ -16,6 +16,11 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import { FaUserPlus, FaCartPlus } from "react-icons/fa";
 import DenseTable from "./tabla_ventas.js";
+import useAxios from "../Hooks/useAxios";
+import { id } from "date-fns/locale";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { matchSorter } from "match-sorter";
+
 
 
 
@@ -141,6 +146,17 @@ const BootstrapInput = withStyles((theme) => ({
   },
 }))(InputBase);
 
+const MiFilter = withStyles({
+  root: {
+    "& .MuiAutocomplete-hasPopupIcon": {
+      padding: "4px",
+    },
+    "& .MuiAutocomplete-hasClearIcon": {
+      padding: "4px",
+    },
+  },
+})(Autocomplete);
+
 
 
 
@@ -151,6 +167,19 @@ const Ventas = () => {
   const [time, setTime] = useState(new Date());
   const classes = useStyles();
   const tabla = DenseTable();
+
+
+  const [url, setUrl] = useState(`/producto/`);
+  const data = useAxios(url);
+  const [input, setInput] = useState("");
+  const [input2, setInput2] = useState([]);
+  console.log(input2)
+  const [precioSel, setPrecioSel] = useState("");
+  const filterOptions = (options, { inputValue }) =>
+    matchSorter(options, inputValue, {
+      keys: ["nombre_pro", "codigo_pro"],
+      threshold: matchSorter.rankings.CONTAINS,
+    });
 
 
 
@@ -240,20 +269,66 @@ const Ventas = () => {
         <div className="flex-container-intermedio">
           <form className="formintermedio">
             <div className="form__section">
-              <Paper className={classes.root}>
-                <Select
+              <MiFilter
+                id="producto"
+                style={{ width: 200 }}
+                options={data.data}
+                value={input}
+                filterOptions={filterOptions}
+                getOptionLabel={(option) => option ? option.codigo_pro + " - " + option.nombre_pro :''}
+                onChange={(event, newValue) => {
+                  //newValue !== null ?
+                  setInput(newValue);
+                  newValue !== null ?
+                    setInput2([{ pre: newValue.precio_may, index: "Precio As: " },
+                    { pre: newValue.precio_uni, index: "Precio Pu: " }]) :
+                    setInput2(null)
+                }}
+                renderInput={(params) => (
+                  <MiInput
+                    {...params}
+                    id="inputproduc"
+                    label="Producto"
+                    variant="outlined"
+                    size="small"
+                    
+                  //onChange={handleChangeDet('producto')}
+                  />
+                )}
+              />
+
+
+              {/* <Paper className={classes.root}>
+                <input value={input} onChange={(e)=>{
+                  setInput(e.target.value)
+                                    
+                }} list="select-producto" name="select" className="select__copia"></input>
+                
+                <datalist className="select__datalist" id="select-producto">
+                  {data.data.map((dat,index)=>{
+                    return (<option id={dat.codigo_pro} key={index}>{dat.codigo_pro} - {dat.nombre_pro} </option>)
+                  })
+                  }
+                </datalist>
+                <button onClick={() => {
+                  data.data.includes
+                }} >holi</button>
+                
+                 <Select
                   defaultValue={0}
                   input={<BootstrapInput />}
                 >
                   <MenuItem default value={0} >Producto</MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
+                  {data.data.map((dat,index)=>{
+                    return (<MenuItem value={dat.codigo_pro} key={index}>{dat.nombre_pro}</MenuItem>)
+                  })
+                  }
+                  
+                </Select> 
                 <IconButton aria-label="menu" className={classes.iconButton}>
                   <FaCartPlus />
                 </IconButton>
-              </Paper>
+              </Paper> */}
             </div>
             <div className="form__section">
               <MiInput
@@ -261,8 +336,32 @@ const Ventas = () => {
               />
             </div>
             <div className="form__section">
-              <MiInput
-                label="Precio Venta"
+              <MiFilter
+                id="precio"
+                style={{ width: 200 }}
+                options={input2}
+                value={precioSel}
+                getOptionLabel={(option) => option ? `${option.pre}` : '' }
+
+                onChange={(event, newValue) => {
+                  setPrecioSel(newValue);
+                }}
+                renderOption= {(option) => (
+                  <>
+                    <span>{option.index}</span>
+                    {option.pre}  </>
+                )}
+                renderInput={(params) => (
+                  <MiInput
+                    {...params}
+                    disabled='true'
+                    id="inputprec"
+                    label="Precio"
+                    variant="outlined"
+                    size="small"
+                  //onChange={handleChangeDet('producto')}
+                  />
+                )}
               />
             </div>
             <div className="form__section">
@@ -279,11 +378,11 @@ const Ventas = () => {
 
         </div>
         <div className="flex-container-tabla">
-          <DenseTable/> 
+          <DenseTable />
         </div>
         <div className="flex-container-derecho">
           <div className="flex-container-derecho__form">
-            
+
             <div className="form__section">
               <MiInput
                 label="Total a Pagar"

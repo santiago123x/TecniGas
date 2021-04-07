@@ -126,3 +126,23 @@ margin-top: 0;
 .flex-container-derecho__form > .form__section:first-child{
     margin-top: 15%;
 }
+
+.select__copia {
+    width: 13vw;
+    border-radius: 4px;
+    position: relative;
+    background-color: rgba(114, 183, 230, 0.295);
+    border: solid 1px black;
+    font-size: 16;
+    padding: 8px 26px 8px 12px;
+}
+
+.select__copia:focus{
+    border-radius: 4;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.select__datalist:hover {
+    background-color: rgba(0, 0, 0, 0);
+}
