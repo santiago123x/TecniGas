@@ -40,7 +40,7 @@ function Rutas() {
             </Layout>
           </Route>
           <Route path="/compra">
-            <Layout>
+            <Layout tipo="compra">
               <Compra />
             </Layout>
           </Route>
