@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const useAxios = (API, metodo, body) => {
+const useAxios = (API, validar, metodo, body) => {
   const uri = "http://localhost:5000";
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
@@ -14,9 +14,7 @@ const useAxios = (API, metodo, body) => {
         url: uri + API,
         data: body,
       });
-      if (metodo === "get" || !metodo) {
-        setData(response.data);
-      }
+      setData(response.data);
       setLoading(false);
     } catch (err) {
       setError(err);
@@ -25,8 +23,17 @@ const useAxios = (API, metodo, body) => {
   };
 
   useEffect(() => {
-    axConfig();
-  }, [API]);
+    if (
+      (metodo === "post" || metodo === "put" || metodo === "delete") &&
+      validar
+    ) {
+      axConfig();
+    } else if (metodo === "get" || metodo === undefined) {
+      axConfig();
+    } else {
+      setLoading(!loading);
+    }
+  }, [API, metodo, body]);
 
   return { data, error, loading };
 };

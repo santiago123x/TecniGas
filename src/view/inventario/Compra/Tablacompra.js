@@ -45,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '100%',
   },
   container: {
-    //maxHeight: 322,
     height: '100%',
     backgroundColor: "#dee2e6",
   },

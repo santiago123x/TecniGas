@@ -21,6 +21,7 @@ const {
 const {
   getCompra,
   postCompra,
+  postCompraDet,
 } = require("../controlador/compra.js");
 
 //router.get("/", getClientes);
@@ -42,7 +43,8 @@ router.get("/proveedor", getProveedor);
 
 // routes Compra
 
-router.get("/compra", getCompra);
+//router.get("/compra", getCompra);
 router.post("/compra", postCompra);
+router.post("/compraDet", postCompraDet);
 
 module.exports = router;
