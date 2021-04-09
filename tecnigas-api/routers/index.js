@@ -15,6 +15,8 @@ const {
 
 //router.get("/", getClientes);
 
+router.get("/clientes", getClientes);
+
 // routes Productos
 
 router.get("/producto", getProducto);

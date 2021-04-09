@@ -32,6 +32,10 @@
     
 }
 
+.makeStyles-iconButton-308 {
+    margin-left: 10% ;
+}
+
 .flex-container-intermedio {
     height: 15vh;
     width: 95%;
@@ -110,8 +114,8 @@ padding-top: 0;
 margin-top: 0;
 }
 
-.formintermedio > .form__section:first-child, .form__section:nth-child(5){
-    padding-top: 1.5%;
+.formintermedio > .form__section:first-child, .formintermedio > .form__section:nth-child(3), .formintermedio > .form__section:nth-child(5){
+    margin-top: 1.5%;
 } 
 
 .flex-container-derecho__form > .form__section{
@@ -146,3 +150,4 @@ margin-top: 0;
 .select__datalist:hover {
     background-color: rgba(0, 0, 0, 0);
 }
+

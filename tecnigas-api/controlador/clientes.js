@@ -3,7 +3,7 @@ const pool = require("./conexion");
 const getClientes = async (req, res) => {
   try {
     const response = await pool.query(
-      "SELECT * FROM persona ORDER BY idpersona"
+      `select * from "cliente-proveedor"  natural join  persona where tipo_clpr = 'cliente' order by persona_id`
     );
     res.send(response.rows);
   } catch (e) {
