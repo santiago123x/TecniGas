@@ -31,6 +31,12 @@ const {
   delProducto,
 } = require("../controlador/producto.js");
 
+const {
+  getCompra,
+  postCompra,
+  postCompraDet,
+} = require("../controlador/compra.js");
+
 // Rutas de Proveedor
 
 router.get("/provpers", getProveedor);
@@ -52,6 +58,8 @@ router.post("/listado/:id/:tp", postCliente_Prov);
 router.delete("/listado/:id", delCliente_Prov);
 router.get("/cliproidp/:idper/:tipo", getCliProIdP);
 
+//router.get("/", getClientes);
+
 // Rutas de productos
 
 router.get("/producto", getProducto);
@@ -62,5 +70,15 @@ router.get("/producto/cat/:nombre_catg", getProductoCat);
 router.post("/producto", postProducto);
 router.put("/producto/:producto_id", putProducto);
 router.delete("/producto/:producto_id", delProducto);
+
+// routes Proveedores
+
+router.get("/proveedor", getProveedor);
+
+// routes Compra
+
+//router.get("/compra", getCompra);
+router.post("/compra", postCompra);
+router.post("/compraDet", postCompraDet);
 
 module.exports = router;

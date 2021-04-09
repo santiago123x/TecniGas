@@ -67,10 +67,8 @@ export default Inventario;
 
 /*
 import Modal from "../Componentes/Modal/Modal";
-
   const [valueSel, setValueSel] = useState(10);
    const [filtro, setFiltro] = useState(false);
-
 <Modal
           filtro={filtro}
           setFiltro={setFiltro}
@@ -83,9 +81,6 @@ import Modal from "../Componentes/Modal/Modal";
     { value: 10, label: "Codigo" },
     { value: 20, label: "Nombre" },
     { value: 30, label: "Categoria" },
-
-
-
       const filtrar = () => {
     if (valueSel == 10 && valueInp !== "") {
       setUrl(`/producto/cod/${valueInp}`);
