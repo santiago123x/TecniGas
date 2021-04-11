@@ -34,6 +34,7 @@ const inicial = {
   ventas: null,
   perfil: null,
   inv: null,
+  compra: null,
   agenda: null,
   dev: null,
   client: null,
@@ -48,6 +49,7 @@ const Nav = ({ tipo }) => {
     ventas: tipo === "vent" ? <RiMapPinUserFill /> : null,
     perfil: tipo === "perf" ? <RiMapPinUserFill /> : null,
     inv: tipo === "inv" ? <RiMapPinUserFill /> : null,
+    compra: tipo === "compra" ? <RiMapPinUserFill /> : null,
     agenda: tipo === "agen" ? <RiMapPinUserFill /> : null,
     dev: tipo === "dev" ? <RiMapPinUserFill /> : null,
     client: tipo === "cli" ? <RiMapPinUserFill /> : null,
@@ -98,15 +100,27 @@ const Nav = ({ tipo }) => {
             >
               Perfil <Link to="/" />
             </MenuItem>
-            <MenuItem
-              onClick={() => {
-                setActive({ ...inicial, inv: <RiMapPinUserFill /> });
-              }}
-              suffix={active.inv}
+            <SubMenu
+              title="Inventario"
               icon={<FcFilingCabinet className="menu-icons" />}
             >
-              Inventario <Link to="/inventario" />
-            </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  setActive({ ...inicial, inv: <RiMapPinUserFill /> });
+                }}
+                suffix={active.inv}
+              >
+                Listado de Prod <Link to="/inventario" />
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  setActive({ ...inicial, compra: <RiMapPinUserFill /> });
+                }}
+                suffix={active.compra}
+              >
+                Compra de Prod <Link to="/compra" />
+              </MenuItem>
+            </SubMenu>
             <MenuItem
               onClick={() => {
                 setActive({ ...inicial, agenda: <RiMapPinUserFill /> });
