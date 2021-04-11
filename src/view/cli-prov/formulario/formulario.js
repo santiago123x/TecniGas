@@ -9,10 +9,68 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { validarCliente, post, postCliPro } from "./Validacion";
+import * as yup from 'yup';
+import  {yupResolver} from '@hookform/resolvers/yup';
+import { setLocale } from 'yup';
+
 
 const URL = "http://localhost:5000";
 
 const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
+
+  //Cambian el estilo de elementos de material-ui
+  const useStyles = makeStyles((theme) => ({
+    modal: {
+      position: "absolute",
+      width: 400,
+      backgroundColor: "white",
+      border: "2px solid 000",
+      boxShadow: theme.shadows[5],
+      padding: "16px 32px 24px",
+      top: "50%",
+      left: "50%",
+      transform: "traslate(-50%, -50%)",
+    },
+    textfield: {
+      '& .MuiOutlinedInput-inputMarginDense': {
+        padding: '8.5px ',
+        
+      },
+      '& .MuiFormLabel-root': {
+        Function: 'disable',
+        
+      },
+      '& .PrivateNotchedOutline-root-2': {
+        top: '0px',
+        borderRadius:'15px',
+        borderColor:'black'
+        
+      },
+      '& .MuiInputBase-input': {
+        borderRadius:'15px',
+        color:'black',
+
+      },
+      '& .MuiInputBase-root': {
+        borderRadius:'15px',
+
+      },
+      '& .MuiOutlinedInput-adornedStart': {
+        paddingLeft: '7px',
+        
+      },
+      '& .MuiOutlinedInput-multiline': {
+        padding: '12px',
+        
+      },
+      '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
+        backgroundColor: '#bbdeef',
+        color:'black',
+        
+      },
+    },
+  }));
+
   // Asignación de los valores escritos en los campos de texto
   const [datos, setDatos] = useState({
     nombre: "",
@@ -21,6 +79,7 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
     direccion: "",
     telefono: "",
   });
+
   const alertasucces =
     tipo === "cliente"
       ? "Se ha creado el cliente: "
@@ -39,39 +98,60 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
     });
   };
 
-  //Realiza validaciones al enviar el formulario
-  const { register, errors, handleSubmit } = useForm();
-
-  const onSubmit = async (data, e) => {
-    const valida = await validarCliente(data.identificacion, tipo);
-    const body = {
-      nombre_pe: data.nombre,
-      identificacion: data.identificacion,
-      email: data.correo,
-      direccion: data.direccion,
-      telefono: data.telefono,
-    };
-
-    switch (metodo) {
-      case "post":
-        if (!valida || (valida > 0 && valida !== true)) {
-          if (!valida === true) {
-            const idPersona = await post(body);
-            await postCliPro(idPersona, tipo);
-            reset(e);
-            setRecarga(!recarga);
-            notify(alertasucces, data.nombre, "info");
-          } else {
-            await postCliPro(valida, tipo);
-            reset(e);
-            setRecarga(!recarga);
-            notify(alertasucces, data.nombre, "info");
-          }
-        } else {
-          notify(alertaerror, data.nombre, "error");
-        }
-        break;
+  setLocale({
+    mixed: {
+      notType: 'Por favor ingrese datos válidos',
+    },
+    number:{
+      min: 'Debe contener más de 9 digitos',
     }
+  });
+   
+  const schema = yup.object().shape({
+    nombre:yup.string().required("Por favor ingrese el nombre").test("validaName","Debe contener mínimo 5 carácteres", valor => valor.toString().length > 4),
+    identificacion:yup.string().required("Por favor ingrese la identificación o nit"),
+    correo:yup.string().required("Por favor ingrese el email").email("Ingrese un email válido"),
+    direccion:yup.string().required("Por favor ingrese la dirección"),
+    telefono:yup.number().required().test("validaTel","Debe contener más de 9 digitos", valor => valor.toString().length > 9),
+  });
+
+  //Realiza validaciones al enviar el formulario
+  const { register, errors, handleSubmit } = useForm({
+    resolver: yupResolver(schema),
+  });
+ 
+  const onSubmit = async (data, e) => {
+      e.preventDefault();
+      const valida = await validarCliente(data.identificacion, tipo);
+      const body = {
+        nombre_pe: data.nombre,
+        identificacion: data.identificacion,
+        email: data.correo,
+        direccion: data.direccion,
+        telefono: data.telefono,
+      };
+
+      switch (metodo) {
+        case "post":
+          if (!valida || (valida > 0 && valida !== true)) {
+            if (!valida === true) {
+              const idPersona = await post(body);
+              await postCliPro(idPersona, tipo);
+              reset(e);
+              setRecarga(!recarga);
+              notify(alertasucces, data.nombre, "info");
+            } else {
+              await postCliPro(valida, tipo);
+              reset(e);
+              setRecarga(!recarga);
+              notify(alertasucces, data.nombre, "info");
+            }
+          } else {
+            notify(alertaerror, data.nombre, "error");
+          }
+          break;
+      }
+
   };
 
   const notify = (suffix, nombre = "", tipo) => {
@@ -103,64 +183,6 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
     setModal(!modal);
   };
 
-  //Cambian el estilo de elementos de material-ui
-  const useStyles = makeStyles((theme) => ({
-    modal: {
-      position: "absolute",
-      width: 400,
-      backgroundColor: "white",
-      border: "2px solid 000",
-      boxShadow: theme.shadows[5],
-      padding: "16px 32px 24px",
-      top: "50%",
-      left: "50%",
-      transform: "traslate(-50%, -50%)",
-    },
-    container: {
-      textAlign: "center",
-    },
-  }));
-
-  const MiInput = withStyles({
-    root: {
-      "& .MuiOutlinedInput-inputMarginDense": {
-        padding: "8.5px ",
-      },
-
-      "& .MuiFormLabel-root": {
-        Function: "disable",
-      },
-
-      "& .PrivateNotchedOutline-root-2": {
-        top: "0px",
-        borderRadius: "15px",
-        borderColor: "black",
-      },
-
-      "& .MuiInputBase-input": {
-        borderRadius: "15px",
-        backgroundColor: "#B8DEFD",
-      },
-
-      "& .MuiOutlinedInput-adornedStart": {
-        paddingLeft: "7px",
-      },
-
-      "& .MuiOutlinedInput-multiline": {
-        padding: "12px",
-      },
-
-      "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
-        backgroundColor: "#B8DEFD",
-        color: "black",
-      },
-
-      "& .MuiOutlinedInput-input": {
-        width: "100%",
-      },
-    },
-  })(TextField);
-
   //Inicializa el estado del modal en falso
   const [modal, setModal] = useState(false);
 
@@ -170,6 +192,7 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
   };
 
   const styles = makeStyles();
+  const classes = useStyles();
 
   const body = (
     <div className={styles.modal}>
@@ -181,118 +204,78 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
           </div>
           <form className="form-group" onSubmit={handleSubmit(onSubmit)}>
             <div className="row">
-              <MiInput
-                variant="outlined"
-                size="small"
-                label="Nombre - Empresa"
-                type="text"
-                name="nombre"
-                onChange={handleInputChange}
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: "Campo Obligatorio",
-                  },
-                  maxLength: {
-                    value: 50,
-                    message: "Digite un dato de menos de 50 caracteres",
-                  },
-                })}
+             <TextField
+               className={classes.textfield}
+               variant="outlined"
+               size="small"
+               type="text"
+               name="nombre"
+               label="Nombre - Empresa"
+               onChange={handleInputChange}
+               inputRef={register}
               />
               <span className="span text-danger text-small d-block">
-                {errors?.nombre?.message}
+              {errors.nombre?.message}
               </span>
             </div>
             <div className="row">
-              <MiInput
-                variant="outlined"
-                size="small"
-                label="Identificación - NIT"
-                type="text"
-                name="identificacion"
-                onChange={handleInputChange}
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: "Campo Obligatorio",
-                  },
-                  maxLength: {
-                    value: 12,
-                    message: "Digite un dato de menos de 12 caracteres",
-                  },
-                })}
-              />
-              <span className="span text-danger text-small d-block">
-                {errors?.identificacion?.message}
+             <TextField
+               className={classes.textfield}
+               variant="outlined"
+               size="small"
+               type="text"
+               name="identificacion"
+               label="Identificación - NIT"
+               onChange={handleInputChange}
+               inputRef={register}
+               />
+             <span className="span text-danger text-small d-block">
+              {errors.identificacion?.message}
               </span>
             </div>
             <div className="row">
-              <MiInput
-                variant="outlined"
-                size="small"
-                label="Correo Electrónico"
-                type="email"
-                name="correo"
-                onChange={handleInputChange}
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: "Campo Obligatorio",
-                  },
-                  maxLength: {
-                    value: 50,
-                    message: "Digite un dato de menos de 50 caracteres",
-                  },
-                })}
-              />
+             <TextField
+               className={classes.textfield}
+               variant="outlined"
+               size="small"
+               type="email"
+               name="correo"
+               label="Correo Electrónico"
+               onChange={handleInputChange}
+               inputRef={register}
+               />
               <span className="span text-danger text-small d-block">
-                {errors?.correo?.message}
+              {errors.correo?.message}
               </span>
             </div>
             <div className="row">
-              <MiInput
-                variant="outlined"
-                size="small"
-                label="Dirección"
-                type="text"
-                name="direccion"
-                onChange={handleInputChange}
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: "Campo Obligatorio",
-                  },
-                  maxLength: {
-                    value: 50,
-                    message: "Digite un dato de menos de 50 caracteres",
-                  },
-                })}
-              />
+             <TextField
+               className={classes.textfield}
+               variant="outlined"
+               size="small"
+               type="text"
+               name="direccion"
+               label="Dirección"
+               onChange={handleInputChange}
+               inputRef={register}
+               />
               <span className="span text-danger text-small d-block">
-                {errors?.direccion?.message}
+              {errors.direccion?.message}
               </span>
             </div>
             <div className="row">
-              <MiInput
-                variant="outlined"
-                size="small"
-                label="Teléfono"
-                type="number"
-                name="telefono"
-                onChange={handleInputChange}
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: "Campo Obligatorio",
-                  },
-                  maxLength: {
-                    value: 50,
-                    message: "Digite un dato de menos de 50 caracteres",
-                  },
-                })}
-              />
-              <span className="span text-danger text-small d-block">
-                {errors?.telefono?.message}
+             <TextField
+               className={classes.textfield}
+               variant="outlined"
+               size="small"
+               type="number"
+               name="telefono"
+               label="Teléfono"
+               onChange={handleInputChange}
+               inputRef={register}
+             />
+             <span className="span text-danger text-small d-block">
+              {errors.telefono?.message}
               </span>
             </div>
             <div className="botones">
@@ -308,6 +291,7 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
                 size="small"
                 variant="contained"
                 color="secondary"
+                type="reset"
                 onClick={() => abrirCerrarModal()}
               >
                 Cancelar
@@ -320,7 +304,7 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
   );
 
   return (
-    <div className={styles.container}>
+    <div >
       <Button
         size="small"
         variant="contained"
