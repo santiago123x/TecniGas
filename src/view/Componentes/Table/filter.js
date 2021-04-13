@@ -1,19 +1,19 @@
 import Row from "./TableRow";
 import TableCell from "@material-ui/core/TableCell";
 
-const Opciones = (cedula) => {
+const Opciones = (objeto) => {
   return (
     <>
       <button
         onClick={() => {
-          alert(cedula);
+          console.log(objeto);
         }}
       >
         Modificar
       </button>
       <button
         onClick={() => {
-          alert(cedula);
+          console.log(objeto);
         }}
       >
         borrar
@@ -65,7 +65,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               firstData={firstData}
               secondData={secondData}
               titulosDetalles={titulosDetalle}
-              opciones={Opciones(row.codigo_pro)}
+              opciones={Opciones(row)}
             />
           );
         });
@@ -89,7 +89,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               titulosDetalles={titulosDetalle}
               firstData={firstData}
               secondData={secondData}
-              opciones={Opciones(row.codigo_pro)}
+              opciones={Opciones(row)}
             />
           );
         });
@@ -121,7 +121,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               firstData={firstData}
               secondData={secondData}
               titulosDetalles={titulosDetalle}
-              opciones={Opciones(row.identificacion)}
+              opciones={Opciones(row)}
             />
           );
         });
@@ -136,7 +136,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               titulosDetalles={titulosDetalle}
               firstData={firstData}
               secondData={secondData}
-              opciones={Opciones(row.identificacion)}
+              opciones={Opciones(row)}
             />
           );
         });
