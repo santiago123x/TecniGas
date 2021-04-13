@@ -9,6 +9,7 @@ import Search from "../../Componentes/Search";
 const Inventario = () => {
   const [valueInp, setValueInp] = useState("");
   const [url, setUrl] = useState(`/producto/`);
+  const [recarga, setRecarga] = useState(false);
   const { data, error, loading } = useAxios(url);
 
   const title = [
@@ -54,6 +55,8 @@ const Inventario = () => {
                 titulos={title}
                 titulosDetalles={titleDetails}
                 tipo="inv"
+                recarga={recarga}
+                setRecarga={setRecarga}
               />
             )}
           </div>

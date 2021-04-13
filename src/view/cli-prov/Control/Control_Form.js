@@ -5,21 +5,27 @@ import logoC from "../formulario/icono.ico";
 import logoP from "../formulario/proveedor.ico";
 import { Modal, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
-import * as yup from 'yup';
-import  {yupResolver} from '@hookform/resolvers/yup';
-import { setLocale } from 'yup';
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { setLocale } from "yup";
 import { validarCliente, post, postCliPro } from "../formulario/Validacion";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { FaUserEdit } from "react-icons/fa";
 
-
 const URL = "http://localhost:5000";
 
-const Control_Form = ({ tipo, metodo, titulo, imagen, recarga, setRecarga, objeto }) => {
-
+const Control_Form = ({
+  tipo,
+  metodo,
+  titulo,
+  imagen,
+  recarga,
+  setRecarga,
+  objeto,
+}) => {
   //Cambian el estilo de elementos de material-ui
   const useStyles = makeStyles((theme) => ({
     modal: {
@@ -34,48 +40,40 @@ const Control_Form = ({ tipo, metodo, titulo, imagen, recarga, setRecarga, objet
       transform: "traslate(-50%, -50%)",
     },
     textfield: {
-      '& .MuiOutlinedInput-inputMarginDense': {
-        padding: '8.5px ',
-        
+      "& .MuiOutlinedInput-inputMarginDense": {
+        padding: "8.5px ",
       },
-      '& .MuiFormLabel-root': {
-        Function: 'disable',
-        
+      "& .MuiFormLabel-root": {
+        Function: "disable",
       },
-      '& .PrivateNotchedOutline-root-2': {
-        top: '0px',
-        borderRadius:'15px',
-        borderColor:'black'
-        
+      "& .PrivateNotchedOutline-root-2": {
+        top: "0px",
+        borderRadius: "15px",
+        borderColor: "black",
       },
-      '& .MuiInputBase-input': {
-        borderRadius:'15px',
-        color:'black',
-
+      "& .MuiInputBase-input": {
+        borderRadius: "15px",
+        color: "black",
       },
-      '& .MuiInputBase-root': {
-        borderRadius:'15px',
-
+      "& .MuiInputBase-root": {
+        borderRadius: "15px",
       },
-      '& .MuiOutlinedInput-adornedStart': {
-        paddingLeft: '7px',
-        
+      "& .MuiOutlinedInput-adornedStart": {
+        paddingLeft: "7px",
       },
-      '& .MuiOutlinedInput-multiline': {
-        padding: '12px',
-        
+      "& .MuiOutlinedInput-multiline": {
+        padding: "12px",
       },
-      '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
-        backgroundColor: '#bbdeef',
-        color:'black',
-
+      "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
+        backgroundColor: "#bbdeef",
+        color: "black",
       },
     },
   }));
 
   // Asignación de los valores escritos en los campos de texto
   const [datos, setDatos] = useState({
-    ...objeto
+    ...objeto,
   });
 
   // Función de escucha que obtiene el valor de los campos de texto
@@ -114,21 +112,39 @@ const Control_Form = ({ tipo, metodo, titulo, imagen, recarga, setRecarga, objet
   //Diccionario que cambia los mensajes predeterminados de la función schema
   setLocale({
     mixed: {
-      notType: 'Por favor ingrese datos válidos',
+      notType: "Por favor ingrese datos válidos",
     },
-    number:{
-      min: 'Debe contener más de 9 digitos',
-    }
+    number: {
+      min: "Debe contener más de 9 digitos",
+    },
   });
-   
 
   //Validaciones en formulario
   const schema = yup.object().shape({
-    nombre:yup.string().required("Por favor ingrese el nombre").test("validaName","Debe contener mínimo 5 carácteres", valor => valor.toString().length > 4),
-    identificacion:yup.string().required("Por favor ingrese la identificación o nit"),
-    correo:yup.string().required("Por favor ingrese el email").email("Ingrese un email válido"),
-    direccion:yup.string().required("Por favor ingrese la dirección"),
-    telefono:yup.number().required().test("validaTel","Debe contener más de 9 digitos", valor => valor.toString().length > 9),
+    nombre: yup
+      .string()
+      .required("Por favor ingrese el nombre")
+      .test(
+        "validaName",
+        "Debe contener mínimo 5 carácteres",
+        (valor) => valor.toString().length > 4
+      ),
+    identificacion: yup
+      .string()
+      .required("Por favor ingrese la identificación o nit"),
+    correo: yup
+      .string()
+      .required("Por favor ingrese el email")
+      .email("Ingrese un email válido"),
+    direccion: yup.string().required("Por favor ingrese la dirección"),
+    telefono: yup
+      .number()
+      .required()
+      .test(
+        "validaTel",
+        "Debe contener más de 9 digitos",
+        (valor) => valor.toString().length > 9
+      ),
   });
 
   //Realiza validaciones al enviar el formulario
@@ -146,7 +162,7 @@ const Control_Form = ({ tipo, metodo, titulo, imagen, recarga, setRecarga, objet
       direccion: data.direccion,
       telefono: data.telefono,
     };
-
+    /*
     switch (metodo) {
       case "put":
         if (!valida || (valida === data.id && valida !== true)) {
@@ -167,32 +183,32 @@ const Control_Form = ({ tipo, metodo, titulo, imagen, recarga, setRecarga, objet
         }
         break;
         break;
-    }
-};
+    }*/
+  };
 
-const notify = (suffix, nombre = "", tipo) => {
-  if (tipo === "info") {
-    toast.info(`${suffix} ${nombre}`, {
-      position: "top-center",
-      autoClose: 4000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  } else {
-    toast.error(`${suffix} ${nombre}`, {
-      position: "top-center",
-      autoClose: 4000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  }
-};
+  const notify = (suffix, nombre = "", tipo) => {
+    if (tipo === "info") {
+      toast.info(`${suffix} ${nombre}`, {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      toast.error(`${suffix} ${nombre}`, {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
 
   const styles = makeStyles();
   const classes = useStyles();
@@ -202,10 +218,10 @@ const notify = (suffix, nombre = "", tipo) => {
       <div className="container_control mt-5">
         <div className="foco_control">
           <div className="header_form">
-              <div className="cliente_control">
-                <img className="imagen" src={imagen === "cli" ? logoC : logoP} />
-              </div>
-            <div className="titulos">  
+            <div className="cliente_control">
+              <img className="imagen" src={imagen === "cli" ? logoC : logoP} />
+            </div>
+            <div className="titulos">
               <h4 className="titulo-form">{titulo}</h4>
               <h4 className="subtitulo-form">Actualización De Datos</h4>
             </div>
@@ -229,85 +245,93 @@ const notify = (suffix, nombre = "", tipo) => {
               >
                 Cancelar
               </Button>
-              </div>
-            <div className="formulario_control">  
-              <form className="form-group_control" onSubmit={handleSubmit(onSubmit)}>
-                <div className="row">  
-                <TextField
-                  className={classes.textfield}
-                  variant="outlined"
-                  size="small"
-                  type="text"
-                  name="nombre"
-                  label="Nombre - Empresa"
-                  onChange={handleInputChange}
-                  inputRef={register}
+            </div>
+            <div className="formulario_control">
+              <form
+                className="form-group_control"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                <div className="row">
+                  <TextField
+                    className={classes.textfield}
+                    variant="outlined"
+                    size="small"
+                    type="text"
+                    name="nombre"
+                    value={datos.nombre_pe}
+                    label="Nombre - Empresa"
+                    onChange={handleInputChange}
+                    inputRef={register}
                   />
-                <span className="span text-danger text-small d-block">
-                {errors.nombre?.message}
-                </span>
-                </div>
-              <div className="row">
-                <TextField
-                  className={classes.textfield}
-                  variant="outlined"
-                  size="small"
-                  type="text"
-                  name="identificacion"
-                  label="Identificación - NIT"
-                  onChange={handleInputChange}
-                  inputRef={register}
-                  />
-                <span className="span text-danger text-small d-block">
-                  {errors.identificacion?.message}
+                  <span className="span text-danger text-small d-block">
+                    {errors.nombre?.message}
                   </span>
                 </div>
-              <div className="row">
-              <TextField
-                className={classes.textfield}
-                variant="outlined"
-                size="small"
-                type="email"
-                name="correo"
-                label="Correo Electrónico"
-                onChange={handleInputChange}
-                inputRef={register}
-                />
-                <span className="span text-danger text-small d-block">
-                {errors.correo?.message}
-                </span>
-              </div>
-              <div className="row">
-              <TextField
-                className={classes.textfield}
-                variant="outlined"
-                size="small"
-                type="text"
-                name="direccion"
-                label="Dirección"
-                onChange={handleInputChange}
-                inputRef={register}
-                />
-                <span className="span text-danger text-small d-block">
-                {errors.direccion?.message}
-                </span>
-              </div>
-              <div className="row">
-              <TextField
-                className={classes.textfield}
-                variant="outlined"
-                size="small"
-                type="number"
-                name="telefono"
-                label="Teléfono"
-                onChange={handleInputChange}
-                inputRef={register}
-              />
-              <span className="span text-danger text-small d-block">
-                {errors.telefono?.message}
-                </span>
-              </div>
-            </form>
+                <div className="row">
+                  <TextField
+                    className={classes.textfield}
+                    variant="outlined"
+                    size="small"
+                    type="text"
+                    name="identificacion"
+                    value={datos.identificacion}
+                    label="Identificación - NIT"
+                    onChange={handleInputChange}
+                    inputRef={register}
+                  />
+                  <span className="span text-danger text-small d-block">
+                    {errors.identificacion?.message}
+                  </span>
+                </div>
+                <div className="row">
+                  <TextField
+                    className={classes.textfield}
+                    variant="outlined"
+                    size="small"
+                    type="email"
+                    name="correo"
+                    value={datos.email}
+                    label="Correo Electrónico"
+                    onChange={handleInputChange}
+                    inputRef={register}
+                  />
+                  <span className="span text-danger text-small d-block">
+                    {errors.correo?.message}
+                  </span>
+                </div>
+                <div className="row">
+                  <TextField
+                    className={classes.textfield}
+                    variant="outlined"
+                    size="small"
+                    type="text"
+                    name="direccion"
+                    value={datos.direccion}
+                    label="Dirección"
+                    onChange={handleInputChange}
+                    inputRef={register}
+                  />
+                  <span className="span text-danger text-small d-block">
+                    {errors.direccion?.message}
+                  </span>
+                </div>
+                <div className="row">
+                  <TextField
+                    className={classes.textfield}
+                    variant="outlined"
+                    size="small"
+                    type="number"
+                    name="telefono"
+                    value={datos.telefono}
+                    label="Teléfono"
+                    onChange={handleInputChange}
+                    inputRef={register}
+                  />
+                  <span className="span text-danger text-small d-block">
+                    {errors.telefono?.message}
+                  </span>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -331,6 +355,5 @@ const notify = (suffix, nombre = "", tipo) => {
       </Modal>
     </div>
   );
-    
 };
 export default Control_Form;

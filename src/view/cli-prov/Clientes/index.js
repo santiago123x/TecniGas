@@ -6,7 +6,6 @@ import useAxios from "../../Hooks/useAxios";
 import Search from "../../Componentes/Search";
 import Formulario from "../formulario/formulario";
 
-
 const Cliente = () => {
   const [valueInp, setValueInp] = useState("");
   const [url, setUrl] = useState(`/clipers/`);
@@ -53,7 +52,10 @@ const Cliente = () => {
                 filtro={valueInp}
                 titulos={title}
                 titulosDetalles={titleDetails}
-                tipo="prov"
+                tipo="clipro"
+                categoria="cli"
+                recarga={recarga}
+                setRecarga={setRecarga}
               />
             )}
           </div>
