@@ -51,6 +51,14 @@ const postCliPro = async (idp, tipo) => {
   }
 };
 
+const put = async (id, body) => {
+  try {
+    const response = await axios.put(`${URL}persona/${id}`, body);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export { validarCliente, post, postCliPro };
 
 //persona_id

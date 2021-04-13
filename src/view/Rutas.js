@@ -8,6 +8,7 @@ import Compra from "./inventario/Compra/Compra";
 import Login from "./login/Login";
 import Layout from "./Componentes/Layout/Layout";
 import Error404 from "./Componentes/Error/Error";
+import ControlForm from "./cli-prov/controlform";
 
 function Rutas() {
   return (
@@ -26,6 +27,10 @@ function Rutas() {
             <Layout tipo="inv">
               <Inventario />
             </Layout>
+          </Route>
+
+          <Route path="/control">
+            <ControlForm/>
           </Route>
 
           <Route path="/clientes">
