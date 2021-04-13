@@ -1,6 +1,27 @@
 import Row from "./TableRow";
 import TableCell from "@material-ui/core/TableCell";
 
+const Opciones = (cedula) => {
+  return (
+    <>
+      <button
+        onClick={() => {
+          alert(cedula);
+        }}
+      >
+        Modificar
+      </button>
+      <button
+        onClick={() => {
+          alert(cedula);
+        }}
+      >
+        borrar
+      </button>
+    </>
+  );
+};
+
 const filter = (tipo, data, filtro, titulosDetalle) => {
   let arreglo = [];
 
@@ -44,6 +65,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               firstData={firstData}
               secondData={secondData}
               titulosDetalles={titulosDetalle}
+              opciones={Opciones(row.codigo_pro)}
             />
           );
         });
@@ -67,23 +89,57 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               titulosDetalles={titulosDetalle}
               firstData={firstData}
               secondData={secondData}
+              opciones={Opciones(row.codigo_pro)}
             />
           );
         });
       }
 
-    case "prod":
+    case "prov":
       if (filtro !== "") {
-        return "epa";
-      } else {
-        return "lul";
-      }
+        arreglo = data.filter((dat) => {
+          return (
+            dat.nombre_pe
+              .toLowerCase()
+              .trim()
+              .includes(filtro.toString().toLowerCase().trim()) ||
+            dat.identificacion
+              .toString()
+              .toLowerCase()
+              .trim()
+              .includes(filtro.toString().toLowerCase().trim())
+          );
+        });
 
-    case "clien":
-      if (filtro !== "") {
-        return "epa";
+        return arreglo.map((row, index) => {
+          const firstData = [row.nombre_pe, row.identificacion, row.telefono];
+          const secondData = [row.email, row.direccion];
+
+          return (
+            <Row
+              key={index}
+              firstData={firstData}
+              secondData={secondData}
+              titulosDetalles={titulosDetalle}
+              opciones={Opciones(row.identificacion)}
+            />
+          );
+        });
       } else {
-        return "lul";
+        return data.map((row, index) => {
+          const firstData = [row.nombre_pe, row.identificacion, row.telefono];
+          const secondData = [row.email, row.direccion];
+
+          return (
+            <Row
+              key={index}
+              titulosDetalles={titulosDetalle}
+              firstData={firstData}
+              secondData={secondData}
+              opciones={Opciones(row.identificacion)}
+            />
+          );
+        });
       }
   }
 };
