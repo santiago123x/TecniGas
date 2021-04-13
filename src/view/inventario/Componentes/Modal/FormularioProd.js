@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-//import { validarCliente, post, postCliPro } from "./Validacion";
+import { validarProducto, post } from "./ValidaProd";
 import * as yup from 'yup';
 import  {yupResolver} from '@hookform/resolvers/yup';
 import { setLocale } from 'yup';
@@ -117,36 +117,33 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga }) => {
  
   const onSubmit = async (data, e) => {
       e.preventDefault();
-    //   const valida = await validarCliente(data.identificacion, tipo);
+        const valida = await validarProducto(data.nombre, parseInt(data.codigoPro));
       const body = {
-        nombre_catg: data.categoria,
+        id_categoria: parseInt(data.categoria),
         nombre_pro: data.nombre,
-        precio_uni: data.precioUni,
-        precio_may: data.precioMay,
-        stock_min: data.stockMin,
-        codigo_pro: data.codigoPro,
+        precio_uni: parseInt(data.precioUni),
+        precio_may: parseInt(data.precioMay),
+        stock_min: parseInt(data.stockMin),
+        codigo_pro: parseInt(data.codigoPro),
       };
 
-    //   switch (metodo) {
-    //     case "post":
-    //       if (!valida || (valida > 0 && valida !== true)) {
-    //         if (!valida === true) {
-    //           const idPersona = await post(body);
-    //           await postCliPro(idPersona, tipo);
-    //           reset(e);
-    //           setRecarga(!recarga);
-    //           notify(alertasucces, data.nombre, "info");
-    //         } else {
-    //           await postCliPro(valida, tipo);
-    //           reset(e);
-    //           setRecarga(!recarga);
-    //           notify(alertasucces, data.nombre, "info");
-    //         }
-    //       } else {
-    //         notify(alertaerror, data.nombre, "error");
-    //       }
-    //       break;
-    //   }
+      console.log(body);
+      console.log(valida);
+
+       switch (metodo) {
+         case "post":
+           if (!valida) {             
+               //await post(body);
+               reset(e);
+               setRecarga(!recarga);
+               notify(alertasucces, data.nombre, "info");
+             } else {               
+               reset(e);
+               setRecarga(!recarga);
+               notify(alertaerror, data.nombre, "info");
+             }
+           break;
+       }
 
   };
 
