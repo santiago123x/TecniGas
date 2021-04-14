@@ -51,14 +51,57 @@ const postCliPro = async (idp, tipo) => {
   }
 };
 
+const validaPut = async (oldId, newId,  tipo) =>{
+  let cliPro = {};
+  let persona = {};
+  try {
+    const response = await axios.get(`${URL}personac/${newId}`);
+    persona = response.data;
+    console.log(persona);
+  } catch (error) {
+    console.error(error);
+  }
+  if (persona !== ""){
+    if(persona.identificacion == oldId){
+      try {
+        const respuesta = await axios.get(
+          `${URL}cliproidp/${persona.persona_id}/${tipo}`
+        );
+        cliPro = respuesta.data;
+      } catch (error) {
+        console.error(error);
+      } if (cliPro !== "") {
+            return true;
+        }else {
+          return false;
+        }
+      } else {
+        return false;
+      } 
+  } else {
+    return true;
+  }
+};
+
 const put = async (id, body) => {
   try {
+    console.log(body);
     const response = await axios.put(`${URL}persona/${id}`, body);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const del = async (id) => {
+  try {
+    const response = await axios.delete(`${URL}persona/${id}`);
   } catch (error) {
     console.error(error);
   }
 }
 
-export { validarCliente, post, postCliPro };
+
+export { validarCliente, post, postCliPro, validaPut, put, del };
 
 //persona_id

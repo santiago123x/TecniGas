@@ -10,7 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { setLocale } from "yup";
-import { validarCliente, post, postCliPro } from "../formulario/Validacion";
+import { validaPut, put, del} from "../formulario/Validacion";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { FaUserEdit } from "react-icons/fa";
@@ -26,6 +26,8 @@ const Control_Form = ({
   setRecarga,
   objeto,
 }) => {
+  const estadoInicial = { ...objeto };
+  
   //Cambian el estilo de elementos de material-ui
   const useStyles = makeStyles((theme) => ({
     modal: {
@@ -77,22 +79,14 @@ const Control_Form = ({
   });
 
   // Función de escucha que obtiene el valor de los campos de texto
-  const handleInputChange = (prop) => (event) => {
+  const handleInputChange = (event) => {
     //console.log(event.target.value)
     setDatos({
       ...datos,
-      [prop]: event.target.value,
+      [event.target.name]: event.target.value,
     });
   };
 
-  const alertasucces =
-    tipo === "cliente"
-      ? "Se ha creado el cliente: "
-      : "Se ha creado el proveedor: ";
-  const alertaerror =
-    tipo === "cliente"
-      ? "Este cliente ya existe: "
-      : "Este proveedor ya existe: ";
 
   //Control del modal
   //Función que reinicia el modal
@@ -107,7 +101,10 @@ const Control_Form = ({
   //Función para cambiar el estado del modal
   const abrirCerrarModal = () => {
     setModal(!modal);
+    setDatos({ ...estadoInicial });
   };
+
+  
 
   //Diccionario que cambia los mensajes predeterminados de la función schema
   setLocale({
@@ -121,7 +118,7 @@ const Control_Form = ({
 
   //Validaciones en formulario
   const schema = yup.object().shape({
-    nombre: yup
+    nombre_pe: yup
       .string()
       .required("Por favor ingrese el nombre")
       .test(
@@ -132,7 +129,7 @@ const Control_Form = ({
     identificacion: yup
       .string()
       .required("Por favor ingrese la identificación o nit"),
-    correo: yup
+    email: yup
       .string()
       .required("Por favor ingrese el email")
       .email("Ingrese un email válido"),
@@ -148,47 +145,59 @@ const Control_Form = ({
   });
 
   //Realiza validaciones al enviar el formulario
-  const { register, errors, handleSubmit } = useForm({
+  const { register, errors, handleSubmit} = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data, e) => {
-    e.preventDefault();
-    const valida = await validarCliente(data.identificacion, tipo);
+  const onSubmit = async (data, event) => {
+    event.preventDefault();
+    if(tipo === "cli"){
+      tipo = "cliente";
+    } else {
+      tipo = "proveedor";
+    }
+    const tp = tipo;
+    const idCliPro = objeto.identificacion;
     const body = {
-      nombre_pe: data.nombre,
+      nombre_pe: data.nombre_pe,
       identificacion: data.identificacion,
-      email: data.correo,
+      email: data.email,
       direccion: data.direccion,
       telefono: data.telefono,
     };
-    /*
+    const valida = await validaPut(idCliPro, data.identificacion, tp);
+    console.log(body);
     switch (metodo) {
       case "put":
-        if (!valida || (valida === data.id && valida !== true)) {
-          if (!valida === true) {
-            const idPersona = await put(data.id,body);
-            await postCliPro(idPersona, tipo);
-            reset(e);
+        if (valida) {
+            const algo = await put(body.identificacion, body);
+            console.log(algo);
+            reset(event);
             setRecarga(!recarga);
-            notify(alertasucces, data.nombre, "info");
-          } else {
-            await postCliPro(valida, tipo);
-            reset(e);
-            setRecarga(!recarga);
-            notify(alertasucces, data.nombre, "info");
-          }
-        } else {
-          notify(alertaerror, data.nombre, "error");
+            notify(alertasucces, data.identificacion, "info");
+        } else if (!valida) {
+          notify(alertaerror, data.identificacion, "error");
         }
         break;
-        break;
-    }*/
+      case "delete":
+        //falta validar y que funcione
+        await del(body.identificacion);
+        reset(event);
+        setRecarga(!recarga);
+        break;  
+    }
   };
 
-  const notify = (suffix, nombre = "", tipo) => {
+  const alertasucces =
+    tipo === "cli"
+      ? "Se ha actualizado el cliente con identificacion: "
+      : "Se ha actualizado el proveedor con identificacion: ";
+  const alertaerror =
+      "Está ingresando un dato inválido, cambie la siguiente identificación";
+
+  const notify = (suffix, identificacion = "", tipo) => {
     if (tipo === "info") {
-      toast.info(`${suffix} ${nombre}`, {
+      toast.info(`${suffix} ${identificacion}`, {
         position: "top-center",
         autoClose: 4000,
         hideProgressBar: false,
@@ -198,7 +207,7 @@ const Control_Form = ({
         progress: undefined,
       });
     } else {
-      toast.error(`${suffix} ${nombre}`, {
+      toast.error(`${suffix} ${identificacion}`, {
         position: "top-center",
         autoClose: 4000,
         hideProgressBar: false,
@@ -227,7 +236,12 @@ const Control_Form = ({
             </div>
           </div>
           <div className="contenedor_form">
-            <div className="conten-btn">
+            
+            <form
+                className="form-group_btn"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+              <div className="conten-btn">
               <Button
                 size="small"
                 variant="contained"
@@ -245,9 +259,11 @@ const Control_Form = ({
               >
                 Cancelar
               </Button>
-            </div>
+              </div>
+              </form>
+            
             <div className="formulario_control">
-              <form
+            <form
                 className="form-group_control"
                 onSubmit={handleSubmit(onSubmit)}
               >
@@ -257,7 +273,7 @@ const Control_Form = ({
                     variant="outlined"
                     size="small"
                     type="text"
-                    name="nombre"
+                    name="nombre_pe"
                     value={datos.nombre_pe}
                     label="Nombre - Empresa"
                     onChange={handleInputChange}
@@ -289,9 +305,9 @@ const Control_Form = ({
                     variant="outlined"
                     size="small"
                     type="email"
-                    name="correo"
-                    value={datos.email}
+                    name="email"
                     label="Correo Electrónico"
+                    value={datos.email}
                     onChange={handleInputChange}
                     inputRef={register}
                   />
@@ -306,8 +322,8 @@ const Control_Form = ({
                     size="small"
                     type="text"
                     name="direccion"
-                    value={datos.direccion}
                     label="Dirección"
+                    value={datos.direccion}
                     onChange={handleInputChange}
                     inputRef={register}
                   />
@@ -322,8 +338,8 @@ const Control_Form = ({
                     size="small"
                     type="number"
                     name="telefono"
-                    value={datos.telefono}
                     label="Teléfono"
+                    value={datos.telefono}
                     onChange={handleInputChange}
                     inputRef={register}
                   />
