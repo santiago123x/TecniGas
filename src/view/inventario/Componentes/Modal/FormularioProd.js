@@ -78,6 +78,7 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga }) => {
     precioMay: "",
     stockMin: "",
     codigoPro: "",
+    cantidadPro: "",
   });
 
   const alertasucces = "Se ha creado el producto: "
@@ -108,6 +109,7 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga }) => {
     precioMay:yup.number().required().test("validaPrecioMay", "el valor debe ser un numero positivo", valor => valor > 0),
     stockMin:yup.number().required("Por favor ingrese un numero minimo de stock"),
     codigoPro:yup.number().required("Por favor ingrese un nuevo codigo de producto"),
+    cantidadPro:yup.number().required("Porfavor ingrese una cantidad valida del producto"),
   });
 
   //Realiza validaciones al enviar el formulario
@@ -121,26 +123,27 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga }) => {
       const body = {
         id_categoria: parseInt(data.categoria),
         nombre_pro: data.nombre,
-        precio_uni: parseInt(data.precioUni),
-        precio_may: parseInt(data.precioMay),
+        precio_uni: parseFloat(data.precioUni),
+        precio_may: parseFloat(data.precioMay),
         stock_min: parseInt(data.stockMin),
         codigo_pro: parseInt(data.codigoPro),
+        cantidad_pro: parseInt(data.cantidadPro),
       };
 
       console.log(body);
-      console.log(valida);
+      //console.log(valida);
 
        switch (metodo) {
          case "post":
            if (!valida) {             
-               //await post(body);
+               await post(body);
                reset(e);
                setRecarga(!recarga);
                notify(alertasucces, data.nombre, "info");
              } else {               
                reset(e);
                setRecarga(!recarga);
-               notify(alertaerror, data.nombre, "info");
+               notify(alertaerror, data.nombre, "error");
              }
            break;
        }
@@ -279,6 +282,21 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga }) => {
                type="number"
                name="codigoPro"
                label="Codigo del producto"
+               onChange={handleInputChange}
+               inputRef={register}
+             />
+             <span className="span text-danger text-small d-block">
+              {errors.codigoPro?.message}
+              </span>
+            </div>
+            <div className="row">
+             <TextField
+               className={classes.textfield}
+               variant="outlined"
+               size="small"
+               type="number"
+               name="cantidadPro"
+               label="Cantidad del producto"
                onChange={handleInputChange}
                inputRef={register}
              />
