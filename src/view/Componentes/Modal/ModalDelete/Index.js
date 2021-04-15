@@ -12,7 +12,7 @@ import React, { useState } from 'react';
 
 const URL = "http://localhost:5000";
 
-export const ModalDelete = ({cosa, elemento}) => {
+export const ModalDelete = ({tipo, elemento, recarga, setRecarga}) => {
     const [modal, setModal] = useState(false);
     const alertasucces = "Se ha eliminado el "
     const alertaerror = "No se ha podido eliminar el "
@@ -46,11 +46,25 @@ export const ModalDelete = ({cosa, elemento}) => {
         setModal(!modal);
     };
 
+
+    const tipoDel= () => {
+        switch (tipo) {
+            case 'inv': return `producto: ${ elemento.nombre_pro } `
+            
+            break;
+            case 'cli': return `cliente: ${ elemento.nombre_pe }`
+            break;
+            case 'prov': return `proveedor: ${ elemento.nombre_pe }`
+            break;
+        }
+        console.log(tipo);
+    };
+
     const body = (
         <div className={styles.modal}>
             <div className="container">
                 <div className="container-element">
-                    <h2>¿Desea eliminar {cosa} {elemento}?</h2>
+                    <h3>¿Desea eliminar el {tipoDel()} ?</h3>
                     <div className="container-element__button">
                         <Button
                             size="small"
@@ -84,11 +98,10 @@ export const ModalDelete = ({cosa, elemento}) => {
                 <IconButton
                     size="small"
                     variant="contained"
-                    color="primary"
                     onClick={() => abrirCerrarModal()}
 
                 >
-                    <RiDeleteBin5Fill />
+                    <RiDeleteBin5Fill className="iconoDelete" />
                 </IconButton>
             </Tooltip>
 

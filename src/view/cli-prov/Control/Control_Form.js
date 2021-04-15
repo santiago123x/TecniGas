@@ -325,15 +325,7 @@ const Control_Form = ({
         <FaUserEdit />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Eliminar" placement="top">
-        <IconButton
-          size="small"
-          variant="contained"
-          color="primary"
-        >
-        <RiDeleteBin5Fill/>  
-        </IconButton>  
-      </Tooltip>
+      
       <Modal open={modal} onClose={abrirCerrarModal}>
         {body}
       </Modal>
