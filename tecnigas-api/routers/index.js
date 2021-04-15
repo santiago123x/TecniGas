@@ -37,6 +37,14 @@ const {
   postCompraDet,
 } = require("../controlador/compra.js");
 
+const {
+  getCategoria,
+} = require("../controlador/categoria.js");
+
+// Rutas de Categoria
+
+router.get("/categorias", getCategoria);
+
 // Rutas de Proveedor
 
 router.get("/provpers", getProveedor);

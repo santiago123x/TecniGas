@@ -1,19 +1,41 @@
 import Row from "./TableRow";
 import TableCell from "@material-ui/core/TableCell";
+import ModalDelete from "../Modal/ModalDelete/Index";
 
-const Opciones = (cedula) => {
+const Opciones = (objeto, categoria, recarga, setRecarga) => {
+  let titulo;
+  if (categoria === "cli") {
+    titulo = `Cliente: ${objeto.nombre_pe}`;
+  } else if (categoria === "prov") {
+    titulo = `Proveedor: ${objeto.nombre_pe}`;
+  } else {
+    titulo = `Producto: ${objeto.nombre_pro}`;
+  }
   return (
     <>
+      {!categoria ? (
+        <button
+          onClick={() => {
+            console.log(objeto);
+          }}
+        >
+          Modificar
+        </button>
+      ) : (
+        <Modificar
+          objeto={objeto}
+          tipo={categoria}
+          titulo={titulo}
+          metodo="put"
+          imagen={categoria}
+          recarga={recarga}
+          setRecarga={setRecarga}
+        />
+      )}
+
       <button
         onClick={() => {
-          alert(cedula);
-        }}
-      >
-        Modificar
-      </button>
-      <button
-        onClick={() => {
-          alert(cedula);
+          console.log(objeto);
         }}
       >
         borrar
@@ -22,7 +44,15 @@ const Opciones = (cedula) => {
   );
 };
 
-const filter = (tipo, data, filtro, titulosDetalle) => {
+const filter = (
+  tipo,
+  data,
+  filtro,
+  titulosDetalle,
+  categoria,
+  recarga,
+  setRecarga
+) => {
   let arreglo = [];
 
   switch (tipo) {
@@ -65,7 +95,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               firstData={firstData}
               secondData={secondData}
               titulosDetalles={titulosDetalle}
-              opciones={Opciones(row.codigo_pro)}
+              opciones={Opciones(row, recarga, setRecarga)}
             />
           );
         });
@@ -89,13 +119,13 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               titulosDetalles={titulosDetalle}
               firstData={firstData}
               secondData={secondData}
-              opciones={Opciones(row.codigo_pro)}
+              opciones={Opciones(row, recarga, setRecarga)}
             />
           );
         });
       }
 
-    case "prov":
+    case "clipro":
       if (filtro !== "") {
         arreglo = data.filter((dat) => {
           return (
@@ -121,7 +151,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               firstData={firstData}
               secondData={secondData}
               titulosDetalles={titulosDetalle}
-              opciones={Opciones(row.identificacion)}
+              opciones={Opciones(row, categoria, recarga, setRecarga)}
             />
           );
         });
@@ -136,7 +166,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               titulosDetalles={titulosDetalle}
               firstData={firstData}
               secondData={secondData}
-              opciones={Opciones(row.identificacion)}
+              opciones={Opciones(row, categoria, recarga, setRecarga)}
             />
           );
         });
