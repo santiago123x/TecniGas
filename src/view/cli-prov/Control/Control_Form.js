@@ -6,6 +6,7 @@ import logoP from "../formulario/proveedor.ico";
 import { Modal, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from "@material-ui/core/styles";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,6 +15,8 @@ import { validaPut, put, del} from "../formulario/Validacion";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { FaUserEdit } from "react-icons/fa";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+
 
 const URL = "http://localhost:5000";
 
@@ -163,14 +166,13 @@ const Control_Form = ({
       identificacion: data.identificacion,
       email: data.email,
       direccion: data.direccion,
-      telefono: data.telefono,
+      telefono: data.telefono.toString(),
     };
     const valida = await validaPut(idCliPro, data.identificacion, tp);
-    console.log(body);
     switch (metodo) {
       case "put":
         if (valida) {
-            const algo = await put(body.identificacion, body);
+            const algo = await put(idCliPro, body);
             console.log(algo);
             reset(event);
             setRecarga(!recarga);
@@ -181,7 +183,7 @@ const Control_Form = ({
         break;
       case "delete":
         //falta validar y que funcione
-        await del(body.identificacion);
+        await del(idCliPro);
         reset(event);
         setRecarga(!recarga);
         break;  
@@ -190,14 +192,14 @@ const Control_Form = ({
 
   const alertasucces =
     tipo === "cli"
-      ? "Se ha actualizado el cliente con identificacion: "
-      : "Se ha actualizado el proveedor con identificacion: ";
+      ? "Se ha actualizado el cliente correctamente "
+      : "Se ha actualizado el proveedor correctamente ";
   const alertaerror =
       "Está ingresando un dato inválido, cambie la siguiente identificación";
 
   const notify = (suffix, identificacion = "", tipo) => {
     if (tipo === "info") {
-      toast.info(`${suffix} ${identificacion}`, {
+      toast.info(`${suffix}`, {
         position: "top-center",
         autoClose: 4000,
         hideProgressBar: false,
@@ -357,15 +359,25 @@ const Control_Form = ({
 
   return (
     <div>
-      <Button
-        size="small"
-        variant="contained"
-        color="primary"
-        startIcon={<FaUserEdit />}
-        onClick={() => abrirCerrarModal()}
-      >
-        Editar
-      </Button>
+      <Tooltip title="Editar">
+        <IconButton
+          size="small"
+          variant="contained"
+          color="primary"
+          onClick={() => abrirCerrarModal()}
+        >
+        <FaUserEdit />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Eliminar">
+        <IconButton
+          size="small"
+          variant="contained"
+          color="primary"
+        >
+        <RiDeleteBin5Fill/>  
+        </IconButton>  
+      </Tooltip>
       <Modal open={modal} onClose={abrirCerrarModal}>
         {body}
       </Modal>
