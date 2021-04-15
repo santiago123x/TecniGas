@@ -76,6 +76,7 @@ const getClientePer = async (req, res) => {
   }
 };
 
+
 module.exports = {
   getCliente_Prov,
   getCliProIdP,

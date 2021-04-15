@@ -6,7 +6,7 @@ const {
   getPersById,
   getPersonaCedula,
   postPersona,
-  upPersona,
+  putPersona,
   delPersona,
 } = require("../controlador/persona");
 
@@ -55,7 +55,7 @@ router.get("/persona", getPersona);
 router.get("/persona/:id", getPersById);
 router.get("/personac/:cedula", getPersonaCedula);
 router.post("/persona", postPersona);
-router.put("/persona/:id", upPersona);
+router.put("/persona/:id", putPersona);
 router.delete("/persona/:id", delPersona);
 
 // Rutas de clientes-proveedores

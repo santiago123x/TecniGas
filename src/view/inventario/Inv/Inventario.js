@@ -66,6 +66,8 @@ const Inventario = () => {
                 titulos={title}
                 titulosDetalles={titleDetails}
                 tipo="inv"
+                recarga={recarga}
+                setRecarga={setRecarga}
               />
             )}
           </div>

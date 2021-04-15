@@ -52,7 +52,10 @@ const Cliente = () => {
                 filtro={valueInp}
                 titulos={title}
                 titulosDetalles={titleDetails}
-                tipo="prov"
+                tipo="clipro"
+                categoria="cli"
+                recarga={recarga}
+                setRecarga={setRecarga}
               />
             )}
           </div>

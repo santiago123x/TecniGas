@@ -1,6 +1,7 @@
 import Row from "./TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import ModalDelete from "../Modal/ModalDelete/Index";
+import Modificar from "../../cli-prov/Control/Control_Form";
 
 const Opciones = (objeto, categoria, recarga, setRecarga) => {
   let titulo;

@@ -5,7 +5,7 @@ import logoC from "./icono.ico";
 import logoP from "./proveedor.ico";
 import { Modal, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { validarCliente, post, postCliPro } from "./Validacion";
@@ -18,7 +18,7 @@ const URL = "http://localhost:5000";
 
 const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
 
-  //Cambian el estilo de elementos de material-ui
+  //Cambian el estilo a los elementos de material-ui
   const useStyles = makeStyles((theme) => ({
     modal: {
       position: "absolute",
@@ -66,7 +66,7 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
       '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
         backgroundColor: '#bbdeef',
         color:'black',
-        
+
       },
     },
   }));
@@ -98,6 +98,7 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
     });
   };
 
+  //Diccionario que cambia los mensajes predeterminados de la función schema
   setLocale({
     mixed: {
       notType: 'Por favor ingrese datos válidos',
@@ -107,6 +108,8 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
     }
   });
    
+
+  //Validaciones en formulario
   const schema = yup.object().shape({
     nombre:yup.string().required("Por favor ingrese el nombre").test("validaName","Debe contener mínimo 5 carácteres", valor => valor.toString().length > 4),
     identificacion:yup.string().required("Por favor ingrese la identificación o nit"),
@@ -178,6 +181,8 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
     }
   };
 
+  //Control del modal
+  //Función que reinicia el modal
   const reset = (e) => {
     e.target.reset();
     setModal(!modal);

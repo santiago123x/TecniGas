@@ -17,6 +17,9 @@ export default function CollapsibleTable({
   titulos,
   titulosDetalles,
   tipo,
+  categoria,
+  recarga,
+  setRecarga,
 }) {
   const styleHead = useHeader();
   const classes = useRowStyles();
@@ -43,8 +46,24 @@ export default function CollapsibleTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {filter(tipo, data, filtro, titulosDetalles).length !== 0 ? (
-              filter(tipo, data, filtro, titulosDetalles)
+            {filter(
+              tipo,
+              data,
+              filtro,
+              titulosDetalles,
+              categoria,
+              recarga,
+              setRecarga
+            ).length !== 0 ? (
+              filter(
+                tipo,
+                data,
+                filtro,
+                titulosDetalles,
+                categoria,
+                recarga,
+                setRecarga
+              )
             ) : (
               <TableRow className={classes.root} align="center">
                 {titulos.length !== 0 &&

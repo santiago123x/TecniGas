@@ -52,7 +52,10 @@ const Proveedores = () => {
                 filtro={valueInp}
                 titulos={title}
                 titulosDetalles={titleDetails}
-                tipo="prov"
+                tipo="clipro"
+                categoria="prov"
+                recarga={recarga}
+                setRecarga={setRecarga}
               />
             )}
           </div>
