@@ -75,8 +75,7 @@ const delPersona = async (req, res) => {
   try {
     const id = req.params.id;
     const response = await pool.query(
-      "DELETE FROM persona WHERE persona_id = $1",
-      [id]
+      `DELETE FROM persona WHERE persona_id = '${id}'`,
     );
     console.log(response);
     res.json(`Persona ${id} eliminada satisfactoriamente`);

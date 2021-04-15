@@ -85,17 +85,19 @@ const validaPut = async (oldId, newId,  tipo) =>{
 
 const put = async (id, body) => {
   try {
-    console.log(body);
     const response = await axios.put(`${URL}persona/${id}`, body);
-    return response.data;
   } catch (error) {
     console.error(error);
   }
 };
 
-const del = async (id) => {
+
+const del = async (idP) => {
+  let persona = {};
   try {
-    const response = await axios.delete(`${URL}persona/${id}`);
+    const response = await axios.get(`${URL}personac/${idP}`);
+    persona = response.data;
+    const responseD = await axios.delete(`${URL}persona/${persona.persona_id}`);
   } catch (error) {
     console.error(error);
   }

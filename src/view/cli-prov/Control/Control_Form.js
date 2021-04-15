@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { FaUserEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import useStyles from "./ControlUseStyle";
 
 
 const URL = "http://localhost:5000";
@@ -31,50 +32,7 @@ const Control_Form = ({
 }) => {
   const estadoInicial = { ...objeto };
   
-  //Cambian el estilo de elementos de material-ui
-  const useStyles = makeStyles((theme) => ({
-    modal: {
-      position: "absolute",
-      width: 400,
-      backgroundColor: "white",
-      border: "2px solid 000",
-      boxShadow: theme.shadows[5],
-      padding: "16px 32px 24px",
-      top: "50%",
-      left: "50%",
-      transform: "traslate(-50%, -50%)",
-    },
-    textfield: {
-      "& .MuiOutlinedInput-inputMarginDense": {
-        padding: "8.5px ",
-      },
-      "& .MuiFormLabel-root": {
-        Function: "disable",
-      },
-      "& .PrivateNotchedOutline-root-2": {
-        top: "0px",
-        borderRadius: "15px",
-        borderColor: "black",
-      },
-      "& .MuiInputBase-input": {
-        borderRadius: "15px",
-        color: "black",
-      },
-      "& .MuiInputBase-root": {
-        borderRadius: "15px",
-      },
-      "& .MuiOutlinedInput-adornedStart": {
-        paddingLeft: "7px",
-      },
-      "& .MuiOutlinedInput-multiline": {
-        padding: "12px",
-      },
-      "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
-        backgroundColor: "#bbdeef",
-        color: "black",
-      },
-    },
-  }));
+  
 
   // Asignación de los valores escritos en los campos de texto
   const [datos, setDatos] = useState({
@@ -168,25 +126,23 @@ const Control_Form = ({
       direccion: data.direccion,
       telefono: data.telefono.toString(),
     };
-    const valida = await validaPut(idCliPro, data.identificacion, tp);
+    const validaP = await validaPut(idCliPro, data.identificacion, tp);
     switch (metodo) {
       case "put":
-        if (valida) {
-            const algo = await put(idCliPro, body);
-            console.log(algo);
+        if (validaP) {
+            await put(idCliPro, body);
             reset(event);
             setRecarga(!recarga);
             notify(alertasucces, data.identificacion, "info");
-        } else if (!valida) {
+        } else if (!validaP) {
           notify(alertaerror, data.identificacion, "error");
         }
         break;
       case "delete":
-        //falta validar y que funcione
-        await del(idCliPro);
-        reset(event);
-        setRecarga(!recarga);
-        break;  
+            await del(idCliPro);
+            reset(event);
+            setRecarga(!recarga);
+            break;   
     }
   };
 
@@ -359,7 +315,7 @@ const Control_Form = ({
 
   return (
     <div>
-      <Tooltip title="Editar">
+      <Tooltip title="Editar" placement="top">
         <IconButton
           size="small"
           variant="contained"
@@ -369,7 +325,7 @@ const Control_Form = ({
         <FaUserEdit />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Eliminar">
+      <Tooltip title="Eliminar" placement="top">
         <IconButton
           size="small"
           variant="contained"
