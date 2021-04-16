@@ -14,11 +14,13 @@ const {
   getCliente_Prov,
   getCliProIdP,
   postCliente_Prov,
-  delCliente_Prov,
+  putCliente_Prov,
   getClientePer,
 } = require("../controlador/clientes");
 
-const { getProveedor } = require("../controlador/proveedores");
+const { 
+  getProveedor,
+} = require("../controlador/proveedores");
 
 const {
   getProducto,
@@ -37,9 +39,6 @@ const {
   postCompraDet,
 } = require("../controlador/compra.js");
 
-// Rutas de Proveedor
-
-router.get("/provpers", getProveedor);
 
 // Rutas de personas
 
@@ -50,12 +49,19 @@ router.post("/persona", postPersona);
 router.put("/persona/:id", putPersona);
 router.delete("/persona/:id", delPersona);
 
-// Rutas de clientes-proveedores
+// Rutas de Clientes
 
 router.get("/clipers", getClientePer);
+
+// Rutas Proveedores
+
+router.get("/proveedor", getProveedor);
+
+// Rutas de Clientes - Proveedores
+
 router.get("/listado/", getCliente_Prov);
-router.post("/listado/:id/:tp", postCliente_Prov);
-router.delete("/listado/:id", delCliente_Prov);
+router.post("/listado/:id/:tp/:estado", postCliente_Prov);
+router.put("/listado/:id", putCliente_Prov);
 router.get("/cliproidp/:idper/:tipo", getCliProIdP);
 
 //router.get("/", getClientes);
@@ -71,9 +77,6 @@ router.post("/producto", postProducto);
 router.put("/producto/:producto_id", putProducto);
 router.delete("/producto/:producto_id", delProducto);
 
-// routes Proveedores
-
-router.get("/proveedor", getProveedor);
 
 // routes Compra
 

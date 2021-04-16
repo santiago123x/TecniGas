@@ -43,8 +43,9 @@ const post = async (body) => {
 };
 
 const postCliPro = async (idp, tipo) => {
+  let estado = "activado";
   try {
-    const response = await axios.post(`${URL}listado/${idp}/${tipo}`);
+    const response = await axios.post(`${URL}listado/${idp}/${tipo}/${estado}`);
     return response.data;
   } catch (error) {
     console.error(error);
