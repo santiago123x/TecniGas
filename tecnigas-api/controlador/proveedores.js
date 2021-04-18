@@ -12,7 +12,6 @@ const getProveedor = async (req, res) => {
   }
 };
 
-
 module.exports = {
   getProveedor,
 };

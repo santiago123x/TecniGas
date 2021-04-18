@@ -58,7 +58,6 @@ const validaPut = async (oldId, newId,  tipo) =>{
   try {
     const response = await axios.get(`${URL}personac/${newId}`);
     persona = response.data;
-    console.log(persona);
   } catch (error) {
     console.error(error);
   }
@@ -93,18 +92,23 @@ const put = async (id, body) => {
 };
 
 
-const del = async (idP) => {
-  let persona = {};
+const delCliPro = async (idP, body) => {
   try {
-    const response = await axios.get(`${URL}personac/${idP}`);
-    persona = response.data;
-    const responseD = await axios.delete(`${URL}persona/${persona.persona_id}`);
+    const response = await axios.put(`${URL}listado/${idP}`, body);
   } catch (error) {
     console.error(error);
   }
-}
+};
 
+const hideProducto = async (producto_id, body) => {
+  try {
+    const response = await axios.put(`${URL}product/${producto_id}`, body);
+    
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-export { validarCliente, post, postCliPro, validaPut, put, del };
+export { validarCliente, post, postCliPro, validaPut, put, delCliPro, hideProducto };
 
 //persona_id
