@@ -4,7 +4,7 @@ const getProducto = async (req, res) => {
   try {
     const response = await pool.query(
       `select * from producto join  categoria 
-      on categoria.id_categoria = producto.id_categoria order by codigo_pro`
+      on categoria.id_categoria = producto.id_categoria where estado_pro = 'activado' order by codigo_pro`
     );
     res.send(response.rows);
   } catch (e) {
@@ -60,7 +60,7 @@ const getProductoCat = async (req, res) => {
     const response = await pool.query(
       `select * from producto join  categoria 
       on categoria.id_categoria = producto.id_categoria 
-      where nombre_catg = '${nombre_catg}'  order by codigo_pro`
+      where nombre_catg = '${nombre_catg}' order by codigo_pro`
     );
     res.send(response.rows);
   } catch (e) {
@@ -127,6 +127,31 @@ const delProducto = async (req, res) => {
   }
 };
 
+const hideProducto = async (req, res) => {
+  try {
+    const producto_id = req.params.producto_id;
+    const {
+      id_categoria,
+      nombre_pro,
+      precio_uni,
+      precio_may,
+      cantidad_pro,
+      stock_min,
+      codigo_pro,
+      estado_pro,
+    } = req.body;
+    const response = await pool.query(
+      `UPDATE producto SET id_categoria = ${id_categoria}, nombre_pro = '${nombre_pro}',
+      precio_uni = ${precio_uni}, precio_may = ${precio_may}, cantidad_pro = ${cantidad_pro}, 
+      stock_min = ${stock_min}, codigo_pro = ${codigo_pro}, estado_pro = '${estado_pro}'
+      WHERE producto_id = ${producto_id}`    
+    );
+    res.send("Producto Escondido");
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 module.exports = {
   getProducto,
   getProductoCod,
@@ -136,4 +161,5 @@ module.exports = {
   putProducto,
   postProducto,
   delProducto,
+  hideProducto,
 };

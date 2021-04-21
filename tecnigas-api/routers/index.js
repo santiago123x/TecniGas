@@ -14,7 +14,7 @@ const {
   getCliente_Prov,
   getCliProIdP,
   postCliente_Prov,
-  delCliente_Prov,
+  putCliente_Prov,
   getClientePer,
 } = require("../controlador/clientes");
 
@@ -29,6 +29,7 @@ const {
   postProducto,
   putProducto,
   delProducto,
+  hideProducto,
 } = require("../controlador/producto.js");
 
 const {
@@ -49,6 +50,10 @@ router.get("/categorias", getCategoria);
 
 router.get("/provpers", getProveedor);
 
+// Rutas de Clientes
+
+router.get("/clipers", getClientePer);
+
 // Rutas de personas
 
 router.get("/persona", getPersona);
@@ -60,10 +65,9 @@ router.delete("/persona/:id", delPersona);
 
 // Rutas de clientes-proveedores
 
-router.get("/clipers", getClientePer);
 router.get("/listado/", getCliente_Prov);
 router.post("/listado/:id/:tp", postCliente_Prov);
-router.delete("/listado/:id", delCliente_Prov);
+router.put("/listado/:persona_id", putCliente_Prov);
 router.get("/cliproidp/:idper/:tipo", getCliProIdP);
 
 //router.get("/", getClientes);
@@ -78,10 +82,7 @@ router.get("/producto/cat/:nombre_catg", getProductoCat);
 router.post("/producto", postProducto);
 router.put("/producto/:producto_id", putProducto);
 router.delete("/producto/:producto_id", delProducto);
-
-// routes Proveedores
-
-router.get("/proveedor", getProveedor);
+router.put("/product/:producto_id", hideProducto);
 
 // routes Compra
 

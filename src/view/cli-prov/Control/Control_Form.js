@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { setLocale } from "yup";
-import { validaPut, put, del} from "../formulario/Validacion";
+import { validaPut, put } from "../formulario/Validacion";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { FaUserEdit } from "react-icons/fa";
@@ -137,12 +137,7 @@ const Control_Form = ({
         } else if (!validaP) {
           notify(alertaerror, data.identificacion, "error");
         }
-        break;
-      case "delete":
-            await del(idCliPro);
-            reset(event);
-            setRecarga(!recarga);
-            break;   
+        break;   
     }
   };
 

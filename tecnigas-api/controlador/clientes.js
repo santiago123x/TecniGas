@@ -39,9 +39,10 @@ const postCliente_Prov = async (req, res) => {
   try {
     const id = req.params.id;
     const tp = req.params.tp;
+    const estado = req.params.estado;
     const response = await pool.query(
-      'INSERT INTO "cliente-proveedor" (persona_id, tipo_clpr) VALUES ($1, $2)',
-      [id, tp]
+      'INSERT INTO "cliente-proveedor" (persona_id, tipo_clpr, estado_clpr) VALUES ($1, $2, $3)',
+      [id, tp, estado]
     );
     console.log(response);
     res.send("Cliente o Proveedor Creado");
@@ -50,24 +51,28 @@ const postCliente_Prov = async (req, res) => {
   }
 };
 
-const delCliente_Prov = async (req, res) => {
+const putCliente_Prov = async (req, res) => {
   try {
-    const id = req.params.id;
+    const persona_id = req.params.persona_id;
+    const {
+      tipo_clpr,
+      estado_clpr,
+    } = req.body;
     const response = await pool.query(
-      'DELETE FROM "cliente-proveedor" WHERE id_clipro = $1',
-      [id]
+      `UPDATE "cliente-proveedor" SET tipo_clpr = '${tipo_clpr}', estado_clpr = '${estado_clpr}'
+      WHERE persona_id = '${persona_id}'`
     );
-    console.log(response);
-    res.send("Cliente O Proveedor Eliminado");
-  } catch (e) {
-    console.log(e);
-  }
+   console.log(response);
+    //res.send("Cliente-Proveedor actualizado");
+} catch (e) {
+  console.log(e);
+}
 };
 
 const getClientePer = async (req, res) => {
   try {
     const response = await pool.query(
-      `select * from "cliente-proveedor" natural join persona where tipo_clpr = 'cliente'
+      `select * from "cliente-proveedor" natural join persona where tipo_clpr = 'cliente' and estado_clpr = 'activado'
       order by nombre_pe`
     );
     res.send(response.rows);
@@ -81,7 +86,7 @@ module.exports = {
   getCliente_Prov,
   getCliProIdP,
   postCliente_Prov,
-  delCliente_Prov,
+  putCliente_Prov,
   getClientes,
   getClientePer,
 };
