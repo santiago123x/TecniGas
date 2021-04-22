@@ -16,6 +16,7 @@ const {
   postCliente_Prov,
   putCliente_Prov,
   getClientePer,
+  activaCliPro,
 } = require("../controlador/clientes");
 
 const { getProveedor } = require("../controlador/proveedores");
@@ -69,6 +70,7 @@ router.get("/listado/", getCliente_Prov);
 router.post("/listado/:id/:tp", postCliente_Prov);
 router.put("/listado/:persona_id/:tipo_clpr/:estado_clpr", putCliente_Prov);
 router.get("/cliproidp/:idper/:tipo", getCliProIdP);
+router.put("/cedulalistclipro/:persona_id", activaCliPro);
 
 //router.get("/", getClientes);
 

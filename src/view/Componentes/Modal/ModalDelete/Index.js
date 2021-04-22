@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from '@material-ui/core/Tooltip';
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import React, { useState } from 'react';
-import { delCliPro } from "../../../cli-prov/formulario/Validacion";
+import { putCliPro } from "../../../cli-prov/formulario/Validacion";
 import { hideProducto } from "../../../inventario/ModalProducto/ValidaProd";
 
 
@@ -82,8 +82,7 @@ export const ModalDelete = ({tipo, elemento, recarga, setRecarga}) => {
             case "cliente":
                     tipo = "cliente";
                     estado_clpr = "desactivado";
-                    del = await delCliPro(idPersona, tipo, estado_clpr);
-                    console.log("Testing");
+                    await putCliPro(idPersona, tipo, estado_clpr);
                     abrirCerrarModal();
                     setRecarga(!recarga);
                     notify(alertisdone, tipo, "info");
@@ -92,8 +91,7 @@ export const ModalDelete = ({tipo, elemento, recarga, setRecarga}) => {
             case "proveedor":
                 tipo = "proveedor";
                 estado_clpr = "desactivado";
-                del = await delCliPro(idPersona, tipo, estado_clpr);
-                    console.log("Testing");
+                await putCliPro(idPersona, tipo, estado_clpr);
                     abrirCerrarModal();
                     setRecarga(!recarga);
                     notify(alertisdone, tipo, "info");

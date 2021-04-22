@@ -66,6 +66,22 @@ const putCliente_Prov = async (req, res) => {
 }
 };
 
+const activaCliPro = async (req, res) => {
+  try {
+    let persona_id = req.params.persona_id;
+    const {
+      tipo_clpr,
+    } = req.body;
+    const response = await pool.query(
+      `UPDATE "cliente-proveedor" SET estado_clpr = 'activado'
+      WHERE persona_id = ${persona_id} AND tipo_clpr = '${tipo_clpr}'` 
+    );
+    res.send(response.rows);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 const getClientePer = async (req, res) => {
   try {
     const response = await pool.query(
@@ -86,4 +102,5 @@ module.exports = {
   putCliente_Prov,
   getClientes,
   getClientePer,
+  activaCliPro,
 };

@@ -91,22 +91,39 @@ const put = async (id, body) => {
   }
 };
 
-const putCliPro = async (id_persona, tipo) => {
-  let estado = "activado";
-  let body = { 
-    tipo_clpr : tipo,
-    estado_clpr: estado
-   };
+const validaActCliPro = async (cedula, tipo) => {
+  let persona = {};
+  let cliPro = {};
   try {
-    const editado = await axios.put(`${URL}listado/${id_persona}`, body);
-    console.log("Hizo el put a cliPro");
+    
+    const personaPut = await axios.get(`${URL}personac/${cedula}`);
+    persona = personaPut.data;
   } catch (error) {
     console.error(error);
   }
+
+  if (persona !== ""){
+    try {
+      const cliproPut = await axios.get(`${URL}cliproidp/${persona.persona_id}/${tipo}`);
+      cliPro = cliproPut.data;
+      if (cliPro !== ""){
+        if (cliPro.estado_clpr === "desactivado"){
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      } 
+    } catch (error) {
+      console.error(error);
+    }   
+  } else {
+    return false;
+  }
 };
 
-
-const delCliPro = async (persona_id, tipo_clpr, estado_clpr) => {
+const putCliPro = async (persona_id, tipo_clpr, estado_clpr) => {
   try {
     await axios.put(`${URL}listado/${persona_id}/${tipo_clpr}/${estado_clpr}`);
   } catch (error) {
@@ -114,7 +131,19 @@ const delCliPro = async (persona_id, tipo_clpr, estado_clpr) => {
   }
 };
 
+const putCliProTipo = async (cedula, body) => {
+  let persona = {};
+  try {
+    let response = await axios.get(`${URL}personac/${cedula}`);
+    persona = response.data;
+    await axios.put(`${URL}cedulalistclipro/${persona.persona_id}`, body);
+    console.log("funcionó");
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-export { validarCliente, post, postCliPro, validaPut, put, delCliPro, putCliPro };
+
+export { validarCliente, post, postCliPro, validaPut, put, putCliPro, validaActCliPro, putCliProTipo};
 
 //persona_id
