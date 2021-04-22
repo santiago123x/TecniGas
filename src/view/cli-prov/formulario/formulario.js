@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { validarCliente, post, postCliPro } from "./Validacion";
+import { validarCliente, post, postCliPro, put, validaActCliPro, putCliProTipo } from "./Validacion";
 import * as yup from 'yup';
 import  {yupResolver} from '@hookform/resolvers/yup';
 import { setLocale } from 'yup';
@@ -123,40 +123,6 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
     resolver: yupResolver(schema),
   });
  
-  const onSubmit = async (data, e) => {
-      e.preventDefault();
-      const valida = await validarCliente(data.identificacion, tipo);
-      const body = {
-        nombre_pe: data.nombre,
-        identificacion: data.identificacion,
-        email: data.correo,
-        direccion: data.direccion,
-        telefono: data.telefono,
-      };
-
-      switch (metodo) {
-        case "post":
-          if (!valida || (valida > 0 && valida !== true)) {
-            if (!valida === true) {
-              const idPersona = await post(body);
-              await postCliPro(idPersona, tipo);
-              reset(e);
-              setRecarga(!recarga);
-              notify(alertasucces, data.nombre, "info");
-            } else {
-              await postCliPro(valida, tipo);
-              reset(e);
-              setRecarga(!recarga);
-              notify(alertasucces, data.nombre, "info");
-            }
-          } else {
-            notify(alertaerror, data.nombre, "error");
-          }
-          break;
-      }
-
-  };
-
   const notify = (suffix, nombre = "", tipo) => {
     if (tipo === "info") {
       toast.info(`${suffix} ${nombre}`, {
@@ -179,6 +145,59 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
         progress: undefined,
       });
     }
+  };
+
+
+  const onSubmit = async (data, e) => {
+      e.preventDefault();
+      const valida = await validarCliente(data.identificacion, tipo);
+      const validaCliPro = await validaActCliPro(data.identificacion, tipo);
+      const body = {
+        nombre_pe: data.nombre,
+        identificacion: data.identificacion,
+        email: data.correo,
+        direccion: data.direccion,
+        telefono: data.telefono,
+      };
+      const body_CliPro = {
+        tipo_clpr : tipo
+      };
+
+      if (validaCliPro === true){
+        metodo = "put";
+      }
+
+      console.log(metodo);
+      console.log(data.persona_id);
+
+      switch (metodo) {
+        case "post":
+          if (!valida || (valida > 0 && valida !== true)) {
+            if (!valida === true) {
+              const idPersona = await post(body);
+              await postCliPro(idPersona, tipo);
+              reset(e);
+              setRecarga(!recarga);
+              notify(alertasucces, data.nombre, "info");
+            } else {
+              await postCliPro(valida, tipo);
+              reset(e);
+              setRecarga(!recarga);
+              notify(alertasucces, data.nombre, "info");
+            }
+          } else {
+            notify(alertaerror, data.nombre, "error");
+          }
+          break;
+        case "put":
+            await put(data.identificacion, body);
+            await putCliProTipo(data.identificacion, body_CliPro);
+            reset(e);
+            setRecarga(!recarga);
+            notify(alertasucces, data.nombre, "info");
+          break;
+      }
+
   };
 
   //Control del modal

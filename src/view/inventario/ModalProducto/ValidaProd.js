@@ -40,5 +40,13 @@ const post = async (body) => {
   }
 };
 
+const hideProducto = async (producto_id, body) => {
+  try {
+    const response = await axios.put(`${URL}product/${producto_id}`, body);
+    
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-export { validarProducto, post };
+export { validarProducto, post, hideProducto };

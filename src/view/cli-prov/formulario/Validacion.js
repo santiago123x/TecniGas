@@ -91,24 +91,59 @@ const put = async (id, body) => {
   }
 };
 
-
-const delCliPro = async (idP, body) => {
+const validaActCliPro = async (cedula, tipo) => {
+  let persona = {};
+  let cliPro = {};
   try {
-    const response = await axios.put(`${URL}listado/${idP}`, body);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const hideProducto = async (producto_id, body) => {
-  try {
-    const response = await axios.put(`${URL}product/${producto_id}`, body);
     
+    const personaPut = await axios.get(`${URL}personac/${cedula}`);
+    persona = personaPut.data;
+  } catch (error) {
+    console.error(error);
+  }
+
+  if (persona !== ""){
+    try {
+      const cliproPut = await axios.get(`${URL}cliproidp/${persona.persona_id}/${tipo}`);
+      cliPro = cliproPut.data;
+      if (cliPro !== ""){
+        if (cliPro.estado_clpr === "desactivado"){
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      } 
+    } catch (error) {
+      console.error(error);
+    }   
+  } else {
+    return false;
+  }
+};
+
+const putCliPro = async (persona_id, tipo_clpr, estado_clpr) => {
+  try {
+    await axios.put(`${URL}listado/${persona_id}/${tipo_clpr}/${estado_clpr}`);
   } catch (error) {
     console.error(error);
   }
 };
 
-export { validarCliente, post, postCliPro, validaPut, put, delCliPro, hideProducto };
+const putCliProTipo = async (cedula, body) => {
+  let persona = {};
+  try {
+    let response = await axios.get(`${URL}personac/${cedula}`);
+    persona = response.data;
+    await axios.put(`${URL}cedulalistclipro/${persona.persona_id}`, body);
+    console.log("funcionó");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+export { validarCliente, post, postCliPro, validaPut, put, putCliPro, validaActCliPro, putCliProTipo};
 
 //persona_id

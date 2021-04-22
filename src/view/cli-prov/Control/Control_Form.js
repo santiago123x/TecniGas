@@ -133,19 +133,19 @@ const Control_Form = ({
             await put(idCliPro, body);
             reset(event);
             setRecarga(!recarga);
-            notify(alertasucces, data.identificacion, "info");
+            notify(alertaexito, data.identificacion, "info");
         } else if (!validaP) {
-          notify(alertaerror, data.identificacion, "error");
+          notify(alertamistake, data.identificacion, "error");
         }
         break;   
     }
   };
 
-  const alertasucces =
+  const alertaexito =
     tipo === "cli"
       ? "Se ha actualizado el cliente correctamente "
       : "Se ha actualizado el proveedor correctamente ";
-  const alertaerror =
+  const alertamistake =
       "Está ingresando un dato inválido, cambie la siguiente identificación";
 
   const notify = (suffix, identificacion = "", tipo) => {
