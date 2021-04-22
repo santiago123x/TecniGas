@@ -137,7 +137,6 @@ const putCliProTipo = async (cedula, body) => {
     let response = await axios.get(`${URL}personac/${cedula}`);
     persona = response.data;
     await axios.put(`${URL}cedulalistclipro/${persona.persona_id}`, body);
-    console.log("funcionó");
   } catch (error) {
     console.error(error);
   }

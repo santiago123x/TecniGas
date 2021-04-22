@@ -167,9 +167,6 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
         metodo = "put";
       }
 
-      console.log(metodo);
-      console.log(data.persona_id);
-
       switch (metodo) {
         case "post":
           if (!valida || (valida > 0 && valida !== true)) {
