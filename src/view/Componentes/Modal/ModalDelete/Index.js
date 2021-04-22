@@ -8,15 +8,16 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from '@material-ui/core/Tooltip';
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import React, { useState } from 'react';
-import { delCliPro, hideProducto } from "../../../cli-prov/formulario/Validacion";
+import { delCliPro } from "../../../cli-prov/formulario/Validacion";
+import { hideProducto } from "../../../inventario/ModalProducto/ValidaProd";
 
 
 const URL = "http://localhost:5000";
 
 export const ModalDelete = ({tipo, elemento, recarga, setRecarga}) => {
     const [modal, setModal] = useState(false);
-    const alertasucces = "Se ha eliminado satisfactoriamente el "
-    const alertaerror = "Por favor recargue la página, no se ha podido eliminar el "
+    const alertisdone = "Se ha eliminado satisfactoriamente el "
+    const alertisaerror = "Por favor recargue la página, no se ha podido eliminar el "
     const styles = useStyles();
 
     const notify = (suffix, nombre = "", tipo) => {
@@ -62,24 +63,75 @@ export const ModalDelete = ({tipo, elemento, recarga, setRecarga}) => {
     const { handleSubmit } = useForm();
 
     const onSubmit = async (event) => {
+        let metodo = ""; 
         if(tipo === "cli"){
-          tipo = "cliente";
+          metodo = "cliente";
         } if(tipo === "prov"){
-          tipo = "proveedor";
-        } 
-        console.log(tipo);
+          metodo = "proveedor";
+        } if(tipo === "inv") {
+          metodo = "inventario";
+        }
+
+        let idPersona = elemento.persona_id;
+        let body = {};
+        let idProducto = elemento.producto_id;
+        let estado_clpr = "";
+        let del = "";
+
+        switch (metodo) {
+            case "cliente":
+                    tipo = "cliente";
+                    estado_clpr = "desactivado";
+                    del = await delCliPro(idPersona, tipo, estado_clpr);
+                    console.log("Testing");
+                    abrirCerrarModal();
+                    setRecarga(!recarga);
+                    notify(alertisdone, tipo, "info");
+                    
+                break;
+            case "proveedor":
+                tipo = "proveedor";
+                estado_clpr = "desactivado";
+                del = await delCliPro(idPersona, tipo, estado_clpr);
+                    console.log("Testing");
+                    abrirCerrarModal();
+                    setRecarga(!recarga);
+                    notify(alertisdone, tipo, "info");
+                break;
+            case "inventario":
+                tipo = "producto";
+                body = {
+                id_categoria : elemento.id_categoria,
+                nombre_pro : elemento.nombre_pro,
+                precio_uni : elemento.precio_uni,
+                precio_may : elemento.precio_may,
+                cantidad_pro : elemento.cantidad_pro,
+                stock_min : elemento.stock_min,
+                codigo_pro : elemento.codigo_pro,
+                estado_pro: "desactivado"
+            };
+                await hideProducto(idProducto, body);
+                setRecarga(!recarga);
+                notify(alertisdone, tipo, "info");
+                abrirCerrarModal();
+                break;
+            default:
+                notify(alertisaerror, tipo, "error");
+                break;
+        }
         
-        if (tipo === "cliente" || tipo === "proveedor")
-        {
+        /*if (tipo === "cli" || tipo === "prov"){
             const idPersona = elemento.persona_id;
             const body = {
                 tipo_clpr : tipo,
                 estado_clpr : "desactivado"
             };
-            await delCliPro(idPersona, body);
+            const algo = await delCliPro(idPersona, body);
+            console.log(algo);
             setRecarga(!recarga);
             notify(alertasucces, tipo, "info");
             abrirCerrarModal();
+
         }if (tipo === "inv"){
             const idProducto = elemento.producto_id;
             const body = {
@@ -99,7 +151,7 @@ export const ModalDelete = ({tipo, elemento, recarga, setRecarga}) => {
             abrirCerrarModal();
         }else {
             notify(alertaerror, tipo, "error");
-        }
+        }*/
       };
 
     const body = (

@@ -91,24 +91,30 @@ const put = async (id, body) => {
   }
 };
 
-
-const delCliPro = async (idP, body) => {
+const putCliPro = async (id_persona, tipo) => {
+  let estado = "activado";
+  let body = { 
+    tipo_clpr : tipo,
+    estado_clpr: estado
+   };
   try {
-    const response = await axios.put(`${URL}listado/${idP}`, body);
+    const editado = await axios.put(`${URL}listado/${id_persona}`, body);
+    console.log("Hizo el put a cliPro");
   } catch (error) {
     console.error(error);
   }
 };
 
-const hideProducto = async (producto_id, body) => {
+
+const delCliPro = async (persona_id, tipo_clpr, estado_clpr) => {
   try {
-    const response = await axios.put(`${URL}product/${producto_id}`, body);
-    
+    await axios.put(`${URL}listado/${persona_id}/${tipo_clpr}/${estado_clpr}`);
   } catch (error) {
     console.error(error);
   }
 };
 
-export { validarCliente, post, postCliPro, validaPut, put, delCliPro, hideProducto };
+
+export { validarCliente, post, postCliPro, validaPut, put, delCliPro, putCliPro };
 
 //persona_id

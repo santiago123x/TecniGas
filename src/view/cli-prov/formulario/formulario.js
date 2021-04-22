@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { validarCliente, post, postCliPro } from "./Validacion";
+import { validarCliente, post, postCliPro, putCliPro, put } from "./Validacion";
 import * as yup from 'yup';
 import  {yupResolver} from '@hookform/resolvers/yup';
 import { setLocale } from 'yup';
@@ -136,6 +136,13 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
 
       switch (metodo) {
         case "post":
+          if (valida === "PUT"){
+            await put(data.persona_id, body);
+            await putCliPro(data.persona_id, tipo);
+            reset(e);
+            setRecarga(!recarga);
+            notify(alertasucces, data.nombre, "info");
+          }
           if (!valida || (valida > 0 && valida !== true)) {
             if (!valida === true) {
               const idPersona = await post(body);
