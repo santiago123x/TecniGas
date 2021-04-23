@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#dee2e6",
   },
   scrollPaper: {
-    background: "#2965aa77",
+    background: "#2965aa2e",
     '& .MuiFormControl-root': {
       display: "block",
     },
@@ -58,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 200,
   },
+  button: {
+    backgroundColor: "rgb(11 52 91)",
+  }
 }));
 
 const Tablacompra = ({ compraDet, setCompraDet }) => {
@@ -80,7 +83,8 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
     setModal(!modal);
   }
 
-  const editDetalle = () => {
+  const editDetalle = (e) => {
+    e.preventDefault();
     const totalDet = precio * cantidad;
     const nuevoDet = {
       producto_id: produSelec.producto_id,
@@ -141,6 +145,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
           </TableBody>
         </Table>
       </TableContainer>
+
       <div id="modal" />
       <Dialog
         disableBackdropClick
@@ -148,11 +153,11 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
         open={modal}
       >
         <DialogTitle className={classes.scrollPaper}>{
-          produSelec !== null ?
-            produSelec.nombre_pro :
-            ""}</DialogTitle>
+          produSelec !== null &&
+            produSelec.nombre_pro
+            }</DialogTitle>
         <DialogContent className={classes.scrollPaper}>
-          <form className={classes.formControl}>
+          <form className={classes.formControl} onSubmit={(e) => editDetalle(e)}>
             <TextField
               id="cantidad"
               label="Cantidad"
@@ -162,6 +167,10 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
               onChange={(evento) => {
                 setCantidad(parseInt(evento.target.value))
               }}
+              inputProps={{
+                min: 1,
+              }}
+              required
             />
             <TextField
               id="precio"
@@ -172,14 +181,19 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
               onChange={(evento) => {
                 setPrecio(parseInt(evento.target.value))
               }}
+              inputProps={{
+                min: 1,
+              }}
+              required
             />
+            <DialogActions >
+              <Button type="submit" color="primary" >
+                Terminar
+          </Button>
+            </DialogActions>
           </form>
         </DialogContent>
-        <DialogActions className={classes.scrollPaper}>
-          <Button onClick={() => editDetalle()} color="primary">
-            Terminar
-          </Button>
-        </DialogActions>
+
       </Dialog>
     </>
   );

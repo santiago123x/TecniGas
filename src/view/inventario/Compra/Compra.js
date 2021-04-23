@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
-import TextField from "@material-ui/core/TextField";
 import "./Compra.css";
 import Tablacompra from "./Tablacompra";
 import { withStyles } from "@material-ui/styles";
 import Button from "@material-ui/core/Button";
-import { purple } from "@material-ui/core/colors";
 import useAxios from "../../Hooks/useAxios";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import moneda from "../../utilidades/moneda";
-import { matchSorter } from "match-sorter";
 import axios from "axios";
 import { Alert } from "bootstrap";
+import MiFilter from "../../Componentes/MiFilter/Mifilter";
+import MiInput from "../../Componentes/MiInput/MiInput";
 
 const Compra = () => {
   const productos = useAxios(`/producto/`);
@@ -68,23 +66,11 @@ const Compra = () => {
       totalDet: totalDet,
     };
     const detalles = [...compraDet, nuevoDet];
-    setCompraDet(detalles);
     setPrecio("");
     setCantidad("");
     setProdu(null);
+    setCompraDet(detalles);
   };
-
-  const filterProduc = (options, { inputValue }) =>
-    matchSorter(options, inputValue, {
-      keys: ["nombre_pro", "codigo_pro"],
-      threshold: matchSorter.rankings.CONTAINS,
-    });
-
-  const filterProvee = (options, { inputValue }) =>
-    matchSorter(options, inputValue, {
-      keys: ["nombre_pe", "identificacion", "apellido"],
-      threshold: matchSorter.rankings.CONTAINS,
-    });
 
   const guardarCompra = async () => {
     const body = {
@@ -94,18 +80,19 @@ const Compra = () => {
       total_gral: totalCompra,
       proveedor_id: proveedor.id_clipro,
     };
-    const response = await axios({
+    await axios({
       method: "post",
       url: "http://localhost:5000/compra/",
       data: body,
+    }).then((response) => {
+      if (response.status === 200) {
+        const id = response.data[0].compra_id;
+        guardarDetalles(id);
+      } else alert("Ha susedido un problema intente mas tarde");
     });
-    if (response.status === 200) {
-      setCompra_id(response.data[0].compra_id);
-      guardarDetalles();
-    } else alert("Ha susedido un problema intente mas tarde");
   };
 
-  const guardarDetalles = () => {
+  const guardarDetalles = (id) => {
     let nuevoBodyDet;
     compraDet.map(async (det) => {
       nuevoBodyDet = {
@@ -113,7 +100,7 @@ const Compra = () => {
         cantidad_pd: det.cantidad,
         precio_cpra: det.precio,
         total_pd: det.totalDet,
-        compra_id: compra_id,
+        compra_id: id,
       };
       const response = await axios({
         method: "post",
@@ -122,6 +109,18 @@ const Compra = () => {
       });
     });
   };
+
+  const optionLabelProvee = (opcion) => {
+    return `${opcion.nombre_pe}`;
+  };
+
+  const optionLabelProduc = (opcion) => {
+    return `${opcion.nombre_pro}`;
+  };
+
+  const filtroProveedor = ["nombre_pe", "identificacion", "apellido"];
+
+  const filtroProducto = ["nombre_pro", "codigo_pro"];
 
   const guardar = () => {
     guardarCompra();
@@ -133,26 +132,14 @@ const Compra = () => {
         <div className="conten-form info">
           <form className="form" id="form-info">
             <MiFilter
-              id="proveedor"
-              style={{ width: 200 }}
-              options={proveedores.data}
+              data={proveedores.data}
+              optionesFiltro={filtroProveedor}
               value={proveedor}
-              filterOptions={filterProvee}
-              getOptionLabel={(option) =>
-                `${option.nombre_pe} ${option.apellido}`
-              }
-              onChange={(event, newValue) => {
-                setProveedor(newValue);
-              }}
-              renderInput={(params) => (
-                <MiInput
-                  {...params}
-                  id="inputproveedor"
-                  label="Proveedor"
-                  variant="outlined"
-                  size="small"
-                />
-              )}
+              setValue={setProveedor}
+              tamaño={250}
+              id="proveedor"
+              label="Proveedor"
+              optionLabel={optionLabelProvee}
             />
             <MiInput
               id="total"
@@ -202,23 +189,13 @@ const Compra = () => {
           >
             <MiFilter
               id="producto"
-              style={{ width: 200 }}
-              options={productos.data}
+              label="Producto"
+              tamaño={200}
+              data={productos.data}
               value={produ}
-              filterOptions={filterProduc}
-              getOptionLabel={(option) => option.nombre_pro}
-              onChange={(event, newValue) => {
-                setProdu(newValue);
-              }}
-              renderInput={(params) => (
-                <MiInput
-                  {...params}
-                  id="inputproduc"
-                  label="Producto"
-                  variant="outlined"
-                  size="small"
-                />
-              )}
+              optionesFiltro={filtroProducto}
+              optionLabel={optionLabelProduc}
+              setValue={setProdu}
             />
             <MiInput
               id="cantidad"
@@ -230,10 +207,14 @@ const Compra = () => {
               onChange={(evento) => {
                 setCantidad(parseInt(evento.target.value));
               }}
+              inputProps={{
+                min: 1,
+              }}
+              required
             />
             <MiInput
               id="precio"
-              label="Precio"
+              label="Precio Uni"
               variant="outlined"
               size="small"
               type="number"
@@ -241,12 +222,12 @@ const Compra = () => {
               onChange={(evento) => {
                 setPrecio(parseInt(evento.target.value));
               }}
+              inputProps={{
+                min: 1,
+              }}
+              required
             />
-            <MiButton
-              variant="contained"
-              color="primary"
-              type="submit" /*onClick={() => { registrarDet() }}*/
-            >
+            <MiButton variant="contained" color="primary" type="submit">
               Agregar
             </MiButton>
           </form>
@@ -281,7 +262,7 @@ const MiButton = withStyles((theme) => ({
   },
 }))(Button);
 
-const MiInput = withStyles({
+/* const MiInput2 = withStyles({
   root: {
     "& .MuiOutlinedInput-inputMarginDense": {
       padding: "8.5px ",
@@ -315,8 +296,9 @@ const MiInput = withStyles({
     },
   },
 })(TextField);
+ */
 
-const MiFilter = withStyles({
+/* const MiFilter2 = withStyles({
   root: {
     "& .MuiFormControl-fullWidth": {
       backgroundColor: "rgba(255, 255, 255, 0.25)",
@@ -329,4 +311,4 @@ const MiFilter = withStyles({
       padding: "2.5px",
     },
   },
-})(Autocomplete);
+})(Autocomplete); */

@@ -5,14 +5,18 @@ import logoC from "../formulario/icono.ico";
 import logoP from "../formulario/proveedor.ico";
 import { Modal, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { setLocale } from "yup";
-import { validaPut, put, del } from "../formulario/Validacion";
+import { validaPut, put } from "../formulario/Validacion";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { FaUserEdit } from "react-icons/fa";
-import { useStyles } from "./style";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import useStyles from "./ControlUseStyle";
+
 const URL = "http://localhost:5000";
 
 const Control_Form = ({
@@ -117,41 +121,33 @@ const Control_Form = ({
       identificacion: data.identificacion,
       email: data.email,
       direccion: data.direccion,
-      telefono: data.telefono,
+      telefono: data.telefono.toString(),
     };
-    const valida = await validaPut(idCliPro, data.identificacion, tp);
-    console.log(body);
+    const validaP = await validaPut(idCliPro, data.identificacion, tp);
     switch (metodo) {
       case "put":
-        if (valida) {
-          const algo = await put(body.identificacion, body);
-          console.log(algo);
+        if (validaP) {
+          await put(idCliPro, body);
           reset(event);
           setRecarga(!recarga);
-          notify(alertasucces, data.identificacion, "info");
-        } else if (!valida) {
-          notify(alertaerror, data.identificacion, "error");
+          notify(alertaexito, data.identificacion, "info");
+        } else if (!validaP) {
+          notify(alertamistake, data.identificacion, "error");
         }
-        break;
-      case "delete":
-        //falta validar y que funcione
-        await del(body.identificacion);
-        reset(event);
-        setRecarga(!recarga);
         break;
     }
   };
 
-  const alertasucces =
+  const alertaexito =
     tipo === "cli"
-      ? "Se ha actualizado el cliente con identificacion: "
-      : "Se ha actualizado el proveedor con identificacion: ";
-  const alertaerror =
+      ? "Se ha actualizado el cliente correctamente "
+      : "Se ha actualizado el proveedor correctamente ";
+  const alertamistake =
     "Está ingresando un dato inválido, cambie la siguiente identificación";
 
   const notify = (suffix, identificacion = "", tipo) => {
     if (tipo === "info") {
-      toast.info(`${suffix} ${identificacion}`, {
+      toast.info(`${suffix}`, {
         position: "top-center",
         autoClose: 4000,
         hideProgressBar: false,
@@ -304,15 +300,17 @@ const Control_Form = ({
 
   return (
     <div>
-      <Button
-        size="small"
-        variant="contained"
-        color="primary"
-        startIcon={<FaUserEdit />}
-        onClick={() => abrirCerrarModal()}
-      >
-        Editar
-      </Button>
+      <Tooltip title="Editar" placement="top">
+        <IconButton
+          size="small"
+          variant="contained"
+          color="primary"
+          onClick={() => abrirCerrarModal()}
+        >
+          <FaUserEdit />
+        </IconButton>
+      </Tooltip>
+
       <Modal open={modal} onClose={abrirCerrarModal}>
         {body}
       </Modal>

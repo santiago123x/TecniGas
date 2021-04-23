@@ -1,6 +1,9 @@
 import Row from "./TableRow";
 import TableCell from "@material-ui/core/TableCell";
+import { ModalDelete } from "../Modal/ModalDelete/Index";
 import Modificar from "../../cli-prov/Control/Control_Form";
+import { Modal } from "bootstrap";
+import "./Table.css";
 
 const Opciones = (objeto, categoria, recarga, setRecarga) => {
   let titulo;
@@ -13,6 +16,7 @@ const Opciones = (objeto, categoria, recarga, setRecarga) => {
   }
   return (
     <>
+    <div className= "container-buttons">
       {!categoria ? (
         <button
           onClick={() => {
@@ -22,24 +26,28 @@ const Opciones = (objeto, categoria, recarga, setRecarga) => {
           Modificar
         </button>
       ) : (
-        <Modificar
-          objeto={objeto}
-          tipo={categoria}
-          titulo={titulo}
-          metodo="put"
-          imagen={categoria}
+        
+          <Modificar
+            objeto={objeto}
+            tipo={categoria}
+            titulo={titulo}
+            metodo="put"
+            imagen={categoria}
+            recarga={recarga}
+            setRecarga={setRecarga}
+          />
+        
+
+      )}
+
+        <ModalDelete
+          tipo= {categoria}
+          elemento={objeto}
           recarga={recarga}
           setRecarga={setRecarga}
         />
-      )}
+      </div>
 
-      <button
-        onClick={() => {
-          console.log(objeto);
-        }}
-      >
-        borrar
-      </button>
     </>
   );
 };
@@ -95,8 +103,10 @@ const filter = (
               firstData={firstData}
               secondData={secondData}
               titulosDetalles={titulosDetalle}
-              opciones={Opciones(row, recarga, setRecarga)}
+              opciones={Opciones(row, tipo, recarga, setRecarga)}
+
             />
+
           );
         });
       } else {
@@ -119,7 +129,7 @@ const filter = (
               titulosDetalles={titulosDetalle}
               firstData={firstData}
               secondData={secondData}
-              opciones={Opciones(row, recarga, setRecarga)}
+              opciones={Opciones(row, tipo, recarga, setRecarga)}
             />
           );
         });

@@ -51,3 +51,12 @@
 .MuiTableContainer-root::-webkit-scrollbar-track:active {
   background: #5d76bd;
 }
+.container-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.iconoDelete {
+  color: rgba(216, 14, 14, 0.685);
+}

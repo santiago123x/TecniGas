@@ -54,13 +54,14 @@ const putPersona = async (req, res) => {
     const id = req.params.id;
     const { nombre_pe, identificacion, email, direccion, telefono } = req.body;
     const response = await pool.query(
-      "UPDATE persona SET nombre_pe = $1, identificacion = $2, email = $3, direccion = $4, telefono = $5 WHERE persona_id = $6",
-      [nombre_pe, identificacion, email, direccion, telefono, id]
+      `UPDATE persona SET nombre_pe = '${nombre_pe}', identificacion  = '${identificacion}',
+      email  = '${email}', direccion  = '${direccion}', telefono  = '${telefono}'
+    WHERE identificacion = '${id}'`
     );
     console.log(response);
     res.send("persona actualizada");
   } catch (e) {
-    console.log(e);
+    console.log(e, "Soy actualizar persona");
   }
 };
 
@@ -68,8 +69,7 @@ const delPersona = async (req, res) => {
   try {
     const id = req.params.id;
     const response = await pool.query(
-      "DELETE FROM persona WHERE persona_id = $1",
-      [id]
+      `DELETE FROM persona WHERE persona_id = '${id}'`
     );
     console.log(response);
     res.json(`Persona ${id} eliminada satisfactoriamente`);
