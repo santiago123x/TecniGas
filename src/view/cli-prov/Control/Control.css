@@ -4,12 +4,13 @@
     flex-direction: column;
     position: relative;
     top: 50%;
-    width: 45%;
-    height: 88vh;
-    min-width: 430px;
+    width: 40%;
+    height: 90vh;
+    min-width: 460px;
     margin: auto;
     background: #bbdeef;
     border-radius: 23px;
+    padding: 1.2%;
   }
   
   .imagen {
@@ -26,6 +27,8 @@
     align-items: center;
     width: 100%;
     min-width: 298px;
+    margin-right: 1%;
+    margin-bottom: 3%;
   }
   
   .guardar {

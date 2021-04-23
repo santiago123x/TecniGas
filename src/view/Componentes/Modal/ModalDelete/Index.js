@@ -63,7 +63,7 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
 
     const { handleSubmit } = useForm();
 
-    const onSubmit = async (event) => {
+    const submit = async () => {
         let metodo = "";
         if (tipo === "cli") {
             metodo = "cliente";
@@ -83,35 +83,40 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
             case "cliente":
                 tipo = "cliente";
                 estado_clpr = "desactivado";
-                await putCliPro(idPersona, tipo, estado_clpr);
+                const valida = await putCliPro(idPersona, tipo, estado_clpr);
+                if(valida){
+                    notify(alertisdone, tipo, "info");
+                }else{
+                    notify(alertisaerror, tipo, "info");
+                }
                 abrirCerrarModal();
                 setRecarga(!recarga);
-                notify(alertisdone, tipo, "info");
+                
 
                 break;
             case "proveedor":
                 tipo = "proveedor";
                 estado_clpr = "desactivado";
-                await putCliPro(idPersona, tipo, estado_clpr);
+                const val = await putCliPro(idPersona, tipo, estado_clpr);
+                if(val){
+                    notify(alertisdone, tipo, "info");
+                }else{
+                    notify(alertisaerror, tipo, "info");
+                }
                 abrirCerrarModal();
-                setRecarga(!recarga);
-                notify(alertisdone, tipo, "info");
+                setRecarga(!recarga);                
                 break;
             case "inventario":
                 tipo = "producto";
-                body = {
-                    id_categoria: elemento.id_categoria,
-                    nombre_pro: elemento.nombre_pro,
-                    precio_uni: elemento.precio_uni,
-                    precio_may: elemento.precio_may,
-                    cantidad_pro: elemento.cantidad_pro,
-                    stock_min: elemento.stock_min,
-                    codigo_pro: elemento.codigo_pro,
-                    estado_pro: "desactivado"
-                };
-                await hideProducto(idProducto, body);
+                const vali = await hideProducto(idProducto);
+                if(vali){
+                    
+                    notify(alertisdone, tipo, "info");
+                }else{
+                    
+                    notify(alertisaerror, tipo, "error");
+                }
                 setRecarga(!recarga);
-                notify(alertisdone, tipo, "info");
                 abrirCerrarModal();
                 break;
             default:
@@ -157,14 +162,17 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
         <div className={styles.modal}>
 
             <div className="container-element">
-                <form onSubmit={handleSubmit(onSubmit)}>
+                
                     <h3 className="container-element__text">¿Desea eliminar el {tipoDel()} ?</h3>
                     <div className="container-element__button">
                         <Button
                             size="small"
                             variant="contained"
                             color="primary"
-                            type="submit"
+                            type="button"
+                            onClick={()=>{
+                                submit()
+                            }}
                         >
                             Aceptar
                             </Button>
@@ -180,7 +188,7 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
                             Cancelar
                             </Button>
                     </div>
-                </form>
+               
             </div>
         </div>
 
@@ -203,7 +211,7 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
             <Modal open={modal} onClose={abrirCerrarModal}>
                 {body}
             </Modal>
-            <ToastContainer />
+            
         </div>
     )
 }

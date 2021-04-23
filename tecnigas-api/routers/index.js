@@ -31,6 +31,7 @@ const {
   putProducto,
   delProducto,
   hideProducto,
+  getProductoAll, 
 } = require("../controlador/producto.js");
 
 const {
@@ -77,6 +78,7 @@ router.put("/cedulalistclipro/:persona_id", activaCliPro);
 // Rutas de productos
 
 router.get("/producto", getProducto);
+router.get("/productoall", getProductoAll);
 router.get("/producto/id/:producto_id", getProductoId);
 router.get("/producto/nom/:nombre_pro", getProductoNom);
 router.get("/producto/cod/:codigo_pro", getProductoCod);
