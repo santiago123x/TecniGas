@@ -160,9 +160,8 @@ const Control_Form = ({
     const validaP = await validaPut(idCliPro, data.identificacion, tp);
 
     if (validaP) {
-      try {
-        console.log(body);
-        //await put(idCliPro, body);
+      try {        
+        await put(idCliPro, body);
         reset(event);
         setRecarga(!recarga);
         notify(alertaexito, data.identificacion, "info");
