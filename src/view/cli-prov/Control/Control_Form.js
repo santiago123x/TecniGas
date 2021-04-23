@@ -5,16 +5,14 @@ import logoC from "../formulario/icono.ico";
 import logoP from "../formulario/proveedor.ico";
 import { Modal, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import { makeStyles } from "@material-ui/core/styles";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { setLocale } from "yup";
-import { validaPut, put, del} from "../formulario/Validacion";
+import { validaPut, put, del } from "../formulario/Validacion";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { FaUserEdit } from "react-icons/fa";
-
+import { useStyles } from "./style";
 const URL = "http://localhost:5000";
 
 const Control_Form = ({
@@ -27,51 +25,10 @@ const Control_Form = ({
   objeto,
 }) => {
   const estadoInicial = { ...objeto };
-  
+
   //Cambian el estilo de elementos de material-ui
-  const useStyles = makeStyles((theme) => ({
-    modal: {
-      position: "absolute",
-      width: 400,
-      backgroundColor: "white",
-      border: "2px solid 000",
-      boxShadow: theme.shadows[5],
-      padding: "16px 32px 24px",
-      top: "50%",
-      left: "50%",
-      transform: "traslate(-50%, -50%)",
-    },
-    textfield: {
-      "& .MuiOutlinedInput-inputMarginDense": {
-        padding: "8.5px ",
-      },
-      "& .MuiFormLabel-root": {
-        Function: "disable",
-      },
-      "& .PrivateNotchedOutline-root-2": {
-        top: "0px",
-        borderRadius: "15px",
-        borderColor: "black",
-      },
-      "& .MuiInputBase-input": {
-        borderRadius: "15px",
-        color: "black",
-      },
-      "& .MuiInputBase-root": {
-        borderRadius: "15px",
-      },
-      "& .MuiOutlinedInput-adornedStart": {
-        paddingLeft: "7px",
-      },
-      "& .MuiOutlinedInput-multiline": {
-        padding: "12px",
-      },
-      "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
-        backgroundColor: "#bbdeef",
-        color: "black",
-      },
-    },
-  }));
+
+  const classes = useStyles();
 
   // Asignación de los valores escritos en los campos de texto
   const [datos, setDatos] = useState({
@@ -86,7 +43,6 @@ const Control_Form = ({
       [event.target.name]: event.target.value,
     });
   };
-
 
   //Control del modal
   //Función que reinicia el modal
@@ -103,8 +59,6 @@ const Control_Form = ({
     setModal(!modal);
     setDatos({ ...estadoInicial });
   };
-
-  
 
   //Diccionario que cambia los mensajes predeterminados de la función schema
   setLocale({
@@ -145,13 +99,13 @@ const Control_Form = ({
   });
 
   //Realiza validaciones al enviar el formulario
-  const { register, errors, handleSubmit} = useForm({
+  const { register, errors, handleSubmit } = useForm({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data, event) => {
     event.preventDefault();
-    if(tipo === "cli"){
+    if (tipo === "cli") {
       tipo = "cliente";
     } else {
       tipo = "proveedor";
@@ -170,11 +124,11 @@ const Control_Form = ({
     switch (metodo) {
       case "put":
         if (valida) {
-            const algo = await put(body.identificacion, body);
-            console.log(algo);
-            reset(event);
-            setRecarga(!recarga);
-            notify(alertasucces, data.identificacion, "info");
+          const algo = await put(body.identificacion, body);
+          console.log(algo);
+          reset(event);
+          setRecarga(!recarga);
+          notify(alertasucces, data.identificacion, "info");
         } else if (!valida) {
           notify(alertaerror, data.identificacion, "error");
         }
@@ -184,7 +138,7 @@ const Control_Form = ({
         await del(body.identificacion);
         reset(event);
         setRecarga(!recarga);
-        break;  
+        break;
     }
   };
 
@@ -193,7 +147,7 @@ const Control_Form = ({
       ? "Se ha actualizado el cliente con identificacion: "
       : "Se ha actualizado el proveedor con identificacion: ";
   const alertaerror =
-      "Está ingresando un dato inválido, cambie la siguiente identificación";
+    "Está ingresando un dato inválido, cambie la siguiente identificación";
 
   const notify = (suffix, identificacion = "", tipo) => {
     if (tipo === "info") {
@@ -219,11 +173,8 @@ const Control_Form = ({
     }
   };
 
-  const styles = makeStyles();
-  const classes = useStyles();
-
   const body = (
-    <div className={styles.modal}>
+    <div>
       <div className="container_control mt-5">
         <div className="foco_control">
           <div className="header_form">
@@ -236,34 +187,30 @@ const Control_Form = ({
             </div>
           </div>
           <div className="contenedor_form">
-            
-            <form
-                className="form-group_btn"
-                onSubmit={handleSubmit(onSubmit)}
-              >
+            <form className="form-group_btn" onSubmit={handleSubmit(onSubmit)}>
               <div className="conten-btn">
-              <Button
-                size="small"
-                variant="contained"
-                color="primary"
-                type="submit"
-              >
-                Actualizar
-              </Button>
-              <Button
-                size="small"
-                variant="contained"
-                color="secondary"
-                type="reset"
-                onClick={() => abrirCerrarModal()}
-              >
-                Cancelar
-              </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                >
+                  Actualizar
+                </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="secondary"
+                  type="reset"
+                  onClick={() => abrirCerrarModal()}
+                >
+                  Cancelar
+                </Button>
               </div>
-              </form>
-            
+            </form>
+
             <div className="formulario_control">
-            <form
+              <form
                 className="form-group_control"
                 onSubmit={handleSubmit(onSubmit)}
               >

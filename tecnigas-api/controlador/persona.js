@@ -52,18 +52,12 @@ const postPersona = async (req, res) => {
 const putPersona = async (req, res) => {
   try {
     const id = req.params.id;
-    const {
-      nombre_pe,
-      identificacion,
-      email,
-      direccion,
-      telefono
-    } = req.body;
+    const { nombre_pe, identificacion, email, direccion, telefono } = req.body;
     const response = await pool.query(
-      'UPDATE persona SET nombre_pe = $1, identificacion = $2, email = $3, direccion = $4, telefono = $5 WHERE persona_id = $6',
+      "UPDATE persona SET nombre_pe = $1, identificacion = $2, email = $3, direccion = $4, telefono = $5 WHERE persona_id = $6",
       [nombre_pe, identificacion, email, direccion, telefono, id]
     );
-   console.log(response);
+    console.log(response);
     res.send("persona actualizada");
   } catch (e) {
     console.log(e);
