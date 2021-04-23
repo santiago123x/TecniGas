@@ -40,7 +40,7 @@ const Inventario = () => {
             metodo="post"
             titulo="Crear Producto"
             dataCategoria={dataCategoria.data}
-            dataProducto= {data}            
+                     
           />
           <hr className="linea-h2" />
           <div className="cont__lista-input"></div>

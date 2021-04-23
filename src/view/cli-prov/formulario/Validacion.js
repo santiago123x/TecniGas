@@ -126,8 +126,10 @@ const validaActCliPro = async (cedula, tipo) => {
 const putCliPro = async (persona_id, tipo_clpr, estado_clpr) => {
   try {
     await axios.put(`${URL}listado/${persona_id}/${tipo_clpr}/${estado_clpr}`);
+    return true;
   } catch (error) {
     console.error(error);
+    return false;
   }
 };
 

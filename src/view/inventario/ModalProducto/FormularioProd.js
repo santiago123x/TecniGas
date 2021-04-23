@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "./FormularioProdStyle.css";
 import useAxios from "../../Hooks/useAxios";
@@ -12,8 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { setLocale } from "yup";
 import Select from "@material-ui/core/Select";
 import useStyles from "./FormularioProdStyles";
-
-const URL = "http://localhost:5000";
+import { RiContactsBookLine } from "react-icons/ri";
 
 const FormularioProd = ({
   tipo,
@@ -22,9 +21,8 @@ const FormularioProd = ({
   recarga,
   setRecarga,
   dataCategoria,
-  dataProducto,
 }) => {
-  //Cambian el estilo de elementos de material-ui
+  const idata = useAxios("/productoall/", recarga);
 
   // Asignación de los valores escritos en los campos de texto
   const [datos, setDatos] = useState({
@@ -35,24 +33,30 @@ const FormularioProd = ({
     stockMin: "",
     codigoPro: "",
     cantidadPro: "",
+    codigoPro2: "",
   });
 
   const alertasucces = "Se ha creado el producto: ";
   const alertaerror = "Este producto ya existe: ";
+  const alertadesact = "Porfavor elija otro nombre para el producto: ";
 
   // Función de escucha que obtiene el valor de los campos de texto
   const handleInputChange = (event) => {
     //console.log(event.target.value)
     if (event.target.name == "categoria") {
-      const productosFilt = dataProducto.filter(
+      const productosFilt = idata.data.filter(
         (prod) => prod.id_categoria == event.target.value
       );
       const codigo = productosFilt[productosFilt.length - 1].codigo_pro + 1;
-      setDatos({ ...datos, categoria: event.target.value, codigoPro: codigo });
+      setDatos({
+        ...datos,
+        categoria: event.target.value,
+        codigoPro: codigo,
+        codigoPro2: codigo,
+      });
     } else {
       setDatos({ ...datos, [event.target.name]: event.target.value });
     }
-    console.log(event.target.name);
   };
 
   setLocale({
@@ -105,31 +109,41 @@ const FormularioProd = ({
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
-    const valida = await validarProducto(data.nombre, parseInt(data.codigoPro));
+    const valida = await validarProducto(
+      data.nombre,
+      parseInt(datos.codigoPro)
+    );
     const body = {
       id_categoria: parseInt(data.categoria),
       nombre_pro: data.nombre,
       precio_uni: parseFloat(data.precioUni),
       precio_may: parseFloat(data.precioMay),
       stock_min: parseInt(data.stockMin),
-      codigo_pro: parseInt(data.codigoPro),
+      codigo_pro: parseInt(datos.codigoPro),
       cantidad_pro: parseInt(data.cantidadPro),
     };
 
-    //console.log(valida);
-
+    console.log(valida);
+    //console.log(body);
     switch (metodo) {
       case "post":
-        if (!valida) {
-          await post(body);
-          reset();
-          setRecarga(!recarga);
-          notify(alertasucces, data.nombre, "info");
-        } else {
-          reset();
-          setRecarga(!recarga);
-          notify(alertaerror, data.nombre, "error");
+        switch (valida) {
+          case "encontrado":
+            reset();
+            setRecarga(!recarga);
+            notify(alertaerror, data.nombre, "error");
+            break;
+          case "noencontrado":
+            await post(body);
+            reset();
+            setRecarga(!recarga);
+            notify(alertasucces, data.nombre, "info");
+            break;
+          case "desactivado":
+            notify(alertadesact, data.nombre, "error");
+            break;
         }
+
         break;
     }
   };
@@ -160,12 +174,12 @@ const FormularioProd = ({
 
   const reset = () => {
     setDatos({
+      ...datos,
       categoria: null,
       nombre: "",
       precioUni: "",
       precioMay: "",
       stockMin: "",
-      codigoPro: "",
       cantidadPro: "",
     });
     setModal(!modal);
@@ -173,6 +187,18 @@ const FormularioProd = ({
 
   //Inicializa el estado del modal en falso
   const [modal, setModal] = useState(false);
+
+  useEffect(() => {
+    if (idata.data) {
+      const productosFilt = idata.data?.filter(
+        (prod) => prod.id_categoria == 1
+      );
+
+      const codigo = productosFilt[productosFilt.length - 1]?.codigo_pro + 1;
+
+      setDatos({ ...datos, codigoPro: codigo, codigoPro2: codigo });
+    }
+  }, [idata.data]);
 
   //Función para cambiar el estado del modal
   const abrirCerrarModal = () => {
@@ -287,7 +313,8 @@ const FormularioProd = ({
             </div>
             <div className="row">
               <TextField
-                value={datos.codigoPro}
+                disabled
+                value={datos.codigoPro2}
                 className={classes.textfield}
                 variant="outlined"
                 size="small"

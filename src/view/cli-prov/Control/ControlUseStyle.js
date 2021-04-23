@@ -53,6 +53,18 @@ const useStyles = makeStyles((theme) => ({
       color: "black",
     },
   },
+  select: {
+    "& .MuiSelect-outlined": {
+      padding: "0",
+    },
+    "& .MuiSelect-select": {
+      backgroundColor: "#bbdeef",
+      height: "20px",
+    },
+    "& .MuiSelect-selectMenu": {
+      background: "black",
+    },
+  },
 }));
 
 export default useStyles;

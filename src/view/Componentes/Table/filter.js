@@ -12,20 +12,12 @@ const Opciones = (objeto, categoria, recarga, setRecarga) => {
   } else if (categoria === "prov") {
     titulo = `Proveedor: ${objeto.nombre_pe}`;
   } else {
-    titulo = `Producto: ${objeto.nombre_pro}`;
+    titulo = `Producto: ${objeto.nombre_pro} - ${objeto.codigo_pro}`;
   }
   return (
     <>
     <div className= "container-buttons">
-      {!categoria ? (
-        <button
-          onClick={() => {
-            console.log(objeto);
-          }}
-        >
-          Modificar
-        </button>
-      ) : (
+     
         
           <Modificar
             objeto={objeto}
@@ -38,7 +30,6 @@ const Opciones = (objeto, categoria, recarga, setRecarga) => {
           />
         
 
-      )}
 
         <ModalDelete
           tipo= {categoria}

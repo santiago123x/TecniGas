@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import Control from "./Control.css";
 import logoC from "../formulario/icono.ico";
 import logoP from "../formulario/proveedor.ico";
-import { Modal, TextField } from "@material-ui/core";
+import logoI from "../formulario/icono-inventario.ico";
+import { Modal } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -16,6 +17,9 @@ import { toast } from "react-toastify";
 import { FaUserEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import useStyles from "./ControlUseStyle";
+import Inputs from "./Inputs";
+import { validarProd, putP } from "../../inventario/ModalProducto/ValidaProd";
+import useAxios from "../../Hooks/useAxios";
 
 const URL = "http://localhost:5000";
 
@@ -30,9 +34,7 @@ const Control_Form = ({
 }) => {
   const estadoInicial = { ...objeto };
 
-  //Cambian el estilo de elementos de material-ui
-
-  const classes = useStyles();
+  const dataCategoria = useAxios("/categorias");
 
   // Asignación de los valores escritos en los campos de texto
   const [datos, setDatos] = useState({
@@ -107,14 +109,46 @@ const Control_Form = ({
     resolver: yupResolver(schema),
   });
 
+  const onSubmit2 = async (data, event) => {
+    const codigoProdOld = objeto.codigo_pro;
+    const idProd = objeto.producto_id;
+    const body = {
+      nombre_pro: data.nombre_pro,
+      cantidad_pro: data.cantidad_pro,
+      stock_min: data.stock_min,
+      id_categoria: data.id_categoria,
+      precio_may: data.precio_may,
+      precio_uni: data.precio_uni,
+    };
+
+    const validar = await validarProd(data.nombre_pro, codigoProdOld);
+    console.log(body);
+    if (validar) {
+      try {
+        console.log(body);
+        console.log(idProd);
+        //await putP(idProd, body);
+        reset(event);
+        setRecarga(!recarga);
+        notify(alertaexito, data.nombre_pro + " " + objeto.codigo_pro, "info");
+      } catch (err) {
+        notify(alertamistake, "error");
+      }
+    } else if (!validar) {
+      notify("Error al modificar, datos invalidos.", "error");
+    }
+  };
+
   const onSubmit = async (data, event) => {
     event.preventDefault();
+    let tp;
+
     if (tipo === "cli") {
-      tipo = "cliente";
+      tp = "cliente";
     } else {
-      tipo = "proveedor";
+      tp = "proveedor";
     }
-    const tp = tipo;
+
     const idCliPro = objeto.identificacion;
     const body = {
       nombre_pe: data.nombre_pe,
@@ -124,26 +158,29 @@ const Control_Form = ({
       telefono: data.telefono.toString(),
     };
     const validaP = await validaPut(idCliPro, data.identificacion, tp);
-    switch (metodo) {
-      case "put":
-        if (validaP) {
-          await put(idCliPro, body);
-          reset(event);
-          setRecarga(!recarga);
-          notify(alertaexito, data.identificacion, "info");
-        } else if (!validaP) {
-          notify(alertamistake, data.identificacion, "error");
-        }
-        break;
+
+    if (validaP) {
+      try {
+        console.log(body);
+        //await put(idCliPro, body);
+        reset(event);
+        setRecarga(!recarga);
+        notify(alertaexito, data.identificacion, "info");
+      } catch (err) {
+        notify(alertamistake, "error");
+      }
+    } else if (!validaP) {
+      notify("Error al modificar, datos invalidos.", "error");
     }
   };
 
   const alertaexito =
-    tipo === "cli"
+    tipo === "inv"
+      ? "Se ha actualizado el producto correctamente"
+      : tipo === "cli"
       ? "Se ha actualizado el cliente correctamente "
       : "Se ha actualizado el proveedor correctamente ";
-  const alertamistake =
-    "Está ingresando un dato inválido, cambie la siguiente identificación";
+  const alertamistake = "Error al intentar modificar, intente de nuevo.";
 
   const notify = (suffix, identificacion = "", tipo) => {
     if (tipo === "info") {
@@ -175,7 +212,10 @@ const Control_Form = ({
         <div className="foco_control">
           <div className="header_form">
             <div className="cliente_control">
-              <img className="imagen" src={imagen === "cli" ? logoC : logoP} />
+              <img
+                className="imagen"
+                src={imagen == "inv" ? logoI : imagen === "cli" ? logoC : logoP}
+              />
             </div>
             <div className="titulos">
               <h4 className="titulo-form">{titulo}</h4>
@@ -183,7 +223,11 @@ const Control_Form = ({
             </div>
           </div>
           <div className="contenedor_form">
-            <form className="form-group_btn" onSubmit={handleSubmit(onSubmit)}>
+            <form
+              id="formPut"
+              className="form-group_btn"
+              onSubmit={handleSubmit(tipo == "inv" ? onSubmit2 : onSubmit)}
+            >
               <div className="conten-btn">
                 <Button
                   size="small"
@@ -207,89 +251,19 @@ const Control_Form = ({
 
             <div className="formulario_control">
               <form
+                id="formPut"
                 className="form-group_control"
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(tipo == "inv" ? onSubmit2 : onSubmit)}
               >
-                <div className="row">
-                  <TextField
-                    className={classes.textfield}
-                    variant="outlined"
-                    size="small"
-                    type="text"
-                    name="nombre_pe"
-                    value={datos.nombre_pe}
-                    label="Nombre - Empresa"
-                    onChange={handleInputChange}
-                    inputRef={register}
-                  />
-                  <span className="span text-danger text-small d-block">
-                    {errors.nombre?.message}
-                  </span>
-                </div>
-                <div className="row">
-                  <TextField
-                    className={classes.textfield}
-                    variant="outlined"
-                    size="small"
-                    type="text"
-                    name="identificacion"
-                    value={datos.identificacion}
-                    label="Identificación - NIT"
-                    onChange={handleInputChange}
-                    inputRef={register}
-                  />
-                  <span className="span text-danger text-small d-block">
-                    {errors.identificacion?.message}
-                  </span>
-                </div>
-                <div className="row">
-                  <TextField
-                    className={classes.textfield}
-                    variant="outlined"
-                    size="small"
-                    type="email"
-                    name="email"
-                    label="Correo Electrónico"
-                    value={datos.email}
-                    onChange={handleInputChange}
-                    inputRef={register}
-                  />
-                  <span className="span text-danger text-small d-block">
-                    {errors.correo?.message}
-                  </span>
-                </div>
-                <div className="row">
-                  <TextField
-                    className={classes.textfield}
-                    variant="outlined"
-                    size="small"
-                    type="text"
-                    name="direccion"
-                    label="Dirección"
-                    value={datos.direccion}
-                    onChange={handleInputChange}
-                    inputRef={register}
-                  />
-                  <span className="span text-danger text-small d-block">
-                    {errors.direccion?.message}
-                  </span>
-                </div>
-                <div className="row">
-                  <TextField
-                    className={classes.textfield}
-                    variant="outlined"
-                    size="small"
-                    type="number"
-                    name="telefono"
-                    label="Teléfono"
-                    value={datos.telefono}
-                    onChange={handleInputChange}
-                    inputRef={register}
-                  />
-                  <span className="span text-danger text-small d-block">
-                    {errors.telefono?.message}
-                  </span>
-                </div>
+                <Inputs
+                  classes={classes}
+                  register={register}
+                  handleInputChange={handleInputChange}
+                  datos={datos}
+                  tipo={tipo}
+                  errors={errors}
+                  dataCategoria={dataCategoria.data}
+                />
               </form>
             </div>
           </div>
