@@ -41,14 +41,17 @@ const validarProd = async (nombre,codigo)=>{
   try{
     const response = await axios.get(`${URL}producto/nom/${nombre}`);
     producto = response.data[0];
-    if(producto.nombre_pro == nombre && producto.codigo_pro !== codigo  ){
+    if(!producto){
+      resultado=false;
+    }
+    else if(producto.nombre_pro == nombre && producto.codigo_pro !== codigo  ){
       resultado = true;
     }
   }catch (error) {
     console.error(error);
   }
   
-      console.log(resultado)
+      
   return resultado;
 }
 
@@ -63,7 +66,7 @@ const post = async (body) => {
 
 const putP = async (idProd, body)=>{
   try{
-    const response = await axios.put(`${URL}/producto/${idProd}`, body);
+    const response = await axios.put(`${URL}producto/${idProd}`, body);
     return true;
   }catch(err){
     return false;

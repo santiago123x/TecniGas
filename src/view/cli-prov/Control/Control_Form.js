@@ -8,7 +8,7 @@ import { Modal } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import * as yup from "yup";
+import {schema, schema2} from "./validacionInp";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { setLocale } from "yup";
 import { validaPut, put } from "../formulario/Validacion";
@@ -76,37 +76,11 @@ const Control_Form = ({
     },
   });
 
-  //Validaciones en formulario
-  const schema = yup.object().shape({
-    nombre_pe: yup
-      .string()
-      .required("Por favor ingrese el nombre")
-      .test(
-        "validaName",
-        "Debe contener mínimo 5 carácteres",
-        (valor) => valor.toString().length > 4
-      ),
-    identificacion: yup
-      .string()
-      .required("Por favor ingrese la identificación o nit"),
-    email: yup
-      .string()
-      .required("Por favor ingrese el email")
-      .email("Ingrese un email válido"),
-    direccion: yup.string().required("Por favor ingrese la dirección"),
-    telefono: yup
-      .number()
-      .required()
-      .test(
-        "validaTel",
-        "Debe contener más de 9 digitos",
-        (valor) => valor.toString().length > 9
-      ),
-  });
+  
 
   //Realiza validaciones al enviar el formulario
   const { register, errors, handleSubmit } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(tipo== "inv"? schema2 :schema),
   });
 
   const onSubmit2 = async (data, event) => {
@@ -122,12 +96,11 @@ const Control_Form = ({
     };
 
     const validar = await validarProd(data.nombre_pro, codigoProdOld);
-    console.log(body);
-    if (validar) {
-      try {
-        console.log(body);
-        console.log(idProd);
-        //await putP(idProd, body);
+    
+    if (!validar) {
+      try {  
+           
+        await putP(idProd, body);
         reset(event);
         setRecarga(!recarga);
         notify(alertaexito, data.nombre_pro + " " + objeto.codigo_pro, "info");
@@ -141,36 +114,43 @@ const Control_Form = ({
 
   const onSubmit = async (data, event) => {
     event.preventDefault();
-    let tp;
+    
+    if(tipo !== 'inv'){
+      let tp;
 
-    if (tipo === "cli") {
-      tp = "cliente";
-    } else {
-      tp = "proveedor";
-    }
-
-    const idCliPro = objeto.identificacion;
-    const body = {
-      nombre_pe: data.nombre_pe,
-      identificacion: data.identificacion,
-      email: data.email,
-      direccion: data.direccion,
-      telefono: data.telefono.toString(),
-    };
-    const validaP = await validaPut(idCliPro, data.identificacion, tp);
-
-    if (validaP) {
-      try {        
-        await put(idCliPro, body);
-        reset(event);
-        setRecarga(!recarga);
-        notify(alertaexito, data.identificacion, "info");
-      } catch (err) {
-        notify(alertamistake, "error");
+      if (tipo === "cli") {
+        tp = "cliente";
+      } else {
+        tp = "proveedor";
       }
-    } else if (!validaP) {
-      notify("Error al modificar, datos invalidos.", "error");
+  
+      const idCliPro = objeto.identificacion;
+      const body = {
+        nombre_pe: data.nombre_pe,
+        identificacion: data.identificacion,
+        email: data.email,
+        direccion: data.direccion,
+        telefono: data.telefono.toString(),
+      };
+      const validaP = await validaPut(idCliPro, data.identificacion, tp);
+  
+      if (validaP) {
+        try {        
+          await put(idCliPro, body);
+          reset(event);
+          setRecarga(!recarga);
+          notify(alertaexito, data.identificacion, "info");
+        } catch (err) {
+          notify(alertamistake, "error");
+        }
+      } else if (!validaP) {
+        notify("Error al modificar, datos invalidos.", "error");
+      }
+    }else{
+      
+      onSubmit2(data, event);
     }
+    
   };
 
   const alertaexito =
@@ -227,7 +207,7 @@ const Control_Form = ({
             <form
               id="formPut"
               className="form-group_btn"
-              onSubmit={handleSubmit(tipo == "inv" ? onSubmit2 : onSubmit)}
+              onSubmit={handleSubmit(onSubmit)}
             >
               <div className="conten-btn">
                 <Button
@@ -247,6 +227,13 @@ const Control_Form = ({
                 >
                   Cancelar
                 </Button>
+                <Button
+                onClick= {() =>{
+                  console.log(datos);
+                }}
+                >
+                  holi
+                </Button>
               </div>
             </form>
 
@@ -254,7 +241,7 @@ const Control_Form = ({
               <form
                 id="formPut"
                 className="form-group_control"
-                onSubmit={handleSubmit(tipo == "inv" ? onSubmit2 : onSubmit)}
+                onSubmit={handleSubmit(onSubmit)}
               >
                 <Inputs
                   classes={classes}

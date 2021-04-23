@@ -89,7 +89,7 @@ const postProducto = async (req, res) => {
       precio_may,
       cantidad_pro,
       stock_min,
-      codigo_pro,      
+      codigo_pro,
     } = req.body;
     const response = await pool.query(
       `INSERT INTO producto(id_categoria, nombre_pro,precio_uni,precio_may,cantidad_pro,stock_min, codigo_pro, estado_pro)
@@ -108,18 +108,19 @@ const putProducto = async (req, res) => {
     const { producto_id } = req.params;
     const {
       id_categoria,
-      nombre,
+      nombre_pro,
       precio_uni,
       precio_may,
-      cantidad,
+      cantidad_pro,
       stock_min,
-      
+
     } = req.body;
+    
     const response = await pool.query(
-      `UPDATE producto SET id_categoria = ${id_categoria}, nombre  = '${nombre}',
-      precio_uni  = ${precio_uni}, precio_may  = ${precio_may}, cantidad  = ${cantidad}, 
-      stock_min  = ${stock_min}
-    WHERE producto_id = ${producto_id}`
+      `UPDATE producto SET id_categoria = ${id_categoria}, nombre_pro  = '${nombre_pro}',
+       precio_uni  = ${precio_uni}, precio_may  = ${precio_may}, cantidad_pro  = ${cantidad_pro}, 
+       stock_min  = ${stock_min}
+     WHERE producto_id = ${producto_id}`
     );
     res.json("Se Actualizo el Producto");
   } catch (e) {
@@ -142,10 +143,10 @@ const delProducto = async (req, res) => {
 const hideProducto = async (req, res) => {
   try {
     const producto_id = req.params.producto_id;
-    
+
     const response = await pool.query(
       `UPDATE producto SET estado_pro = 'desactivado'
-      WHERE producto_id = ${producto_id}`    
+      WHERE producto_id = ${producto_id}`
     );
     res.send("Producto Escondido");
   } catch (e) {
