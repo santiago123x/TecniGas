@@ -9,7 +9,6 @@ import Login from "./login/Login";
 import Layout from "./Componentes/Layout/Layout";
 import Error404 from "./Componentes/Error/Error";
 
-
 function Rutas() {
   return (
     <div className="App">
@@ -41,7 +40,7 @@ function Rutas() {
             </Layout>
           </Route>
           <Route path="/compra">
-            <Layout>
+            <Layout tipo="compra">
               <Compra />
             </Layout>
           </Route>
@@ -49,7 +48,6 @@ function Rutas() {
           <Route path="*">
             <Error404 ancho={400} error="Pagina no Encontrada, Error 404." />
           </Route>
-
         </Switch>
       </Router>
     </div>

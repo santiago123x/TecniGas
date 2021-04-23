@@ -1,7 +1,57 @@
 import Row from "./TableRow";
 import TableCell from "@material-ui/core/TableCell";
+import { ModalDelete } from "../Modal/ModalDelete/Index";
+import Modificar from "../../cli-prov/Control/Control_Form";
+import { Modal } from "bootstrap";
+import "./Table.css";
 
-const filter = (tipo, data, filtro, titulosDetalle) => {
+const Opciones = (objeto, categoria, recarga, setRecarga) => {
+  let titulo;
+  if (categoria === "cli") {
+    titulo = `Cliente: ${objeto.nombre_pe}`;
+  } else if (categoria === "prov") {
+    titulo = `Proveedor: ${objeto.nombre_pe}`;
+  } else {
+    titulo = `Producto: ${objeto.nombre_pro} - ${objeto.codigo_pro}`;
+  }
+  return (
+    <>
+    <div className= "container-buttons">
+     
+        
+          <Modificar
+            objeto={objeto}
+            tipo={categoria}
+            titulo={titulo}
+            metodo="put"
+            imagen={categoria}
+            recarga={recarga}
+            setRecarga={setRecarga}
+          />
+        
+
+
+        <ModalDelete
+          tipo= {categoria}
+          elemento={objeto}
+          recarga={recarga}
+          setRecarga={setRecarga}
+        />
+      </div>
+
+    </>
+  );
+};
+
+const filter = (
+  tipo,
+  data,
+  filtro,
+  titulosDetalle,
+  categoria,
+  recarga,
+  setRecarga
+) => {
   let arreglo = [];
 
   switch (tipo) {
@@ -44,7 +94,10 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               firstData={firstData}
               secondData={secondData}
               titulosDetalles={titulosDetalle}
+              opciones={Opciones(row, tipo, recarga, setRecarga)}
+
             />
+
           );
         });
       } else {
@@ -67,17 +120,17 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               titulosDetalles={titulosDetalle}
               firstData={firstData}
               secondData={secondData}
+              opciones={Opciones(row, tipo, recarga, setRecarga)}
             />
           );
         });
       }
 
-    case "prov":
+    case "clipro":
       if (filtro !== "") {
         arreglo = data.filter((dat) => {
-          const nombreC = dat.nombre_pe + " " + dat.apellido;
           return (
-            nombreC
+            dat.nombre_pe
               .toLowerCase()
               .trim()
               .includes(filtro.toString().toLowerCase().trim()) ||
@@ -90,8 +143,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
         });
 
         return arreglo.map((row, index) => {
-          const nombreC = row.nombre_pe + " " + row.apellido;
-          const firstData = [nombreC, row.identificacion, row.telefono];
+          const firstData = [row.nombre_pe, row.identificacion, row.telefono];
           const secondData = [row.email, row.direccion];
 
           return (
@@ -100,13 +152,13 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               firstData={firstData}
               secondData={secondData}
               titulosDetalles={titulosDetalle}
+              opciones={Opciones(row, categoria, recarga, setRecarga)}
             />
           );
         });
       } else {
         return data.map((row, index) => {
-          const nombreC = row.nombre_pe + " " + row.apellido;
-          const firstData = [nombreC, row.identificacion, row.telefono];
+          const firstData = [row.nombre_pe, row.identificacion, row.telefono];
           const secondData = [row.email, row.direccion];
 
           return (
@@ -115,6 +167,7 @@ const filter = (tipo, data, filtro, titulosDetalle) => {
               titulosDetalles={titulosDetalle}
               firstData={firstData}
               secondData={secondData}
+              opciones={Opciones(row, categoria, recarga, setRecarga)}
             />
           );
         });
