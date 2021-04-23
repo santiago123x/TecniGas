@@ -12,8 +12,7 @@ const Inventario = () => {
   const [url, setUrl] = useState(`/producto/`);
   const [recarga, setRecarga] = useState(false);
   const { data, error, loading } = useAxios(url, recarga);
-  const dataCategoria  = useAxios("/categorias");
-  
+  const dataCategoria = useAxios("/categorias");
 
   const title = [
     "Codigo del Producto",
@@ -40,7 +39,6 @@ const Inventario = () => {
             metodo="post"
             titulo="Crear Producto"
             dataCategoria={dataCategoria.data}
-                     
           />
           <hr className="linea-h2" />
           <div className="cont__lista-input"></div>

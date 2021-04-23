@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 //Cambia el estilo de elementos de material-ui
 const useStyles = makeStyles((theme) => ({
   modal: {

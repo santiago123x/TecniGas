@@ -6,7 +6,7 @@ import logoP from "./proveedor.ico";
 import { Modal, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import useStyles from "../Control/ControlUseStyle";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   validarCliente,
@@ -304,6 +304,7 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
       <Modal open={modal} onClose={abrirCerrarModal}>
         {body}
       </Modal>
+      <ToastContainer />
     </div>
   );
 };

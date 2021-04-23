@@ -53,13 +53,12 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
     switch (tipo) {
       case "inv":
         return `producto: ${elemento.nombre_pro} `;
-        break;
+
       case "cli":
         return `cliente: ${elemento.nombre_pe}`;
-        break;
+
       case "prov":
         return `proveedor: ${elemento.nombre_pe}`;
-        break;
     }
   };
 
@@ -182,24 +181,13 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
           <Button
             size="small"
             variant="contained"
-            color="danger"
+            color="secondary"
             type="button"
             onClick={() => abrirCerrarModal()}
           >
             Cancelar
           </Button>
         </div>
-      </div>
-      <div className="container-element__button">
-        <Button
-          size="small"
-          variant="contained"
-          color="secondary"
-          type="button"
-          onClick={() => abrirCerrarModal()}
-        >
-          Cancelar
-        </Button>
       </div>
     </div>
   );

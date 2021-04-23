@@ -4,7 +4,7 @@ import "./FormularioProdStyle.css";
 import useAxios from "../../Hooks/useAxios";
 import { Modal, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { validarProducto, post } from "./ValidaProd";
 import * as yup from "yup";
@@ -26,7 +26,7 @@ const FormularioProd = ({
 
   // Asignación de los valores escritos en los campos de texto
   const [datos, setDatos] = useState({
-    categoria: null,
+    categoria: "",
     nombre: "",
     precioUni: "",
     precioMay: "",
@@ -175,7 +175,7 @@ const FormularioProd = ({
   const reset = () => {
     setDatos({
       ...datos,
-      categoria: null,
+      categoria: "",
       nombre: "",
       precioUni: "",
       precioMay: "",
@@ -382,6 +382,7 @@ const FormularioProd = ({
       <Modal open={modal} onClose={abrirCerrarModal}>
         {body}
       </Modal>
+      <ToastContainer />
     </div>
   );
 };
