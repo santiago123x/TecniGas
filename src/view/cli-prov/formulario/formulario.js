@@ -5,7 +5,7 @@ import logoC from "./icono.ico";
 import logoP from "./proveedor.ico";
 import { Modal, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { useStyles } from "../Control/style";
+import useStyles from "../Control/ControlUseStyle";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {

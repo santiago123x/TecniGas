@@ -4,23 +4,27 @@ import "./FormularioProdStyle.css";
 import useAxios from "../../Hooks/useAxios";
 import { Modal, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { validarProducto, post } from "./ValidaProd";
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { setLocale } from 'yup';
-import Select from '@material-ui/core/Select';
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { setLocale } from "yup";
+import Select from "@material-ui/core/Select";
 import useStyles from "./FormularioProdStyles";
-
 
 const URL = "http://localhost:5000";
 
-const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga, dataCategoria, dataProducto }) => {
-
+const FormularioProd = ({
+  tipo,
+  metodo,
+  titulo,
+  recarga,
+  setRecarga,
+  dataCategoria,
+  dataProducto,
+}) => {
   //Cambian el estilo de elementos de material-ui
-  
 
   // Asignación de los valores escritos en los campos de texto
   const [datos, setDatos] = useState({
@@ -33,40 +37,65 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga, dataCategor
     cantidadPro: "",
   });
 
-  const alertasucces = "Se ha creado el producto: "
-  const alertaerror = "Este producto ya existe: "
+  const alertasucces = "Se ha creado el producto: ";
+  const alertaerror = "Este producto ya existe: ";
 
   // Función de escucha que obtiene el valor de los campos de texto
   const handleInputChange = (event) => {
     //console.log(event.target.value)
-    if(event.target.name == "categoria"){
-      const productosFilt = dataProducto.filter(prod => prod.id_categoria == event.target.value);
-      const codigo = productosFilt[productosFilt.length-1].codigo_pro + 1;
-      setDatos ({... datos, categoria: event.target.value, codigoPro: codigo})
-
-    }else {
-      setDatos ({... datos, [event.target.name]: event.target.value}) 
+    if (event.target.name == "categoria") {
+      const productosFilt = dataProducto.filter(
+        (prod) => prod.id_categoria == event.target.value
+      );
+      const codigo = productosFilt[productosFilt.length - 1].codigo_pro + 1;
+      setDatos({ ...datos, categoria: event.target.value, codigoPro: codigo });
+    } else {
+      setDatos({ ...datos, [event.target.name]: event.target.value });
     }
-      console.log(event.target.name);
-    
+    console.log(event.target.name);
   };
 
   setLocale({
     mixed: {
-      notType: 'Por favor ingrese datos válidos',
+      notType: "Por favor ingrese datos válidos",
     },
     number: {
-      min: 'Debe contener más de 9 digitos',
-    }
+      min: "Debe contener más de 9 digitos",
+    },
   });
 
   const schema = yup.object().shape({
     categoria: yup.number().required("Por favor seleccione una categoría"),
-    nombre: yup.string().required().test("validaNombre", "Debe contener más de 3 caracteres", valor => valor.toString().length > 3),
-    precioUni: yup.number().required().test("validaPrecioUni", "el valor debe ser un numero positivo", valor => valor > 0),
-    precioMay: yup.number().required().test("validaPrecioMay", "el valor debe ser un numero positivo", valor => valor > 0),
-    stockMin: yup.number().required("Por favor ingrese un numero minimo de stock"),
-    cantidadPro: yup.number().required("Porfavor ingrese una cantidad valida del producto"),
+    nombre: yup
+      .string()
+      .required()
+      .test(
+        "validaNombre",
+        "Debe contener más de 3 caracteres",
+        (valor) => valor.toString().length > 3
+      ),
+    precioUni: yup
+      .number()
+      .required()
+      .test(
+        "validaPrecioUni",
+        "el valor debe ser un numero positivo",
+        (valor) => valor > 0
+      ),
+    precioMay: yup
+      .number()
+      .required()
+      .test(
+        "validaPrecioMay",
+        "el valor debe ser un numero positivo",
+        (valor) => valor > 0
+      ),
+    stockMin: yup
+      .number()
+      .required("Por favor ingrese un numero minimo de stock"),
+    cantidadPro: yup
+      .number()
+      .required("Porfavor ingrese una cantidad valida del producto"),
   });
 
   //Realiza validaciones al enviar el formulario
@@ -87,13 +116,12 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga, dataCategor
       cantidad_pro: parseInt(data.cantidadPro),
     };
 
-    
     //console.log(valida);
 
     switch (metodo) {
       case "post":
         if (!valida) {
-          await post(body);                   
+          await post(body);
           reset();
           setRecarga(!recarga);
           notify(alertasucces, data.nombre, "info");
@@ -104,7 +132,6 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga, dataCategor
         }
         break;
     }
-
   };
 
   const notify = (suffix, nombre = "", tipo) => {
@@ -133,14 +160,14 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga, dataCategor
 
   const reset = () => {
     setDatos({
-    categoria: null,
-    nombre: "",
-    precioUni: "",
-    precioMay: "",
-    stockMin: "",
-    codigoPro: "",
-    cantidadPro: "",
-    })
+      categoria: null,
+      nombre: "",
+      precioUni: "",
+      precioMay: "",
+      stockMin: "",
+      codigoPro: "",
+      cantidadPro: "",
+    });
     setModal(!modal);
   };
 
@@ -149,49 +176,47 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga, dataCategor
 
   //Función para cambiar el estado del modal
   const abrirCerrarModal = () => {
-    reset();    
+    reset();
   };
 
-
-
-
-
-
-
-  const styles = makeStyles();
   const classes = useStyles();
 
   const body = (
-    <div className={styles.modal}>
+    <div>
       <div className="container mt-5">
         <div className="foco">
           <div className="producto">
-
             <h4 className="titulo-form">{titulo}</h4>
           </div>
           <form className="form-group" onSubmit={handleSubmit(onSubmit)}>
             <div className="row">
-
               <Select
                 native
-                variant= "outlined"
+                variant="outlined"
                 value={datos.categoria}
                 onChange={handleInputChange}
                 label="Categoria"
                 className={classes.select}
-                name= 'categoria'
+                name="categoria"
                 inputRef={register}
                 inputProps={{
-                  name: 'categoria',
-                  id: 'categoria',
+                  name: "categoria",
+                  id: "categoria",
                 }}
               >
                 {dataCategoria.map((cat, index) => {
-                  return(<option className="option" key={index} value={cat.id_categoria}>{cat.nombre_catg}</option>)
-                })}        
+                  return (
+                    <option
+                      className="option"
+                      key={index}
+                      value={cat.id_categoria}
+                    >
+                      {cat.nombre_catg}
+                    </option>
+                  );
+                })}
               </Select>
 
-              
               <span className="span text-danger text-small d-block">
                 {errors.categoria?.message}
               </span>
@@ -206,7 +231,7 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga, dataCategor
                 label="Nombre Producto"
                 value={datos.nombre}
                 inputRef={register}
-                onChange={handleInputChange}                
+                onChange={handleInputChange}
               />
               <span className="span text-danger text-small d-block">
                 {errors.nombre?.message}
@@ -262,7 +287,6 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga, dataCategor
             </div>
             <div className="row">
               <TextField
-                
                 value={datos.codigoPro}
                 className={classes.textfield}
                 variant="outlined"
@@ -319,7 +343,7 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga, dataCategor
   );
 
   return (
-    <div >
+    <div>
       <Button
         size="small"
         variant="contained"
@@ -331,7 +355,6 @@ const FormularioProd = ({ tipo, metodo, titulo, recarga, setRecarga, dataCategor
       <Modal open={modal} onClose={abrirCerrarModal}>
         {body}
       </Modal>
-      <ToastContainer />
     </div>
   );
 };
