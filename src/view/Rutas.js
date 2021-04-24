@@ -8,6 +8,7 @@ import Compra from "./inventario/Compra/Compra";
 import Login from "./login/Login";
 import Layout from "./Componentes/Layout/Layout";
 import Error404 from "./Componentes/Error/Error";
+import Perfil from "./Perfil";
 
 function Rutas() {
   return (
@@ -42,6 +43,11 @@ function Rutas() {
           <Route path="/compra">
             <Layout tipo="compra">
               <Compra />
+            </Layout>
+          </Route>
+          <Route path="/perfil">
+            <Layout tipo="perf">
+              <Perfil />
             </Layout>
           </Route>
 

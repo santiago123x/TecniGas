@@ -53,6 +53,38 @@ const useStyles = makeStyles((theme) => ({
       color: "black",
     },
   },
+  textfieldPerfil: {
+    "& .MuiOutlinedInput-inputMarginDense": {
+      padding: "10px ",
+    },
+    "& .MuiFormLabel-root": {
+      Function: "disable",
+    },
+    "& .PrivateNotchedOutline-root-2": {
+      top: "0px",
+      borderRadius: "15px",
+      borderColor: "black",
+    },
+    "& .MuiInputBase-input": {
+      borderRadius: "15px",
+      color: "rgba(0, 0, 0, 0.76)",
+    },
+    "& .MuiInputBase-root": {
+      borderRadius: "15px",
+    },
+    "& .MuiOutlinedInput-adornedStart": {
+      paddingLeft: "7px",
+    },
+    "& .MuiOutlinedInput-multiline": {
+      padding: "12px",
+    },
+    "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
+      color: "black",
+      paddingBotton: "5px",
+      fontWeight: "bold",
+      color: "rgba(0, 0, 0, 0.76)",
+    },
+  },
   select: {
     "& .MuiSelect-outlined": {
       padding: "0",
