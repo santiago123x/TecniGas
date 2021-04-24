@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { Modal } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import useStyles from "./modalStyle.js";
-import { toast } from "react-toastify";
+import { notify } from "../../notify/Notify";
 import "react-toastify/dist/ReactToastify.css";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -20,30 +20,6 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
   const alertisaerror =
     "Por favor recargue la página, no se ha podido eliminar el ";
   const styles = useStyles();
-
-  const notify = (suffix, nombre = "", tipo) => {
-    if (tipo === "info") {
-      toast.info(`${suffix} ${nombre}`, {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    } else {
-      toast.error(`${suffix}`, {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-  };
 
   const abrirCerrarModal = () => {
     setModal(!modal);

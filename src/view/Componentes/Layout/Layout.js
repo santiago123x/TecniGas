@@ -8,7 +8,7 @@ const Layout = ({ children, tipo }) => {
       <div className="nav-contenedor">
         <Nav className="nav" tipo={tipo} />
       </div>
-      {children}
+      <div className="chil-contenedor">{children}</div>
     </div>
   );
 };

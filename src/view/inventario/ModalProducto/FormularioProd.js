@@ -4,7 +4,8 @@ import "./FormularioProdStyle.css";
 import useAxios from "../../Hooks/useAxios";
 import { Modal, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import { notify } from "../../Componentes/notify/Notify";
 import "react-toastify/dist/ReactToastify.css";
 import { validarProducto, post } from "./ValidaProd";
 import * as yup from "yup";
@@ -145,30 +146,6 @@ const FormularioProd = ({
         }
 
         break;
-    }
-  };
-
-  const notify = (suffix, nombre = "", tipo) => {
-    if (tipo === "info") {
-      toast.info(`${suffix} ${nombre}`, {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    } else {
-      toast.error(`${suffix} ${nombre}`, {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
     }
   };
 

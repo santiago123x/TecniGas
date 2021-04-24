@@ -6,7 +6,8 @@ import logoP from "./proveedor.ico";
 import { Modal, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import useStyles from "../Control/ControlUseStyle";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import { notify } from "../../Componentes/notify/Notify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   validarCliente,
@@ -94,30 +95,6 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
   const { register, errors, handleSubmit } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const notify = (suffix, nombre = "", tipo) => {
-    if (tipo === "info") {
-      toast.info(`${suffix} ${nombre}`, {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    } else {
-      toast.error(`${suffix} ${nombre}`, {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-  };
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
