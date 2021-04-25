@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 export const Error404 = ({
   error = "Se ha Producido un Error, Por favor Recargue la Pagina.",
   ancho = 400,
+  boton = false,
 }) => {
   let history = useHistory();
 
@@ -26,17 +27,19 @@ export const Error404 = ({
     <div className="error-container">
       <img width={ancho} className="cont__error-img" src={Robot}></img>
       {clase && <h3 className={`titulo ${clase}`}>Error: {error}</h3>}
-      <div className="button-error">
-        <Button
-          size="small"
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={() => pushInicio()}
-        >
-          Ir al Inicio
-        </Button>
-      </div>
+      {boton && (
+        <div className="button-error">
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={() => pushInicio()}
+          >
+            Ir al Inicio
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
