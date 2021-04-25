@@ -52,7 +52,11 @@ function Rutas() {
           </Route>
 
           <Route path="*">
-            <Error404 ancho={400} error="Pagina no Encontrada, Error 404." />
+            <Error404
+              ancho={400}
+              error="Pagina no Encontrada, Error 404."
+              boton={true}
+            />
           </Route>
         </Switch>
       </Router>
