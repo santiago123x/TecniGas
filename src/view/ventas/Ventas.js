@@ -1,9 +1,9 @@
 import "./ventas.css";
-import "./normalize.css";
+
 import Button from '@material-ui/core/Button';
-import { DatePicker, MuiPickersUtilsProvider, TimePicker } from "@material-ui/pickers";
+
 import { useState } from "react";
-import DateFnsUtils from '@date-io/date-fns';
+
 import { lightBlue } from "@material-ui/core/colors";
 import Select from '@material-ui/core/Select';
 import React from 'react';
@@ -16,8 +16,9 @@ import useAxios from "../Hooks/useAxios";
 import { id } from "date-fns/locale";
 import { matchSorter } from "match-sorter";
 import {
-  MiFilter, BootstrapInput, MiSelect, MiInput2, MiInput, useStyles, MiFilter2
-} from "./estilo_componentes/estilos"
+  BootstrapInput, MiSelect, MiInput2, MiInput, useStyles, MiFilter2
+} from "./estilo_componentes/estilos";
+import MiFilter from "../Componentes/MiFilter/Mifilter";
 
 
 
@@ -31,7 +32,7 @@ import {
 
 const Ventas = () => {
   const [selectedDate, handleDateChange] = useState(new Date());
-  const [date, changeDate] = useState(new Date());
+
   const [time, setTime] = useState(new Date());
   const classes = useStyles();
   const tabla = DenseTable();
@@ -41,6 +42,7 @@ const Ventas = () => {
   const data = useAxios(url);
   const [input, setInput] = useState("");
   const [input2, setInput2] = useState([]);
+  const [cliente, setCliente] = useState(null);
   console.log(input2)
   const [precioSel, setPrecioSel] = useState("");
   const filterOptions = (options, { inputValue }) =>
@@ -48,18 +50,21 @@ const Ventas = () => {
       keys: ["nombre_pro", "codigo_pro"],
       threshold: matchSorter.rankings.CONTAINS,
     });
-  
-  
-  
-  const [urlClientes, setUrlClientes] = useState(`/clientes/`);
+
+
+
+  const [urlClientes, setUrlClientes] = useState(`/clipers`);
   const dataClientes = useAxios(urlClientes);
-  const [inputClientes, setInputClientes] = useState({cliente: "" , documento: "" });
+  console.log(dataClientes);
+  const [inputClientes, setInputClientes] = useState({ cliente: "", documento: "" });
   const filterOptionsClientes = (options, { inputValue }) =>
     matchSorter(options, inputValue, {
       keys: ["nombre_pe", "identificacion"],
       threshold: matchSorter.rankings.CONTAINS,
     });
-
+  const optionLabelCliente = (opcion) => {
+    return `${opcion.nombre_pe}`;
+  };
 
 
 
@@ -70,36 +75,49 @@ const Ventas = () => {
         <div className="flex-container-superior">
           <form className="formsuperior">
             <div className="form__section">
-              <Paper className={classes.root} >
-              <MiFilter2
-                id="cliente"
-                style={{ width: 200 }}
-                options={dataClientes.data}
+              <MiFilter
+                data={dataClientes.data}
+                optionesFiltro={filterOptionsClientes}
                 value={inputClientes.cliente}
-                filterOptions={filterOptionsClientes}
-                getOptionLabel={(option) => option ? option.identificacion + " - " + option.nombre_pe:''}
-                onChange={(event, newValue) => {
-                  //newValue !== null ?
-                  if (newValue !== null) {
-                    setInputClientes({cliente: newValue, documento: newValue.identificacion})                    
-                    
-                  }else{
-                    setInputClientes({cliente: "", documento: ""})                    
-                                      
-                  }                                    
-                }}
-                renderInput={(params) => (
-                  <MiInput2
-                    {...params}
-                    id="inputCliente"
-                    label="Cliente"
-                    variant="outlined"
-                    size="small"
-                    
-                  //onChange={handleChangeDet('producto')}
-                  />
-                )}
+                setValue={setCliente}
+                tamaño={250}
+                id="cliente2"
+                label="cliente2"
+                optionLabel={optionLabelCliente}
               />
+            </div>
+            <div className="form__section">
+              <Paper className={classes.root} >
+
+                <MiFilter2
+                  id="cliente"
+                  style={{ width: 200 }}
+                  options={dataClientes.data}
+                  value={inputClientes.cliente}
+                  filterOptions={filterOptionsClientes}
+                  getOptionLabel={(option) => option ? option.identificacion + " - " + option.nombre_pe : ''}
+                  onChange={(event, newValue) => {
+                    //newValue !== null ?
+                    if (newValue !== null) {
+                      setInputClientes({ cliente: newValue, documento: newValue.identificacion })
+
+                    } else {
+                      setInputClientes({ cliente: "", documento: "" })
+
+                    }
+                  }}
+                  renderInput={(params) => (
+                    <MiInput2
+                      {...params}
+                      id="inputCliente"
+                      label="Cliente"
+                      variant="outlined"
+                      size="small"
+
+                    //onChange={handleChangeDet('producto')}
+                    />
+                  )}
+                />
                 <IconButton aria-label="menu" className={classes.iconButton}>
                   <FaUserPlus />
                 </IconButton>
@@ -111,7 +129,7 @@ const Ventas = () => {
               <MiInput
                 label="Documento"
                 disabled="true"
-                value= {inputClientes.documento}
+                value={inputClientes.documento}
               />
             </div>
             <div className="form__section">
@@ -121,14 +139,7 @@ const Ventas = () => {
             </div>
 
             <div className="form__section">
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker
-                  label="Fecha de Venta"
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  animateYearScrolling
-                />
-              </MuiPickersUtilsProvider>
+
             </div>
 
             <div className="form__section">
@@ -157,7 +168,7 @@ const Ventas = () => {
         <div className="flex-container-intermedio">
           <form className="formintermedio">
             <div className="form__section">
-              <MiFilter
+              <MiFilter2
                 id="producto"
                 style={{ width: 200 }}
                 options={data.data}
@@ -189,38 +200,7 @@ const Ventas = () => {
                 )}
               />
 
-
-              {/* <Paper className={classes.root}>
-                <input value={input} onChange={(e)=>{
-                  setInput(e.target.value)
-                                    
-                }} list="select-producto" name="select" className="select__copia"></input>
-                
-                <datalist className="select__datalist" id="select-producto">
-                  {data.data.map((dat,index)=>{
-                    return (<option id={dat.codigo_pro} key={index}>{dat.codigo_pro} - {dat.nombre_pro} </option>)
-                  })
-                  }
-                </datalist>
-                <button onClick={() => {
-                  data.data.includes
-                }} >holi</button>
-                
-                 <Select
-                  defaultValue={0}
-                  input={<BootstrapInput />}
-                >
-                  <MenuItem default value={0} >Producto</MenuItem>
-                  {data.data.map((dat,index)=>{
-                    return (<MenuItem value={dat.codigo_pro} key={index}>{dat.nombre_pro}</MenuItem>)
-                  })
-                  }
-                  
-                </Select> 
-                <IconButton aria-label="menu" className={classes.iconButton}>
-                  <FaCartPlus />
-                </IconButton>
-              </Paper> */}
+              
             </div>
             <div className="form__section">
               <MiInput
@@ -228,7 +208,7 @@ const Ventas = () => {
               />
             </div>
             <div className="form__section">
-              <MiFilter
+              <MiFilter2
                 id="precio"
                 style={{ width: 200 }}
                 options={input2}
