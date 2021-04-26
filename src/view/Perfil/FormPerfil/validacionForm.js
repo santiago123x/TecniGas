@@ -17,7 +17,7 @@ const validaPerf = yup.object().shape({
     .test(
       "validaTel",
       "Debe contener más de 7 digitos",
-      (valor) => valor.toString().length >= 7
+      (valor) => valor.toString().length >= 7 && valor.toString().length <= 12
     ),
   usu_email: yup
     .string()
@@ -38,4 +38,25 @@ const type = (dato) => {
   }
 };
 
-export { validaAcc, validaPerf, type };
+const validarTelefono = (tel) => {
+  if ((tel.length < 7 || tel.length > 12) && tel.length !== 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const validarEmail = (email) => {
+  if (
+    !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(.[a-zA-Z0-9-]+)*$/.test(
+      email
+    ) &&
+    email.length !== 0
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export { validaAcc, validaPerf, type, validarTelefono, validarEmail };
