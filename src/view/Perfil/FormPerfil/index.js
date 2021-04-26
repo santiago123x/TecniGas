@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import "../perfil.css";
 import { useForm } from "react-hook-form";
-import { TextField } from "@material-ui/core";
-import useStyles from "../../cli-prov/Control/ControlUseStyle";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   validaAcc,
@@ -12,6 +10,7 @@ import {
   validarEmail,
 } from "./validacionForm";
 import Button from "@material-ui/core/Button";
+import MiIput from "./MiInput";
 
 const FormPerfil = ({ titulo, datos, labels, tipo }) => {
   const [data, setData] = useState({ ...datos });
@@ -36,7 +35,6 @@ const FormPerfil = ({ titulo, datos, labels, tipo }) => {
     event.preventDefault();
     console.log(data);
   };
-  const classes = useStyles();
   return (
     <div className="forms-perfil">
       <h4 className="cont__lista-titulo">{titulo}</h4>
@@ -49,8 +47,7 @@ const FormPerfil = ({ titulo, datos, labels, tipo }) => {
           {Object.keys(datos).map((dat, index) => {
             return (
               <div className="input-form" key={index}>
-                <TextField
-                  className={classes.textfieldPerfil}
+                <MiIput
                   variant="outlined"
                   size="small"
                   type={type(dat)}
