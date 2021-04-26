@@ -1,0 +1,60 @@
+.titulo-perfil {
+  margin-top: 2%;
+}
+
+.perfil-forms {
+  padding: 1.8% 4%;
+  height: 90%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.forms-perfil > h4 {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(46, 123, 212, 0.342);
+  border-radius: 20px;
+  box-shadow: 0 4px 8px 4px rgba(52, 113, 192, 0.66);
+}
+
+.forms-perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.8%;
+  width: 33%;
+  height: 100%;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 12px 4px rgba(52, 113, 192, 0.76);
+}
+
+.form-inputs-perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10%;
+  height: 100%;
+  margin-top: 8%;
+  width: 100%;
+  background-color: rgba(46, 123, 212, 0.342);
+  border-radius: 20px;
+  box-shadow: 0 4px 8px 4px rgba(52, 113, 192, 0.66);
+}
+
+.inputs-perfil {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-form {
+  margin-bottom: 4%;
+}

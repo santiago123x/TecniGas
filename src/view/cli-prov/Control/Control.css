@@ -1,0 +1,111 @@
+.foco_control {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 50%;
+  width: 40%;
+  height: 90vh;
+  min-width: 460px;
+  margin: auto;
+  background: #bbdeef;
+  border-radius: 23px;
+  padding: 1.2%;
+}
+
+.imagen {
+  padding-top: 1%;
+  width: 130px;
+  height: 130px;
+  border-radius: 10px;
+}
+
+.form-group_control {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 298px;
+  margin-right: 1%;
+  margin-bottom: 3%;
+}
+
+.guardar {
+  height: 0px;
+  margin-left: 10px;
+  font-weight: 600px;
+}
+
+.cancelar {
+  margin-left: 120px;
+  font-weight: 600px;
+}
+
+.titulo-form {
+  margin-top: 2%;
+  margin-bottom: 8%;
+  text-align: center;
+  font-weight: bold;
+  size: 12%;
+}
+
+.row {
+  height: 50px;
+  margin-bottom: 3.3%;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+}
+
+.header_form {
+  display: flex;
+  flex-direction: row;
+}
+
+.cliente_control {
+  width: 150px;
+  height: 180px;
+  margin-top: 20px;
+  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.titulos {
+  margin-top: 30px;
+  width: 400px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.contenedor_form {
+  display: flex;
+  flex-direction: row;
+}
+
+.conten-btn {
+  width: 120px;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.formulario_control {
+  width: 420px;
+  height: 340px;
+}
+
+.form_group_btn {
+  width: 120px;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+  justify-content: space-around;
+  align-items: center;
+}

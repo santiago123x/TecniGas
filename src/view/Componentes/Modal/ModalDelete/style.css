@@ -1,0 +1,13 @@
+.container-element{
+    display: flex;
+    flex-wrap: wrap;    
+}
+
+.container-element__button {
+    display: inline-block;
+    margin: 5% 12% 0 12%;
+}
+
+.container-element__text{
+    text-align: center;
+}

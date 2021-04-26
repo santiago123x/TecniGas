@@ -6,3 +6,11 @@
 .nav-contenedor {
   height: 100vh;
 }
+
+.chil-contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
