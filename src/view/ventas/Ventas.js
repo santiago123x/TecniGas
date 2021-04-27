@@ -1,29 +1,27 @@
 import "./ventas.css";
-
 import Button from '@material-ui/core/Button';
-
-import { useState } from "react";
-
-import { lightBlue } from "@material-ui/core/colors";
+import { useState,useEffect } from "react";
 import Select from '@material-ui/core/Select';
-import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import { FaUserPlus, FaCartPlus } from "react-icons/fa";
 import DenseTable from "./tabla_ventas.js";
 import useAxios from "../Hooks/useAxios";
-import { id } from "date-fns/locale";
 import { matchSorter } from "match-sorter";
 import {
-  BootstrapInput, MiSelect, MiInput2, MiInput, useStyles, MiFilter2
+  BootstrapInput, MiInput2, useStyles, MiFilter2
 } from "./estilo_componentes/estilos";
-import MiFilter from "../Componentes/MiFilter/Mifilter";
+import {notify} from "../Componentes/notify/Notify";
+import { ToastContainer } from "react-toastify";
 
 
 
 
 
+
+function createRow(codigo, nombre, cantidad, precio, descuento, subtotal) {
+  return { codigo, nombre, cantidad, precio, descuento, subtotal };
+}
 
 
 
@@ -31,11 +29,11 @@ import MiFilter from "../Componentes/MiFilter/Mifilter";
 
 
 const Ventas = () => {
+  const [rows, setRows] = useState([]);
   const [selectedDate, handleDateChange] = useState(new Date());
 
   const [time, setTime] = useState(new Date());
   const classes = useStyles();
-  const tabla = DenseTable();
 
 
   const [url, setUrl] = useState(`/producto/`);
@@ -43,7 +41,6 @@ const Ventas = () => {
   const [input, setInput] = useState("");
   const [input2, setInput2] = useState([]);
   const [cliente, setCliente] = useState(null);
-  console.log(input2)
   const [precioSel, setPrecioSel] = useState("");
   const filterOptions = (options, { inputValue }) =>
     matchSorter(options, inputValue, {
@@ -56,8 +53,21 @@ const Ventas = () => {
     date.getMonth(),
     date.getDate()
   );
+  const calcularTotal = (antsub) => {
+
+    setTotal({
+      ...total, total: total.total+antsub
+    })
+  }
 
 
+  const [total, setTotal] = useState({
+    total: 0,
+    recibido: 0,    
+  })
+  const [cambio, setCambio] =useState(0);
+  const [cantidad, setCantidad] = useState(0);
+  const [descuento, setDescuento] = useState(0);
   const [urlClientes, setUrlClientes] = useState(`/clipers`);
   const dataClientes = useAxios(urlClientes);
   const [inputClientes, setInputClientes] = useState({ cliente: "", documento: "" });
@@ -71,8 +81,50 @@ const Ventas = () => {
     return `${opcion.identificacion + " - " + opcion.nombre_pe}`;
   };
   const filterOptionsClientes2 = ["nombre_pe", "identificacion"];
+  const validaProd = (codigo) => {
+    let result = false;
+    rows.forEach((row)=> {
+     
+    if (row.codigo == codigo){
+      
+      result = true;
+    }
+    
+    })
+    return result;
+  }
+  const creaFilas = () => {
 
+    if(input == "" || cantidad == 0 || precioSel == ""){      
+      notify("Debe llenar todos los campos","","error");
+      return ;
+    }if (validaProd(input.codigo_pro)){
+      notify("Este producto ya fue agregado a la compra","","error");
+      return ;
+    }
+    console.log(validaProd(input.codigo_pro));
+    const subtotal = (parseInt(precioSel.pre) - parseInt(descuento)) * parseInt(cantidad);
+    const row = createRow(input.codigo_pro, input.nombre_pro, cantidad, precioSel.pre, descuento, subtotal);
+    setRows([...rows, row]);
+    setCantidad(0);
+    setDescuento(0);
+    setInput("");
+    setPrecioSel("");
+    
+  }
 
+  useEffect(()=>{
+    if(total.recibido >= total.total){
+      setCambio(total.recibido-total.total);
+    }else{
+      setCambio("Recibido invalido");
+    }
+    
+  },[total.total, total.recibido])
+  
+  useEffect(() => {
+    setTotal({...total, total:rows.reduce((sum, li) => sum + li.subtotal, 0)})
+  }, [rows])
 
   return (
     <>
@@ -197,7 +249,7 @@ const Ventas = () => {
                     setInput(newValue);
                     setInput2([{ pre: newValue.precio_may, index: "Precio As: " },
                     { pre: newValue.precio_uni, index: "Precio Pu: " }])
-                    console.log(newValue)
+
                   } else {
                     setInput2([])
                     setInput(null);
@@ -220,9 +272,12 @@ const Ventas = () => {
             </div>
             <div className="form__section">
               <MiInput2
+                type="number"
                 label="Cantidad"
                 variant="outlined"
                 size="small"
+                value={cantidad}
+                onChange={(e) => setCantidad(e.target.value)}
               />
             </div>
             <div className="form__section">
@@ -256,13 +311,20 @@ const Ventas = () => {
             </div>
             <div className="form__section">
               <MiInput2
+                type="number"
                 label="Descuento"
                 variant="outlined"
                 size="small"
+                value={descuento}
+                onChange={(e) => setDescuento(e.target.value)}
               />
             </div>
             <div className="form__section">
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() =>  creaFilas()}
+              >
                 Agregar
               </Button>
             </div>
@@ -270,41 +332,51 @@ const Ventas = () => {
 
         </div>
         <div className="flex-container-tabla">
-          <DenseTable />
+          <DenseTable rows={rows} />
         </div>
         <div className="flex-container-derecho">
           <div className="flex-container-derecho__form">
             <div className="flex-container-derecho__form__inputs">
               <div className="form__section">
                 <MiInput2
+                  disabled
                   label="Total"
                   variant="outlined"
                   size="small"
+                  value={total.total}
                 />
               </div>
               <div className="form__section">
                 <MiInput2
+                  type="number"
                   label="Recibido"
                   variant="outlined"
                   size="small"
+                  value= {total.recibido}
+                  onChange= {(e)=>{
+                    setTotal({...total, recibido: e.target.value})
+                  }}
                 />
               </div>
               <div className="form__section">
                 <MiInput2
+                  disabled
                   label="Cambio"
                   variant="outlined"
                   size="small"
+                  value= {cambio}
                 />
               </div>
             </div>
 
             <div className="form__section">
-              <Button variant="contained" color="primary" style={{maxHeight: 30}} fullWidth>
+              <Button variant="contained" color="primary" style={{ maxHeight: 30 }} fullWidth>
                 Pagar
               </Button>
             </div>
           </div>
         </div>
+        <ToastContainer/>
 
       </div>
 
