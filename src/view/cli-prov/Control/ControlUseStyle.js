@@ -63,8 +63,9 @@ const useStyles = makeStyles((theme) => ({
   },
   textfieldPerfil: {
     "& .MuiOutlinedInput-inputMarginDense": {
-      padding: "10px ",
+      height: "10px",
     },
+
     "& .MuiFormLabel-root": {
       Function: "disable",
     },
@@ -74,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
       borderColor: "black",
     },
     "& .MuiInputBase-input": {
+      backgroundColor: "rgba(255, 255, 255, 0.25)",
       borderRadius: "15px",
       color: "rgba(0, 0, 0, 0.76)",
     },
@@ -87,10 +89,10 @@ const useStyles = makeStyles((theme) => ({
       padding: "12px",
     },
     "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
-      color: "black",
-      paddingBotton: "5px",
       fontWeight: "bold",
       color: "rgba(0, 0, 0, 0.76)",
+      borderRadius: "15px",
+      // backgroundColor: "rgba(255, 255, 255, 0.25)",
     },
   },
   select: {

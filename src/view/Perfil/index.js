@@ -1,8 +1,9 @@
 import { useState } from "react";
 import "./perfil.css";
 import FormPerfil from "./FormPerfil";
+import Button from "@material-ui/core/Button";
 
-const Perfil = ({ nombre_usu = "Pedro" }) => {
+const Perfil = ({ nombre_usu = "Pedro", tipo = "admin" }) => {
   const testDatos1 = {
     nick: "pepito12",
     contra: "pepo",
@@ -29,6 +30,13 @@ const Perfil = ({ nombre_usu = "Pedro" }) => {
             labels={labelAcc}
             tipo="acc"
           />
+          {tipo == "admin" && (
+            <div>
+              <Button size="small" variant="contained" color="default">
+                Administración
+              </Button>
+            </div>
+          )}
           <FormPerfil
             titulo="Perfil"
             datos={testDatos2}
