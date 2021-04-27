@@ -50,21 +50,27 @@ const Ventas = () => {
       keys: ["nombre_pro", "codigo_pro"],
       threshold: matchSorter.rankings.CONTAINS,
     });
-
+  const date = new Date();
+  const fechaActu = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
 
 
   const [urlClientes, setUrlClientes] = useState(`/clipers`);
   const dataClientes = useAxios(urlClientes);
-  console.log(dataClientes);
   const [inputClientes, setInputClientes] = useState({ cliente: "", documento: "" });
+  const [fecha, setFecha] = useState(fechaActu.toISOString().substr(0, 10));
   const filterOptionsClientes = (options, { inputValue }) =>
     matchSorter(options, inputValue, {
       keys: ["nombre_pe", "identificacion"],
       threshold: matchSorter.rankings.CONTAINS,
     });
   const optionLabelCliente = (opcion) => {
-    return `${opcion.nombre_pe}`;
+    return `${opcion.identificacion + " - " + opcion.nombre_pe}`;
   };
+  const filterOptionsClientes2 = ["nombre_pe", "identificacion"];
 
 
 
@@ -74,78 +80,96 @@ const Ventas = () => {
       <div className="principal-container">
         <div className="flex-container-superior">
           <form className="formsuperior">
+
             <div className="form__section">
-              <MiFilter
-                data={dataClientes.data}
-                optionesFiltro={filterOptionsClientes}
+              <MiFilter2
+                id="cliente"
+                options={dataClientes.data}
+                style={{ width: 240 }}
                 value={inputClientes.cliente}
-                setValue={setCliente}
-                tamaño={250}
-                id="cliente2"
-                label="cliente2"
-                optionLabel={optionLabelCliente}
+                filterOptions={filterOptionsClientes}
+                getOptionLabel={(option) => option ? option.identificacion + " - " + option.nombre_pe : ''}
+                onChange={(event, newValue) => {
+                  //newValue !== null ?
+                  if (newValue !== null) {
+                    setInputClientes({ cliente: newValue, documento: newValue.identificacion })
+
+                  } else {
+                    setInputClientes({ cliente: "", documento: "" })
+
+                  }
+                }}
+                renderInput={(params) => (
+                  <MiInput2
+                    {...params}
+                    id="inputCliente"
+                    label="Cliente"
+                    variant="outlined"
+                    size="small"
+
+                  //onChange={handleChangeDet('producto')}
+                  />
+                )}
               />
-            </div>
-            <div className="form__section">
-              <Paper className={classes.root} >
-
-                <MiFilter2
-                  id="cliente"
-                  style={{ width: 200 }}
-                  options={dataClientes.data}
-                  value={inputClientes.cliente}
-                  filterOptions={filterOptionsClientes}
-                  getOptionLabel={(option) => option ? option.identificacion + " - " + option.nombre_pe : ''}
-                  onChange={(event, newValue) => {
-                    //newValue !== null ?
-                    if (newValue !== null) {
-                      setInputClientes({ cliente: newValue, documento: newValue.identificacion })
-
-                    } else {
-                      setInputClientes({ cliente: "", documento: "" })
-
-                    }
-                  }}
-                  renderInput={(params) => (
-                    <MiInput2
-                      {...params}
-                      id="inputCliente"
-                      label="Cliente"
-                      variant="outlined"
-                      size="small"
-
-                    //onChange={handleChangeDet('producto')}
-                    />
-                  )}
-                />
-                <IconButton aria-label="menu" className={classes.iconButton}>
-                  <FaUserPlus />
-                </IconButton>
-              </Paper>
+              <IconButton aria-label="menu" className={classes.iconButton}>
+                <FaUserPlus />
+              </IconButton>
 
               {/* <Button variant="contained" size="large" color="primary">Agregar</Button> */}
             </div>
             <div className="form__section">
-              <MiInput
+              <MiInput2
                 label="Documento"
                 disabled="true"
                 value={inputClientes.documento}
+                variant="outlined"
+                size="small"
               />
             </div>
             <div className="form__section">
-              <MiInput
+              <MiInput2
                 label="Nro venta"
+                variant="outlined"
+                size="small"
               />
             </div>
 
             <div className="form__section">
+              <MiInput2
+                id="date"
+                label="Fecha"
+                type="date"
+                value={fecha}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={(evento) => {
+                  setFecha(evento.target.value);
+                }}
+              />
+            </div>
+            <div className="form__section">
+              <MiInput2
+                style={{ width: '17vw' }}
+                label="Nota"
+                placeholder="Digite su Nota"
+                rows={3}
+                multiline
+                variant="outlined"
+                size="small" />
+
 
             </div>
 
             <div className="form__section">
+
               <Select
                 defaultValue={0}
                 input={<BootstrapInput />}
+                label="Estado"
+
               >
                 <MenuItem default value={0} >Estado</MenuItem>
                 <MenuItem value={10}>Ten</MenuItem>
@@ -154,15 +178,7 @@ const Ventas = () => {
               </Select>
 
             </div>
-            <div className="form__section">
-              <BootstrapInput
-                label="Nota"
-                placeholder="Digite su Nota"
-                rows={3}
-                multiline />
 
-
-            </div>
           </form>
         </div>
         <div className="flex-container-intermedio">
@@ -174,7 +190,7 @@ const Ventas = () => {
                 options={data.data}
                 value={input}
                 filterOptions={filterOptions}
-                getOptionLabel={(option) => option ? option.codigo_pro + " - " + option.nombre_pro :''}
+                getOptionLabel={(option) => option ? option.codigo_pro + " - " + option.nombre_pro : ''}
                 onChange={(event, newValue) => {
                   //newValue !== null ?
                   if (newValue !== null) {
@@ -182,10 +198,10 @@ const Ventas = () => {
                     setInput2([{ pre: newValue.precio_may, index: "Precio As: " },
                     { pre: newValue.precio_uni, index: "Precio Pu: " }])
                     console.log(newValue)
-                  }else{
+                  } else {
                     setInput2([])
                     setInput(null);
-                  }                                    
+                  }
                 }}
                 renderInput={(params) => (
                   <MiInput2
@@ -194,17 +210,19 @@ const Ventas = () => {
                     label="Producto"
                     variant="outlined"
                     size="small"
-                    
+
                   //onChange={handleChangeDet('producto')}
                   />
                 )}
               />
 
-              
+
             </div>
             <div className="form__section">
-              <MiInput
+              <MiInput2
                 label="Cantidad"
+                variant="outlined"
+                size="small"
               />
             </div>
             <div className="form__section">
@@ -213,12 +231,12 @@ const Ventas = () => {
                 style={{ width: 200 }}
                 options={input2}
                 value={precioSel}
-                getOptionLabel={(option) => option ? `${option.pre}` : '' }
+                getOptionLabel={(option) => option ? `${option.pre}` : ''}
 
                 onChange={(event, newValue) => {
                   setPrecioSel(newValue);
                 }}
-                renderOption= {(option) => (
+                renderOption={(option) => (
                   <>
                     <span>{option.index}</span>
                     {option.pre}  </>
@@ -226,7 +244,7 @@ const Ventas = () => {
                 renderInput={(params) => (
                   <MiInput2
                     {...params}
-                    
+
                     id="inputprec"
                     label="Precio"
                     variant="outlined"
@@ -237,8 +255,10 @@ const Ventas = () => {
               />
             </div>
             <div className="form__section">
-              <MiInput
+              <MiInput2
                 label="Descuento"
+                variant="outlined"
+                size="small"
               />
             </div>
             <div className="form__section">
@@ -254,25 +274,33 @@ const Ventas = () => {
         </div>
         <div className="flex-container-derecho">
           <div className="flex-container-derecho__form">
+            <div className="flex-container-derecho__form__inputs">
+              <div className="form__section">
+                <MiInput2
+                  label="Total"
+                  variant="outlined"
+                  size="small"
+                />
+              </div>
+              <div className="form__section">
+                <MiInput2
+                  label="Recibido"
+                  variant="outlined"
+                  size="small"
+                />
+              </div>
+              <div className="form__section">
+                <MiInput2
+                  label="Cambio"
+                  variant="outlined"
+                  size="small"
+                />
+              </div>
+            </div>
 
             <div className="form__section">
-              <MiInput
-                label="Total a Pagar"
-              />
-            </div>
-            <div className="form__section">
-              <MiInput
-                label="Recibido"
-              />
-            </div>
-            <div className="form__section">
-              <MiInput
-                label="Cambio"
-              />
-            </div>
-            <div className="form__section">
-              <Button variant="contained" color="primary">
-                Realizar Pago
+              <Button variant="contained" color="primary" style={{maxHeight: 30}} fullWidth>
+                Pagar
               </Button>
             </div>
           </div>
