@@ -11,6 +11,14 @@ const useStyles = makeStyles((theme) => ({
     top: "50%",
     left: "50%",
     transform: "traslate(-50%, -50%)",
+  }, iconButton: {
+    marginLeft: '0%',
+    padding: 7,
+    background: "#0e7e4a28",
+    border: 'solid 2px rgba(11, 69, 134, 0.747)',
+    borderRadius: '10px',
+    color: '#eeecee'
+
   },
   modalEliminar: {
     position: "absolute",

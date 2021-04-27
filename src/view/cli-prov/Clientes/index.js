@@ -27,6 +27,7 @@ const Cliente = () => {
             metodo="post"
             titulo="Crear Cliente"
             imagen="cli"
+            tipoButton="true"
           />
 
           <hr className="linea-h2" />

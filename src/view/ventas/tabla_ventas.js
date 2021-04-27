@@ -38,6 +38,7 @@ export default function DenseTable({rows}) {
             <TableCell align="center">Precio</TableCell>
             <TableCell align="center">Descuento</TableCell>
             <TableCell align="center" >Subtotal</TableCell>
+            <TableCell align="center" >Opciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -48,9 +49,10 @@ export default function DenseTable({rows}) {
               </TableCell>
               <TableCell align="center">{row.nombre}</TableCell>
               <TableCell align="center">{row.cantidad}</TableCell>
-              <TableCell align="center">{row.precio}</TableCell>
-              <TableCell align="center" >{row.descuento}</TableCell>
-              <TableCell align="center">{row.subtotal}</TableCell>
+              <TableCell align="center">${row.precio}</TableCell>
+              <TableCell align="center" >${row.descuento}</TableCell>
+              <TableCell align="center">${row.subtotal}</TableCell>
+              <TableCell align="center"></TableCell>
             </TableRow>
           ))}
         </TableBody>

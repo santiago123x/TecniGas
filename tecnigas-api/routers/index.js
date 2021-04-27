@@ -44,9 +44,17 @@ const {
   getCategoria,
 } = require("../controlador/categoria.js");
 
+const {
+  getIva,
+} = require("../controlador/iva.js");
+
 // Rutas de Categoria
 
 router.get("/categorias", getCategoria);
+
+//Rutas de iva
+
+router.get("/iva", getIva);
 
 // Rutas de Proveedor
 
