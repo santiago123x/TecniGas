@@ -1,0 +1,51 @@
+.containerPrin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    top: 5%;
+    width: 130vh;
+    height: 90vh;
+    min-width: 460px;
+    margin: auto;
+    background: linear-gradient(180deg, #61B3FF 10%, #0659A7 100%);
+    border: 2px solid #000000;
+    border-radius: 23px;
+    padding: 1.2%;
+  }
+
+.titulo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}  
+
+.content_one {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 90vh;
+}
+
+.txt01 {
+  display: flex;
+  align-items: center;
+}
+
+.btn_save {
+  display: flex;
+  align-items: center;
+}
+
+.line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lineTop {
+  left: 13%;
+  border: 2px solid #000000;
+  width: 125%;
+}

@@ -1,11 +1,12 @@
 import { useState } from "react";
+import FormularioDev from "./FormDev/FormularioDev";
+
 
 const Devolucion = () => {
   const [recarga, setRecarga] = useState(false);
   return (
     <>
-      <h1>Hola Soy Devolución wiii</h1>
-      
+      <FormularioDev />
     </>
   );
 };
