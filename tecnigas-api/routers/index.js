@@ -19,6 +19,8 @@ const {
   activaCliPro,
 } = require("../controlador/clientes");
 
+const { getIva } = require("../controlador/iva");
+
 const { getProveedor } = require("../controlador/proveedores");
 
 const {
@@ -31,7 +33,7 @@ const {
   putProducto,
   delProducto,
   hideProducto,
-  getProductoAll, 
+  getProductoAll,
 } = require("../controlador/producto.js");
 
 const {
@@ -40,9 +42,11 @@ const {
   postCompraDet,
 } = require("../controlador/compra.js");
 
-const {
-  getCategoria,
-} = require("../controlador/categoria.js");
+const { getCategoria } = require("../controlador/categoria.js");
+
+//Ruta de Iva
+
+router.get("/iva", getIva);
 
 // Rutas de Categoria
 
