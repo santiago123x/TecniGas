@@ -1,26 +1,19 @@
 import { useState, useEffect } from "react";
 import "../perfil.css";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import {
-  validaAcc,
-  validaPerf,
   type,
   validarTelefono,
   validarEmail,
+  validaTodo,
+  contraseñas,
 } from "./validacionForm";
 import Button from "@material-ui/core/Button";
 import MiIput from "./MiInput";
 
 const FormPerfil = ({ titulo, datos, labels, tipo }) => {
   const [data, setData] = useState({ ...datos });
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({
-    resolver: yupResolver(tipo == "acc" ? validaAcc : validaPerf),
-  });
+  const { register, handleSubmit } = useForm({});
   const handleInputChange = (event) => {
     setData({
       ...data,
@@ -29,10 +22,20 @@ const FormPerfil = ({ titulo, datos, labels, tipo }) => {
   };
   const onSubmitAcc = (data, event) => {
     event.preventDefault();
+    if (validaTodo(data) && contraseñas(data.contra, data.contraConf)) {
+      return;
+    }
     console.log(data);
   };
   const onSubmitPerf = (data, event) => {
     event.preventDefault();
+    if (
+      validaTodo(data) ||
+      validarEmail(data.usu_email) ||
+      validarTelefono(data.usu_tel)
+    ) {
+      return;
+    }
     console.log(data);
   };
   return (

@@ -8,9 +8,7 @@ import { Modal } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import { schema, schema2 } from "./validacionInp";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { setLocale } from "yup";
+import { validarTelefono, validarEmail, validaTodo } from "./validacionInp";
 import { validaPut, put } from "../formulario/Validacion";
 import "react-toastify/dist/ReactToastify.css";
 import { notify } from "../../Componentes/notify/Notify";
@@ -66,21 +64,14 @@ const Control_Form = ({
   };
 
   //Diccionario que cambia los mensajes predeterminados de la función schema
-  setLocale({
-    mixed: {
-      notType: "Por favor ingrese datos válidos",
-    },
-    number: {
-      min: "Debe contener más de 9 digitos",
-    },
-  });
 
   //Realiza validaciones al enviar el formulario
-  const { register, errors, handleSubmit } = useForm({
-    resolver: yupResolver(tipo == "inv" ? schema2 : schema),
-  });
+  const { register, handleSubmit } = useForm({});
 
   const onSubmit2 = async (data, event) => {
+    if (validaTodo(data)) {
+      return;
+    }
     const codigoProdOld = objeto.codigo_pro;
     const idProd = objeto.producto_id;
     const body = {
@@ -113,7 +104,13 @@ const Control_Form = ({
 
     if (tipo !== "inv") {
       let tp;
-
+      if (
+        validaTodo(data) ||
+        validarEmail(data.email) ||
+        validarTelefono(data.telefono.toString())
+      ) {
+        return;
+      }
       if (tipo === "cli") {
         tp = "cliente";
       } else {
@@ -212,7 +209,6 @@ const Control_Form = ({
                   handleInputChange={handleInputChange}
                   datos={datos}
                   tipo={tipo}
-                  errors={errors}
                   dataCategoria={dataCategoria.data}
                 />
               </form>
