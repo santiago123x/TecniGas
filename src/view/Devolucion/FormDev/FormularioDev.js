@@ -6,6 +6,7 @@ import useStyles from "../../cli-prov/Control/ControlUseStyle";
 import styleDev from "../styleDev.css";
 import Tablacompra from "../../inventario/Compra/Tablacompra";
 import Select from "@material-ui/core/Select";
+import MiSelect from "../../ventas/estilo_componentes/estilos";
 
 const FormularioDev = ({}) => {
 
@@ -37,7 +38,7 @@ const FormularioDev = ({}) => {
             </div>
             <div className = "content_one">
               <div className = "txt01">
-                <Select
+                <MiSelect
                   native
                   className = {classes.select}
                   variant = "outlined"
