@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { TextField } from "@material-ui/core";
+import MiInput from "../../Componentes/MiInput/MiInput";
 import Button from "@material-ui/core/Button";
 import useStyles from "../../cli-prov/Control/ControlUseStyle";
 import styleDev from "../styleDev.css";
 import Tablacompra from "../../inventario/Compra/Tablacompra";
+import Select from "@material-ui/core/Select";
 
 const FormularioDev = ({}) => {
 
 // Asignación de los valores escritos en los campos de texto
-    const [datos, setDatos] = useState({
-        nombre: "",
-        identificacion: "",
-        correo: "",
-        direccion: "",
-        telefono: "",
-      });
+    const [datos, setDatos] = useState([{
+      nombre_pro: "",
+      cantidad: "",
+      precio: "",
+      totalDet: ""
+      }]);
     
 // Función de escucha que obtiene el valor de los campos de texto
       const handleInputChange = (event) => {
@@ -31,14 +31,14 @@ const FormularioDev = ({}) => {
   //Formulario del modal
   const body = (
       <div className = "containerPrin">
-        <form>
+        <form className = "miForm">
           <div className = "titulo">
             <h1> Devolución De Productos </h1>
             </div>
             <div className = "content_one">
               <div className = "txt01">
-                <TextField 
-                  className = {classes.textFieldDev}
+                <Select
+                  native
                   variant = "outlined"
                   size = "small"
                   label = "Código Factura"
@@ -60,16 +60,14 @@ const FormularioDev = ({}) => {
             </div>
             <div className = "content_two">
               <div className = "txt02">
-                <TextField
-                  className = {classes.textFieldDev}
+                <MiInput
                   variant = "outlined"
                   size = "small"
                   label = "ID Producto"
                 />
               </div>
               <div className = "txt03">
-                <TextField 
-                  className = {classes.textFieldDev}
+                <MiInput 
                   variant = "outlined"
                   size = "small"
                   label = "Cantidad"
@@ -78,8 +76,7 @@ const FormularioDev = ({}) => {
             </div>
             <div className = "content_three">
               <div className = "txt04">
-                <TextField 
-                  className = {classes.textFieldDev}
+                <MiInput 
                   variant = "outlined"
                   size = "small"
                   multiline
@@ -89,7 +86,7 @@ const FormularioDev = ({}) => {
               </div>
               <div className = "btn_marcar">
                 <Button 
-                  size = "large"
+                  size = "medium"
                   variant ="contained"
                   color ="primary"
                   type = "submit"
@@ -99,16 +96,19 @@ const FormularioDev = ({}) => {
               </div>
             </div>
             <div className = "table">
-              {/*<Tablacompra/>*/}
+              <Tablacompra
+                compraDet = {datos}
+                setCompraDet = {setDatos}
+              />
             </div>
             <div className = "btn_devolver">
               <Button
-              size = "large"
+              size = "medium"
               variant ="contained"
               color ="primary"
               type = "submit"
               >
-                Devolver Producto
+                Devolver Productos
               </Button>
             </div> 
         </form>
@@ -116,9 +116,9 @@ const FormularioDev = ({}) => {
   );
 
     return (
-        <div>
+        <>
           {body}
-        </div>
+        </>
     );
 };
 export default FormularioDev;
