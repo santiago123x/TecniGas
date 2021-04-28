@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import * as yup from 'yup';
-import  {yupResolver} from '@hookform/resolvers/yup';
-import { setLocale } from 'yup';
 import useStyles from "../../cli-prov/Control/ControlUseStyle";
 import styleDev from "../styleDev.css";
+import Tablacompra from "../../inventario/Compra/Tablacompra";
 
 const FormularioDev = ({}) => {
 
@@ -40,26 +38,79 @@ const FormularioDev = ({}) => {
             <div className = "content_one">
               <div className = "txt01">
                 <TextField 
-                  className={classes.textfieldDev}
-                  variant="outlined"
-                  size="small"
+                  className = {classes.textFieldDev}
+                  variant = "outlined"
+                  size = "small"
                   label = "Código Factura"
                 />
                 </div>
                 <div className = "btn_save">
                 <Button 
-                  size = "small"
-                  variant="contained"
-                  color="primary"
+                  size = "large"
+                  variant ="contained"
+                  color ="primary"
                   type = "submit"
                 >
                   Buscar
                 </Button>
                 </div>
             </div>
-            <div className="line"> 
-              <hr className="lineTop"/>
+            <div className = "line"> 
+              <hr className = "lineTop"/>
             </div>
+            <div className = "content_two">
+              <div className = "txt02">
+                <TextField
+                  className = {classes.textFieldDev}
+                  variant = "outlined"
+                  size = "small"
+                  label = "ID Producto"
+                />
+              </div>
+              <div className = "txt03">
+                <TextField 
+                  className = {classes.textFieldDev}
+                  variant = "outlined"
+                  size = "small"
+                  label = "Cantidad"
+                />
+              </div>
+            </div>
+            <div className = "content_three">
+              <div className = "txt04">
+                <TextField 
+                  className = {classes.textFieldDev}
+                  variant = "outlined"
+                  size = "small"
+                  multiline
+                  rows={4}
+                  label = "Nota De Devolución"
+                />
+              </div>
+              <div className = "btn_marcar">
+                <Button 
+                  size = "large"
+                  variant ="contained"
+                  color ="primary"
+                  type = "submit"
+                >
+                  Marcar Producto
+                </Button>
+              </div>
+            </div>
+            <div className = "table">
+              {/*<Tablacompra/>*/}
+            </div>
+            <div className = "btn_devolver">
+              <Button
+              size = "large"
+              variant ="contained"
+              color ="primary"
+              type = "submit"
+              >
+                Devolver Producto
+              </Button>
+            </div> 
         </form>
       </div>
   );

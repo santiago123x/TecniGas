@@ -8,8 +8,8 @@
     height: 90vh;
     min-width: 460px;
     margin: auto;
-    background: linear-gradient(180deg, #61B3FF 10%, #0659A7 100%);
-    border: 2px solid #000000;
+    background-color: rgba(114, 183, 230, 0.295);
+    border: solid 2px rgba(176, 196, 222, 0.699);
     border-radius: 23px;
     padding: 1.2%;
   }
