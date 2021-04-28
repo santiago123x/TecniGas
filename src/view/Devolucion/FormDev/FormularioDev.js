@@ -39,6 +39,7 @@ const FormularioDev = ({}) => {
               <div className = "txt01">
                 <Select
                   native
+                  className = {classes.select}
                   variant = "outlined"
                   size = "small"
                   label = "Código Factura"
