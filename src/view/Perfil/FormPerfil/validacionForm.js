@@ -48,7 +48,7 @@ const validarTelefono = (tel) => {
 
 const validarEmail = (email) => {
   if (
-    !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(.[a-zA-Z0-9-]+)*$/.test(
+    !/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
       email
     ) &&
     email.length !== 0
@@ -59,4 +59,30 @@ const validarEmail = (email) => {
   }
 };
 
-export { validaAcc, validaPerf, type, validarTelefono, validarEmail };
+const validaTodo = (data) => {
+  let bool = false;
+  Object.keys(data).forEach((dat) => {
+    if (data[dat].length == 0) {
+      bool = true;
+    }
+  });
+  return bool;
+};
+
+const contraseñas = (contra1, contra2) => {
+  let bool = false;
+  if (contra1 !== contra2) {
+    bool = true;
+  }
+  return bool;
+};
+
+export {
+  validaAcc,
+  validaPerf,
+  type,
+  validarTelefono,
+  validarEmail,
+  validaTodo,
+  contraseñas,
+};

@@ -7,13 +7,9 @@ import Button from "@material-ui/core/Button";
 import { ToastContainer } from "react-toastify";
 import { notify } from "../../Componentes/notify/Notify";
 import "react-toastify/dist/ReactToastify.css";
-import { validarProducto, post } from "./ValidaProd";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { setLocale } from "yup";
+import { validarProducto, post, validaTodo, validaMenor0 } from "./ValidaProd";
 import Select from "@material-ui/core/Select";
 import useStyles from "./FormularioProdStyles";
-import { RiContactsBookLine } from "react-icons/ri";
 
 const FormularioProd = ({
   tipo,
@@ -60,56 +56,21 @@ const FormularioProd = ({
     }
   };
 
-  setLocale({
-    mixed: {
-      notType: "Por favor ingrese datos válidos",
-    },
-    number: {
-      min: "Debe contener más de 9 digitos",
-    },
-  });
-
-  const schema = yup.object().shape({
-    categoria: yup.number().required("Por favor seleccione una categoría"),
-    nombre: yup
-      .string()
-      .required()
-      .test(
-        "validaNombre",
-        "Debe contener más de 3 caracteres",
-        (valor) => valor.toString().length > 3
-      ),
-    precioUni: yup
-      .number()
-      .required()
-      .test(
-        "validaPrecioUni",
-        "el valor debe ser un numero positivo",
-        (valor) => valor > 0
-      ),
-    precioMay: yup
-      .number()
-      .required()
-      .test(
-        "validaPrecioMay",
-        "el valor debe ser un numero positivo",
-        (valor) => valor > 0
-      ),
-    stockMin: yup
-      .number()
-      .required("Por favor ingrese un numero minimo de stock"),
-    cantidadPro: yup
-      .number()
-      .required("Porfavor ingrese una cantidad valida del producto"),
-  });
-
   //Realiza validaciones al enviar el formulario
-  const { register, errors, handleSubmit } = useForm({
-    resolver: yupResolver(schema),
-  });
+  const { register, handleSubmit } = useForm({});
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
+    if (
+      validaTodo(data) ||
+      validaMenor0(parseFloat(data.precioUni)) ||
+      validaMenor0(parseFloat(data.precioMay)) ||
+      validaMenor0(parseInt(data.stockMin)) ||
+      validaMenor0(parseInt(data.cantidadPro))
+    ) {
+      return;
+    }
+    console.log("eepa");
     const valida = await validarProducto(
       data.nombre,
       parseInt(datos.codigoPro)
@@ -220,9 +181,7 @@ const FormularioProd = ({
                 })}
               </Select>
 
-              <span className="span text-danger text-small d-block">
-                {errors.categoria?.message}
-              </span>
+              <span className="span text-danger text-small d-block"></span>
             </div>
             <div className="row">
               <TextField
@@ -237,7 +196,7 @@ const FormularioProd = ({
                 onChange={handleInputChange}
               />
               <span className="span text-danger text-small d-block">
-                {errors.nombre?.message}
+                {datos.nombre.length == 0 && "Campo requerido"}
               </span>
             </div>
             <div className="row">
@@ -253,7 +212,9 @@ const FormularioProd = ({
                 inputRef={register}
               />
               <span className="span text-danger text-small d-block">
-                {errors.precioUni?.message}
+                {datos.precioUni.length == 0 && "Campo requerido"}
+                {validaMenor0(parseFloat(datos.precioUni)) &&
+                  "Debe ser mayor que 0"}
               </span>
             </div>
             <div className="row">
@@ -269,7 +230,9 @@ const FormularioProd = ({
                 inputRef={register}
               />
               <span className="span text-danger text-small d-block">
-                {errors.precioMay?.message}
+                {datos.precioMay.length == 0 && "Campo requerido"}
+                {validaMenor0(parseFloat(datos.precioMay)) &&
+                  "Debe ser mayor que 0"}
               </span>
             </div>
             <div className="row">
@@ -285,7 +248,9 @@ const FormularioProd = ({
                 inputRef={register}
               />
               <span className="span text-danger text-small d-block">
-                {errors.stockMin?.message}
+                {datos.stockMin.length == 0 && "Campo requerido"}
+                {validaMenor0(parseInt(datos.stockMin)) &&
+                  "Debe ser mayor que 0"}
               </span>
             </div>
             <div className="row">
@@ -301,9 +266,7 @@ const FormularioProd = ({
                 onChange={handleInputChange}
                 inputRef={register}
               />
-              <span className="span text-danger text-small d-block">
-                {errors.codigoPro?.message}
-              </span>
+              <span className="span text-danger text-small d-block"></span>
             </div>
             <div className="row">
               <TextField
@@ -318,7 +281,9 @@ const FormularioProd = ({
                 inputRef={register}
               />
               <span className="span text-danger text-small d-block">
-                {errors.cantidadPro?.message}
+                {datos.cantidadPro.length == 0 && "Campo requerido"}
+                {validaMenor0(parseInt(datos.cantidadPro)) &&
+                  "Debe ser mayor que 0"}
               </span>
             </div>
             <div className="botones">
