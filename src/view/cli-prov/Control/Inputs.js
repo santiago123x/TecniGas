@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
-import { validarTelefono, validarEmail } from "./validacionInp";
+import { validarTelefono, validarEmail, validaMenor0 } from "./validacionInp";
 
 const Inputs = ({
   classes,
@@ -80,6 +80,9 @@ const Inputs = ({
           {tipo == "inv"
             ? datos.stock_min.length == 0 && "Campo requerido"
             : datos.identificacion.length == 0 && "Campo requerido"}
+          {tipo == "inv" &&
+            validaMenor0(parseInt(datos.stock_min)) &&
+            "Debe ser mayor que 0"}
         </span>
       </div>
       <div className="row">
@@ -98,6 +101,9 @@ const Inputs = ({
           {tipo == "inv"
             ? datos.cantidad_pro.length == 0 && "Campo requerido"
             : datos.email.length == 0 && "Campo requerido"}
+          {tipo == "inv" &&
+            validaMenor0(parseInt(datos.cantidad_pro)) &&
+            "Debe ser mayor que 0"}
           {tipo !== "inv" &&
             validarEmail(datos.email) &&
             "Debe ser un Email valido Ej: ej@ej.com"}
@@ -120,6 +126,9 @@ const Inputs = ({
           {tipo == "inv"
             ? datos.precio_may.length == 0 && "Campo requerido"
             : datos.direccion.length == 0 && "Campo requerido"}
+          {tipo == "inv" &&
+            validaMenor0(parseFloat(datos.precio_may)) &&
+            "Debe ser mayor que 0"}
         </span>
       </div>
       <div className="row">
@@ -138,6 +147,9 @@ const Inputs = ({
           {tipo == "inv"
             ? datos.precio_uni.length == 0 && "Campo requerido"
             : datos.telefono.length == 0 && "Campo requerido"}
+          {tipo == "inv" &&
+            validaMenor0(parseFloat(datos.precio_uni)) &&
+            "Debe ser mayor que 0"}
           {tipo !== "inv" &&
             validarTelefono(datos.telefono) &&
             "El telefono debe tener entre 7 y 12 caracteres"}

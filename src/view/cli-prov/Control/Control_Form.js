@@ -8,7 +8,12 @@ import { Modal } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import { validarTelefono, validarEmail, validaTodo } from "./validacionInp";
+import {
+  validarTelefono,
+  validarEmail,
+  validaTodo,
+  validaMenor0,
+} from "./validacionInp";
 import { validaPut, put } from "../formulario/Validacion";
 import "react-toastify/dist/ReactToastify.css";
 import { notify } from "../../Componentes/notify/Notify";
@@ -69,7 +74,13 @@ const Control_Form = ({
   const { register, handleSubmit } = useForm({});
 
   const onSubmit2 = async (data, event) => {
-    if (validaTodo(data)) {
+    if (
+      validaTodo(data) ||
+      validaMenor0(parseFloat(data.precio_uni)) ||
+      validaMenor0(parseFloat(data.precio_may)) ||
+      validaMenor0(parseInt(data.stock_min)) ||
+      validaMenor0(parseInt(data.cantidad_pro))
+    ) {
       return;
     }
     const codigoProdOld = objeto.codigo_pro;

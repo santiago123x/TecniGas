@@ -59,4 +59,21 @@ const validaTodo = (data) => {
   return bool;
 };
 
-export { schema, schema2, validarTelefono, validarEmail, validaTodo };
+const validaMenor0 = (numero) => {
+  let bool = false;
+  if (numero !== "") {
+    if (numero < 0) {
+      bool = true;
+    }
+  }
+  return bool;
+};
+
+export {
+  schema,
+  schema2,
+  validarTelefono,
+  validarEmail,
+  validaTodo,
+  validaMenor0,
+};
