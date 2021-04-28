@@ -1,9 +1,9 @@
 import "./ventas.css";
 import Button from '@material-ui/core/Button';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import IvaContext from "../Context/Iva/IvaContext";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-
 import DenseTable from "./tabla_ventas.js";
 import useAxios from "../Hooks/useAxios";
 import { matchSorter } from "match-sorter";
@@ -13,6 +13,9 @@ import {
 import { notify } from "../Componentes/notify/Notify";
 import { ToastContainer } from "react-toastify";
 import Formulario from "../cli-prov/formulario/formulario";
+
+
+
 
 
 
@@ -43,6 +46,8 @@ const Ventas = () => {
   })
   const [recarga, setRecarga] = useState(false);
   const [cambio, setCambio] = useState(0);
+  const [subtotal, setSubtotal] = useState(0);
+  const [totalIva, setTotalIva] = useState(0);
   const [cantidad, setCantidad] = useState(0);
   const [descuento, setDescuento] = useState(0);
   const [urlClientes, setUrlClientes] = useState(`/clipers`);
@@ -58,9 +63,9 @@ const Ventas = () => {
 
   // Constantes iniciales
   const filterOptionsClientes2 = ["nombre_pe", "identificacion"];
-  const iva = 0.19;
-  
-  
+  const { iva: { iva } } = useContext(IvaContext);
+
+
 
   //Funciones
 
@@ -115,9 +120,12 @@ const Ventas = () => {
       setPrecioSel("");
       return;
     }
-    const productConIva = parseInt(precioSel.pre) + (parseInt(precioSel.pre) * iva);
-    const subtotal = (productConIva - parseInt(descuento)) * parseInt(cantidad);
+
+
+    const subtotal = (parseInt(precioSel.pre) - parseInt(descuento)) * parseInt(cantidad);
     const row = createRow(productos.codigo_pro, productos.nombre_pro, cantidad, precioSel.pre, descuento, subtotal);
+
+
     setRows([...rows, row]);
     setCantidad(0);
     setDescuento(0);
@@ -141,6 +149,12 @@ const Ventas = () => {
     setTotal({ ...total, total: rows.reduce((sum, li) => sum + li.subtotal, 0) })
   }, [rows])
 
+  useEffect(() => {
+    setSubtotal(total.total - (total.total * iva));
+    setTotalIva(total.total * iva);
+  }, [total.total, iva])
+
+
   return (
     <>
 
@@ -155,7 +169,7 @@ const Ventas = () => {
                 style={{ width: 240 }}
                 value={inputClientes.cliente}
                 filterOptions={filterOptionsClientes}
-                getOptionLabel={(option) => option ? option.identificacion + " - " + option.nombre_pe : ''}
+                getOptionLabel={(option) => option ?  option.nombre_pe + " - " + option.identificacion : ''}
                 onChange={(event, newValue) => {
                   if (newValue !== null) {
                     setInputClientes({ cliente: newValue, documento: newValue.identificacion })
@@ -175,15 +189,17 @@ const Ventas = () => {
                   />
                 )}
               />
-              <Formulario
-                recarga={recarga}
-                setRecarga={setRecarga}
-                tipo="cliente"
-                metodo="post"
-                titulo="Crear Cliente"
-                imagen="cli"
-                tipoButton="false"
-              />
+              
+                <Formulario
+                  recarga={recarga}
+                  setRecarga={setRecarga}
+                  tipo="cliente"
+                  metodo="post"
+                  titulo="Crear Cliente"
+                  imagen="cli"
+                  tipoButton="false"
+                />
+              
 
             </div>
             <div className="form__section">
@@ -266,6 +282,7 @@ const Ventas = () => {
                     setProductos(newValue);
                     setPrecios([{ pre: newValue.precio_may, index: "Precio As: $" },
                     { pre: newValue.precio_uni, index: "Precio Pu: $" }])
+                    setPrecioSel("");
 
                   } else {
                     setPrecios([])
@@ -275,6 +292,7 @@ const Ventas = () => {
                 renderInput={(params) => (
                   <MiInput2
                     {...params}
+
                     id="inputproduc"
                     label="Producto"
                     variant="outlined"
@@ -316,7 +334,6 @@ const Ventas = () => {
                 renderInput={(params) => (
                   <MiInput2
                     {...params}
-
                     id="inputprec"
                     label="Precio"
                     variant="outlined"
@@ -349,11 +366,29 @@ const Ventas = () => {
 
         </div>
         <div className="flex-container-tabla">
-          <DenseTable rows={rows} />
+          <DenseTable rows={rows} setRows={setRows} />
         </div>
         <div className="flex-container-derecho">
           <div className="flex-container-derecho__form">
             <div className="flex-container-derecho__form__inputs">
+              <div className="form__section">
+                <MiInput2
+                  disabled
+                  label="Subtotal"
+                  variant="outlined"
+                  size="small"
+                  value={subtotal}
+                />
+              </div>
+              <div className="form__section">
+                <MiInput2
+                  disabled
+                  label="Iva"
+                  variant="outlined"
+                  size="small"
+                  value={totalIva}
+                />
+              </div>
               <div className="form__section">
                 <MiInput2
                   disabled
@@ -376,8 +411,8 @@ const Ventas = () => {
                 />
               </div>
               <div className="form__section">
-                               
-                
+
+
                 <MiInput2
                   disabled
                   label="Cambio"

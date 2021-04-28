@@ -116,10 +116,10 @@ margin-top: 0;
 .flex-container-derecho__form__inputs{
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
     width: 100%;
-    height: 70%;
+    height: 85%;
 }
 
 .flex-container-derecho__form > .form__section:last-child{

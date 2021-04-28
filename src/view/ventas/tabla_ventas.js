@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { colors } from '@material-ui/core';
+import {EliminarRow} from "./EliminarRow";
 
 const useStyles = makeStyles({
     
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
 
 
 
-export default function DenseTable({rows}) {
+export default function DenseTable({rows, setRows}) {
   const classes = useStyles();
  
   
@@ -52,7 +53,8 @@ export default function DenseTable({rows}) {
               <TableCell align="center">${row.precio}</TableCell>
               <TableCell align="center" >${row.descuento}</TableCell>
               <TableCell align="center">${row.subtotal}</TableCell>
-              <TableCell align="center"></TableCell>
+              <TableCell align="center"><div style={{display: "flex", justifyContent: "center"}}>{<EliminarRow tipo="edit" rowsG={rows} rowE={row} setRows={setRows}/>}
+                                        {<EliminarRow tipo="delete" rowsG={rows} rowE={row} setRows={setRows}/>}</div></TableCell>
             </TableRow>
           ))}
         </TableBody>

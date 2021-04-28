@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from "@material-ui/core/Tooltip";
 import { FaUserPlus, FaCartPlus } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import style_Form from "./style_Form.css";
@@ -289,6 +290,7 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
     }else{
       return (
         <div>
+        <Tooltip title="Crear nuevo Cliente" placement="bottom">
          <IconButton 
           aria-label="Agregar Cliente" 
           className={classes.iconButton}
@@ -296,6 +298,7 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
           >
             <FaUserPlus />
           </IconButton>
+        </Tooltip>
           <Modal open={modal} onClose={abrirCerrarModal}>
             {body}
           </Modal>

@@ -14,11 +14,11 @@ import { setLocale } from "yup";
 import { validaPut, put } from "../formulario/Validacion";
 import "react-toastify/dist/ReactToastify.css";
 import { notify } from "../../Componentes/notify/Notify";
-import { FaUserEdit } from "react-icons/fa";
 import useStyles from "./ControlUseStyle";
 import Inputs from "./Inputs";
 import { validarProd, putP } from "../../inventario/ModalProducto/ValidaProd";
 import useAxios from "../../Hooks/useAxios";
+import { MdModeEdit } from "react-icons/md";
 
 const URL = "http://localhost:5000";
 
@@ -232,7 +232,7 @@ const Control_Form = ({
           color="primary"
           onClick={() => abrirCerrarModal()}
         >
-          <FaUserEdit />
+          <MdModeEdit />
         </IconButton>
       </Tooltip>
 
