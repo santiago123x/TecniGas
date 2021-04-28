@@ -77,7 +77,9 @@ router.put("/listado/:persona_id/:tipo_clpr/:estado_clpr", putCliente_Prov);
 router.get("/cliproidp/:idper/:tipo", getCliProIdP);
 router.put("/cedulalistclipro/:persona_id", activaCliPro);
 
-//router.get("/", getClientes);
+
+//router.get("/clientes", getClientes);
+
 
 // Rutas de productos
 
