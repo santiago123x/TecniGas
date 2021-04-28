@@ -17,7 +17,7 @@ const validaPerf = yup.object().shape({
     .test(
       "validaTel",
       "Debe contener más de 7 digitos",
-      (valor) => valor.toString().length >= 7
+      (valor) => valor.toString().length >= 7 && valor.toString().length <= 12
     ),
   usu_email: yup
     .string()
@@ -38,4 +38,51 @@ const type = (dato) => {
   }
 };
 
-export { validaAcc, validaPerf, type };
+const validarTelefono = (tel) => {
+  if ((tel.length < 7 || tel.length > 12) && tel.length !== 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const validarEmail = (email) => {
+  if (
+    !/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
+      email
+    ) &&
+    email.length !== 0
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const validaTodo = (data) => {
+  let bool = false;
+  Object.keys(data).forEach((dat) => {
+    if (data[dat].length == 0) {
+      bool = true;
+    }
+  });
+  return bool;
+};
+
+const contraseñas = (contra1, contra2) => {
+  let bool = false;
+  if (contra1 !== contra2) {
+    bool = true;
+  }
+  return bool;
+};
+
+export {
+  validaAcc,
+  validaPerf,
+  type,
+  validarTelefono,
+  validarEmail,
+  validaTodo,
+  contraseñas,
+};

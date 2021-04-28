@@ -10,24 +10,53 @@ import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
+import Tooltip from "@material-ui/core/Tooltip";
 
 function Row({ firstData, secondData, titulosDetalles, opciones }) {
   const [open, setOpen] = useState(false);
   const classes = useRowStyles();
   const classes2 = useRowStyles2();
   const sub = useSub();
+  const cantidad = firstData.length == 4 ? firstData[2] : null;
+  const minCantidad = secondData.length == 3 ? secondData[2] : null;
+  const comparar = () => {
+    if (cantidad && minCantidad) {
+      if (cantidad < minCantidad) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  };
 
   return (
     <>
-      <TableRow className={classes.root}>
+      <TableRow className={comparar() ? classes.root2 : classes.root}>
         <TableCell size="small">
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <FcCollapse /> : <FcExpand />}
-          </IconButton>
+          {comparar() ? (
+            <Tooltip
+              title={`Comprar mas Productos: ${firstData[1]}`}
+              placement="top"
+            >
+              <IconButton
+                aria-label="expand row"
+                size="small"
+                onClick={() => setOpen(!open)}
+              >
+                {open ? <FcCollapse /> : <FcExpand />}
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <FcCollapse /> : <FcExpand />}
+            </IconButton>
+          )}
         </TableCell>
 
         {firstData.length !== 0 &&
@@ -97,6 +126,12 @@ const useRowStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       background: "#9EADCB",
+      borderBottom: "unset",
+    },
+  },
+  root2: {
+    "& > *": {
+      background: "rgba(219, 116, 116, 0.485)",
       borderBottom: "unset",
     },
   },

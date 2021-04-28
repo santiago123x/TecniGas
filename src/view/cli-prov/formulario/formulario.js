@@ -65,29 +65,22 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
 
   //Validaciones en formulario
   const schema = yup.object().shape({
-    nombre: yup
-      .string()
-      .required("Por favor ingrese el nombre")
-      .test(
-        "validaName",
-        "Debe contener mínimo 5 carácteres",
-        (valor) => valor.toString().length > 4
-      ),
+    nombre: yup.string().required("Por favor ingrese el nombre"),
     identificacion: yup
       .string()
       .required("Por favor ingrese la identificación o nit"),
     correo: yup
       .string()
       .required("Por favor ingrese el email")
-      .email("Ingrese un email válido"),
+      .email("Debe ser un Email valido Ej: ej@ej.com"),
     direccion: yup.string().required("Por favor ingrese la dirección"),
     telefono: yup
       .number()
       .required()
       .test(
         "validaTel",
-        "Debe contener más de 9 digitos",
-        (valor) => valor.toString().length > 9
+        "El telefono debe tener entre 7 y 12 caracteres",
+        (valor) => valor.toString().length >= 7 && valor.toString().length <= 12
       ),
   });
 

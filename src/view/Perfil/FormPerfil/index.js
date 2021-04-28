@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import "../perfil.css";
 import { useForm } from "react-hook-form";
-import { TextField } from "@material-ui/core";
-import useStyles from "../../cli-prov/Control/ControlUseStyle";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { validaAcc, validaPerf, type } from "./validacionForm";
+import {
+  type,
+  validarTelefono,
+  validarEmail,
+  validaTodo,
+  contraseñas,
+} from "./validacionForm";
 import Button from "@material-ui/core/Button";
+import MiIput from "./MiInput";
 
 const FormPerfil = ({ titulo, datos, labels, tipo }) => {
   const [data, setData] = useState({ ...datos });
-  const { register, errors, handleSubmit } = useForm({
-    resolver: yupResolver(tipo == "acc" ? validaAcc : validaPerf),
-  });
+  const { register, handleSubmit } = useForm({});
   const handleInputChange = (event) => {
     setData({
       ...data,
@@ -20,14 +22,22 @@ const FormPerfil = ({ titulo, datos, labels, tipo }) => {
   };
   const onSubmitAcc = (data, event) => {
     event.preventDefault();
+    if (validaTodo(data) && contraseñas(data.contra, data.contraConf)) {
+      return;
+    }
     console.log(data);
   };
-
   const onSubmitPerf = (data, event) => {
     event.preventDefault();
+    if (
+      validaTodo(data) ||
+      validarEmail(data.usu_email) ||
+      validarTelefono(data.usu_tel)
+    ) {
+      return;
+    }
     console.log(data);
   };
-  const classes = useStyles();
   return (
     <div className="forms-perfil">
       <h4 className="cont__lista-titulo">{titulo}</h4>
@@ -40,8 +50,7 @@ const FormPerfil = ({ titulo, datos, labels, tipo }) => {
           {Object.keys(datos).map((dat, index) => {
             return (
               <div className="input-form" key={index}>
-                <TextField
-                  className={classes.textfieldPerfil}
+                <MiIput
                   variant="outlined"
                   size="small"
                   type={type(dat)}
@@ -53,29 +62,39 @@ const FormPerfil = ({ titulo, datos, labels, tipo }) => {
                   fullWidth
                 />
                 <span className="span text-danger text-small d-block">
-                  {errors[dat]?.message}
+                  {data[dat].length == 0 && "Campo requerido"}
+                  {dat == "usu_tel" &&
+                    validarTelefono(data[dat]) &&
+                    "El telefono debe tener entre 7 y 12 caracteres"}
+                  {dat == "usu_email" &&
+                    validarEmail(data[dat]) &&
+                    "Debe ser un Email valido Ej: ej@ej.com"}
                 </span>
                 <span className="span text-danger text-small d-block">
                   {dat == "contraConf" &&
                     data.contraConf !== data.contra &&
-                    "Las contraseña debe ser igual"}
+                    "Las contraseñas deben ser igual"}
                 </span>
               </div>
             );
           })}
         </div>
-        <Button
-          size="medium"
-          fullWidth
-          variant="contained"
-          color="primary"
-          type="submit"
-        >
-          Modificar
-        </Button>
+        <div className="perfil-buttonForm">
+          <Button
+            size="small"
+            fullWidth
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
+            Modificar
+          </Button>
+        </div>
       </form>
     </div>
   );
 };
 
 export default FormPerfil;
+
+//errors[dat]?.message
