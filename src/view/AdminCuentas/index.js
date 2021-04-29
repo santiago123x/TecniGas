@@ -9,6 +9,7 @@ import CollapsibleTable from "../Componentes/Table/Table";
 import useAxios from "../Hooks/useAxios";
 import Search from "../Componentes/Search";
 import { ToastContainer } from "react-toastify";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const AdminCuentas = ({ tipo = "admin" }) => {
   const [valueInp, setValueInp] = useState("");
@@ -29,16 +30,18 @@ const AdminCuentas = ({ tipo = "admin" }) => {
       <div className="cont__lista">
         <div className="cont__admin">
           <div className="buttonAdminBack">
-            <Button
-              size="small"
-              variant="contained"
-              color="default"
-              onClick={() => {
-                history.push("/perfil");
-              }}
-            >
-              <IoArrowBack />
-            </Button>
+            <Tooltip title="Volver a Perfil" placement="top">
+              <Button
+                size="small"
+                variant="contained"
+                color="default"
+                onClick={() => {
+                  history.push("/perfil");
+                }}
+              >
+                <IoArrowBack />
+              </Button>
+            </Tooltip>
           </div>
           <h2 className="cont__lista-titulo titulo-admin">
             Administración de Usuarios
