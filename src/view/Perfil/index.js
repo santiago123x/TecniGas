@@ -7,6 +7,7 @@ import Loading from "../Componentes/Loading/Loading";
 import Error404 from "../Componentes/Error/Error";
 import { ToastContainer } from "react-toastify";
 import { useHistory } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const Perfil = () => {
   const history = useHistory();
@@ -81,18 +82,20 @@ const Perfil = () => {
                 setRecarga={setRecarga}
                 id={data.usuario_id}
               />
-              {data !== [] && data.rol == "vendedor" && (
+              {data !== [] && data.rol == "Administrador" && (
                 <div>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="default"
-                    onClick={() => {
-                      history.push("/administracioncuentas");
-                    }}
-                  >
-                    Administración
-                  </Button>
+                  <Tooltip title="Administración de cuentas" placement="top">
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="default"
+                      onClick={() => {
+                        history.push("/administracioncuentas");
+                      }}
+                    >
+                      Administración
+                    </Button>
+                  </Tooltip>
                 </div>
               )}
               <FormPerfil

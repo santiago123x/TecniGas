@@ -1,10 +1,10 @@
 export const rolUsu = (rol) => {
   switch (rol) {
-    case "administrador":
+    case "Administrador":
       return 10;
-    case "vendedor":
+    case "Vendedor":
       return 20;
-    case "contador":
+    case "Contador":
       return 30;
     default:
       return 0;
@@ -14,11 +14,11 @@ export const rolUsu = (rol) => {
 export const rolUsuNum = (num) => {
   switch (num) {
     case 10:
-      return "administrador";
+      return "Administrador";
     case 20:
-      return "vendedor";
+      return "Vendedor";
     case 30:
-      return "contador";
+      return "Contador";
     default:
       return 0;
   }
