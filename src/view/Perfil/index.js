@@ -6,8 +6,10 @@ import useAxios from "../Hooks/useAxios";
 import Loading from "../Componentes/Loading/Loading";
 import Error404 from "../Componentes/Error/Error";
 import { ToastContainer } from "react-toastify";
+import { useHistory } from "react-router-dom";
 
 const Perfil = () => {
+  const history = useHistory();
   const [recarga, setRecarga] = useState(false);
   const [datosCuenta, setDatosCuenta] = useState({
     nombre_usr: "",
@@ -81,7 +83,14 @@ const Perfil = () => {
               />
               {data !== [] && data.rol == "vendedor" && (
                 <div>
-                  <Button size="small" variant="contained" color="default">
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="default"
+                    onClick={() => {
+                      history.push("/administracioncuentas");
+                    }}
+                  >
                     Administración
                   </Button>
                 </div>

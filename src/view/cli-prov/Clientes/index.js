@@ -30,7 +30,7 @@ const Cliente = () => {
           />
 
           <hr className="linea-h2" />
-          <div className="cont__lista-input"></div>
+
           <Search
             valueInp={valueInp}
             setValueInp={setValueInp}

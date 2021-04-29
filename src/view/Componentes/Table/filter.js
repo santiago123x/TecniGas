@@ -2,7 +2,7 @@ import Row from "./TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import { ModalDelete } from "../Modal/ModalDelete/Index";
 import Modificar from "../../cli-prov/Control/Control_Form";
-import { Modal } from "bootstrap";
+import ModalModUsu from "../Modal/ModalModUsu";
 import "./Table.css";
 
 const Opciones = (objeto, categoria, recarga, setRecarga) => {
@@ -16,9 +16,14 @@ const Opciones = (objeto, categoria, recarga, setRecarga) => {
   }
   return (
     <>
-    <div className= "container-buttons">
-     
-        
+      <div className="container-buttons">
+        {categoria == "usu" ? (
+          <ModalModUsu
+            objeto={objeto}
+            recarga={recarga}
+            setRecarga={setRecarga}
+          />
+        ) : (
           <Modificar
             objeto={objeto}
             tipo={categoria}
@@ -28,17 +33,14 @@ const Opciones = (objeto, categoria, recarga, setRecarga) => {
             recarga={recarga}
             setRecarga={setRecarga}
           />
-        
-
-
+        )}
         <ModalDelete
-          tipo= {categoria}
+          tipo={categoria}
           elemento={objeto}
           recarga={recarga}
           setRecarga={setRecarga}
         />
       </div>
-
     </>
   );
 };
@@ -95,9 +97,7 @@ const filter = (
               secondData={secondData}
               titulosDetalles={titulosDetalle}
               opciones={Opciones(row, tipo, recarga, setRecarga)}
-
             />
-
           );
         });
       } else {
@@ -160,6 +160,61 @@ const filter = (
         return data.map((row, index) => {
           const firstData = [row.nombre_pe, row.identificacion, row.telefono];
           const secondData = [row.email, row.direccion];
+
+          return (
+            <Row
+              key={index}
+              titulosDetalles={titulosDetalle}
+              firstData={firstData}
+              secondData={secondData}
+              opciones={Opciones(row, categoria, recarga, setRecarga)}
+            />
+          );
+        });
+      }
+
+    case "usu":
+      if (filtro !== "") {
+        arreglo = data.filter((dat) => {
+          return (
+            dat.nombre_pe
+              .toLowerCase()
+              .trim()
+              .includes(filtro.toString().toLowerCase().trim()) ||
+            dat.identificacion
+              .toString()
+              .toLowerCase()
+              .trim()
+              .includes(filtro.toString().toLowerCase().trim()) ||
+            dat.nombre_usr
+              .toLowerCase()
+              .trim()
+              .includes(filtro.toString().toLowerCase().trim()) ||
+            dat.rol
+              .toLowerCase()
+              .trim()
+              .includes(filtro.toString().toLowerCase().trim())
+          );
+        });
+
+        return arreglo.map((row, index) => {
+          const firstData = [row.nombre_usr, row.nombre_pe, row.rol];
+          const secondData = [row.identificacion, row.email, row.contraseña];
+
+          return (
+            <Row
+              key={index}
+              firstData={firstData}
+              secondData={secondData}
+              titulosDetalles={titulosDetalle}
+              opciones={Opciones(row, categoria, recarga, setRecarga)}
+            />
+          );
+        });
+      } else {
+        return data.map((row, index) => {
+          const firstData = [row.nombre_usr, row.nombre_pe, row.rol];
+          const secondData = [row.identificacion, row.email, row.contraseña];
 
           return (
             <Row
