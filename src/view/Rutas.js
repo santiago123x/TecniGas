@@ -11,6 +11,7 @@ import Error404 from "./Componentes/Error/Error";
 import Perfil from "./Perfil";
 import UserState from "./Context/User/UserState";
 import IvaState from "./Context/Iva/IvaState";
+import AdminCuentas from "./AdminCuentas";
 
 function Rutas() {
   return (
@@ -52,6 +53,11 @@ function Rutas() {
               <Route path="/perfil">
                 <Layout tipo="perf">
                   <Perfil />
+                </Layout>
+              </Route>
+              <Route path="/administracioncuentas">
+                <Layout tipo="perf">
+                  <AdminCuentas />
                 </Layout>
               </Route>
 

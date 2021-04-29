@@ -17,7 +17,7 @@ import {
 import { validaPut, put } from "../formulario/Validacion";
 import "react-toastify/dist/ReactToastify.css";
 import { notify } from "../../Componentes/notify/Notify";
-import { FaUserEdit } from "react-icons/fa";
+import { MdModeEdit } from "react-icons/md";
 import useStyles from "./ControlUseStyle";
 import Inputs from "./Inputs";
 import { validarProd, putP } from "../../inventario/ModalProducto/ValidaProd";
@@ -239,7 +239,7 @@ const Control_Form = ({
           color="primary"
           onClick={() => abrirCerrarModal()}
         >
-          <FaUserEdit />
+          <MdModeEdit />
         </IconButton>
       </Tooltip>
 
