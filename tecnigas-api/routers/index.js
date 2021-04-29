@@ -42,7 +42,25 @@ const {
   postCompraDet,
 } = require("../controlador/compra.js");
 
+const {
+  getDevolucion,
+  postDevolucion,
+} = require("../controlador/devolucion.js");
+
 const { getCategoria } = require("../controlador/categoria.js");
+
+const { 
+  getVenta,
+} = require("../controlador/venta.js");
+
+// Rutas de devolución
+
+router.get("/devolucion", getDevolucion);
+router.post("/devolucion", postDevolucion);
+
+// Rutas de venta
+
+router.get("/venta", getVenta);
 
 //Ruta de Iva
 
@@ -52,7 +70,7 @@ router.get("/iva", getIva);
 
 router.get("/categorias", getCategoria);
 
-// Rutas de Proveedor
+// Rutas de Proveedores
 
 router.get("/provpers", getProveedor);
 

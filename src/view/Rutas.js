@@ -34,7 +34,7 @@ function Rutas() {
                 </Layout>
               </Route>
 
-          <Route path="/devolucion">
+            <Route path="/devolucion">
             <Layout tipo="dev">
               <Devolucion />
             </Layout>

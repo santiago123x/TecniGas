@@ -34,9 +34,21 @@
   width: 90%;
 }
 
+.select01 {
+  display: flex;
+  align-items: center;
+}
+
+.select02 {
+  display: flex;
+  align-items: center;
+}
+
 .txt01 {
   display: flex;
   align-items: center;
+  width: 30%;
+  min-width: 158px;
 }
 
 .btn_save {
