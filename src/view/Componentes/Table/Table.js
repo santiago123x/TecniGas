@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -17,6 +17,9 @@ export default function CollapsibleTable({
   titulos,
   titulosDetalles,
   tipo,
+  categoria,
+  recarga,
+  setRecarga,
 }) {
   const styleHead = useHeader();
   const classes = useRowStyles();
@@ -29,7 +32,6 @@ export default function CollapsibleTable({
       noHayDatos[i] = "";
     }
   }
-  console.log(filter(tipo, data, filtro, titulosDetalles));
   return (
     <div className="table-container">
       <TableContainer component={Paper}>
@@ -44,8 +46,24 @@ export default function CollapsibleTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {filter(tipo, data, filtro, titulosDetalles).length !== 0 ? (
-              filter(tipo, data, filtro, titulosDetalles)
+            {filter(
+              tipo,
+              data,
+              filtro,
+              titulosDetalles,
+              categoria,
+              recarga,
+              setRecarga
+            ).length !== 0 ? (
+              filter(
+                tipo,
+                data,
+                filtro,
+                titulosDetalles,
+                categoria,
+                recarga,
+                setRecarga
+              )
             ) : (
               <TableRow className={classes.root} align="center">
                 {titulos.length !== 0 &&
@@ -62,7 +80,7 @@ export default function CollapsibleTable({
   );
 }
 
-const useHeader = makeStyles({
+const useHeader = makeStyles((theme) => ({
   root: {
     "& > *": {
       borderBottom: "unset",
@@ -71,16 +89,16 @@ const useHeader = makeStyles({
       fontWeight: "bold",
     },
   },
-});
+}));
 
-const useRowStyles = makeStyles({
+const useRowStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       background: "#9EADCB",
       borderBottom: "unset",
     },
   },
-});
+}));
 
 /*<TableCell align="center">Codigo del Producto</TableCell>
               <TableCell size="small" align="center">

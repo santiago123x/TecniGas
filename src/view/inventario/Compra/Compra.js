@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "./Compra.css";
-import Tablacompra from "./Tablacompra"
-import { withStyles } from '@material-ui/styles';
-import Button from '@material-ui/core/Button';
+import Tablacompra from "./Tablacompra";
+import { withStyles } from "@material-ui/styles";
+import Button from "@material-ui/core/Button";
 import useAxios from "../../Hooks/useAxios";
-import moneda from '../../utilidades/moneda';
+import moneda from "../../utilidades/moneda";
 import axios from "axios";
-import { Alert } from "bootstrap";
-import MiFilter from '../../Componentes/MiFilter/Mifilter';
-import MiInput from '../../Componentes/MiInput/MiInput';
-
+import MiFilter from "../../Componentes/MiFilter/Mifilter";
+import MiInput from "../../Componentes/MiInput/MiInput";
 
 const Compra = () => {
   const productos = useAxios(`/producto/`);
   const proveedores = useAxios(`/proveedor/`);
   const date = new Date();
-  const fechaActu = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const fechaActu = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
 
   const [compraVacia, setCompraVacia] = useState(true);
   const [proveedor, setProveedor] = useState(null);
@@ -39,10 +41,8 @@ const Compra = () => {
   };
 
   const verificaCompra = () => {
-    if (compraDet.length > 0 && proveedor != null)
-      setCompraVacia(false);
-    else
-      setCompraVacia(true);
+    if (compraDet.length > 0 && proveedor != null) setCompraVacia(false);
+    else setCompraVacia(true);
   };
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const Compra = () => {
     verificaCompra();
   }, [compraDet, proveedor]);
 
-  const registrarDet = e => {
+  const registrarDet = (e) => {
     e.preventDefault();
     const nuevoDet = {
       producto_id: produ.producto_id,
@@ -82,18 +82,17 @@ const Compra = () => {
       method: "post",
       url: "http://localhost:5000/compra/",
       data: body,
-    }).then(response => {
+    }).then((response) => {
       if (response.status === 200) {
         const id = response.data[0].compra_id;
         guardarDetalles(id);
-      } else
-        alert("Ha susedido un problema intente mas tarde")
+      } else alert("Ha susedido un problema intente mas tarde");
     });
   };
 
   const guardarDetalles = (id) => {
     let nuevoBodyDet;
-    compraDet.map(async det => {
+    compraDet.map(async (det) => {
       nuevoBodyDet = {
         producto_id: det.producto_id,
         cantidad_pd: det.cantidad,
@@ -106,25 +105,23 @@ const Compra = () => {
         url: "http://localhost:5000/compraDet/",
         data: nuevoBodyDet,
       });
-    }) 
-  }
+    });
+  };
 
   const optionLabelProvee = (opcion) => {
-    return `${opcion.nombre_pe}`
-  }
+    return `${opcion.nombre_pe}`;
+  };
 
   const optionLabelProduc = (opcion) => {
     return `${opcion.codigo_pro} - ${opcion.nombre_pro}`
   }
 
   const filtroProveedor = ['nombre_pe', 'identificacion'];
-
-  const filtroProducto = ['nombre_pro', 'codigo_pro'];
-
+  const filtroProducto = ["nombre_pro", "codigo_pro"];
 
   const guardar = () => {
     guardarCompra();
-  }
+  };
 
   return (
     <div className="conten-compras" id="compra">
@@ -137,8 +134,8 @@ const Compra = () => {
               value={proveedor}
               setValue={setProveedor}
               tamaño={250}
-              id='proveedor'
-              label='Proveedor'
+              id="proveedor"
+              label="Proveedor"
               optionLabel={optionLabelProvee}
             />
             <MiInput
@@ -160,7 +157,7 @@ const Compra = () => {
                 shrink: true,
               }}
               onChange={(evento) => {
-                setFecha(evento.target.value)
+                setFecha(evento.target.value);
               }}
             />
             <MiInput
@@ -172,17 +169,21 @@ const Compra = () => {
               variant="outlined"
               size="small"
               onChange={(evento) => {
-                setObservacion(evento.target.value)
+                setObservacion(evento.target.value);
               }}
               inputProps={{
-                maxLength: 150
+                maxLength: 150,
               }}
             />
           </form>
         </div>
 
         <div className="conten-form produ">
-          <form className="form" id="form-produc" onSubmit={(e) => registrarDet(e)}>
+          <form
+            className="form"
+            id="form-produc"
+            onSubmit={(e) => registrarDet(e)}
+          >
             <MiFilter
               id="producto"
               label="Producto"
@@ -235,7 +236,14 @@ const Compra = () => {
       </div>
 
       <div className="conten-button-compra">
-        <MiButton variant="contained" color="primary" disabled={compraVacia} onClick={() => { guardar() }} >
+        <MiButton
+          variant="contained"
+          color="primary"
+          disabled={compraVacia}
+          onClick={() => {
+            guardar();
+          }}
+        >
           Terminar Compra
         </MiButton>
       </div>

@@ -4,7 +4,7 @@ import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import { FcSearch, FcViewDetails } from "react-icons/fc";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 
 const Search = ({ valueInp, setValueInp, titulo, tooltip }) => {
   const classes = useStyles();
@@ -25,16 +25,15 @@ const Search = ({ valueInp, setValueInp, titulo, tooltip }) => {
           setValueInp(e.target.value);
         }}
       />
-      <Tooltip title="Buscar" placement="top">
-        <IconButton
-          type="button"
-          className={classes.iconButton}
-          aria-label="search"
-          disabled
-        >
-          <FcSearch className="buscar-icono" />
-        </IconButton>
-      </Tooltip>
+
+      <IconButton
+        type="button"
+        className={classes.iconButton}
+        aria-label="search"
+        disabled
+      >
+        <FcSearch className="buscar-icono" />
+      </IconButton>
     </Paper>
   );
 };

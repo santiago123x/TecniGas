@@ -3,7 +3,7 @@ import { FcCollapse, FcExpand } from "react-icons/fc";
 import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Typography from "@material-ui/core/Typography";
@@ -11,7 +11,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
 
-function Row({ firstData, secondData, titulosDetalles }) {
+function Row({ firstData, secondData, titulosDetalles, opciones }) {
   const [open, setOpen] = useState(false);
   const classes = useRowStyles();
   const classes2 = useRowStyles2();
@@ -38,6 +38,9 @@ function Row({ firstData, secondData, titulosDetalles }) {
               </TableCell>
             );
           })}
+        <TableCell align="center">
+          <strong>{opciones}</strong>
+        </TableCell>
       </TableRow>
       <TableRow className={classes.root}>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -90,15 +93,15 @@ function Row({ firstData, secondData, titulosDetalles }) {
   );
 }
 
-const useRowStyles = makeStyles({
+const useRowStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       background: "#9EADCB",
       borderBottom: "unset",
     },
   },
-});
-const useRowStyles2 = makeStyles({
+}));
+const useRowStyles2 = makeStyles((theme) => ({
   root: {
     "& > *": {
       background: "#ffffff71",
@@ -106,14 +109,14 @@ const useRowStyles2 = makeStyles({
       borderRadius: "5px",
     },
   },
-});
-const useSub = makeStyles({
+}));
+const useSub = makeStyles((theme) => ({
   root: {
     "& > *": {
       fontWeight: "bold",
     },
   },
-});
+}));
 
 export default Row;
 

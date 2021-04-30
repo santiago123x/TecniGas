@@ -5,17 +5,21 @@ import Loading from "../../Componentes/Loading/Loading";
 import Error404 from "../../Componentes/Error/Error";
 import useAxios from "../../Hooks/useAxios";
 import Search from "../../Componentes/Search";
+import FormularioProd from "../ModalProducto/FormularioProd";
 
 const Inventario = () => {
   const [valueInp, setValueInp] = useState("");
   const [url, setUrl] = useState(`/producto/`);
-  const { data, error, loading } = useAxios(url);
+  const [recarga, setRecarga] = useState(false);
+  const { data, error, loading } = useAxios(url, recarga);
+  const dataCategoria = useAxios("/categorias");
 
   const title = [
     "Codigo del Producto",
     "Nombre del Producto",
     "Cantidad",
     "Categoria",
+    "Opciones",
   ];
   const titleDetails = [
     "Precio Publico",
@@ -28,7 +32,14 @@ const Inventario = () => {
       <div className="conteiner">
         <div className="cont__lista">
           <h2 className="cont__lista-titulo">Listado de Productos</h2>
-
+          <FormularioProd
+            recarga={recarga}
+            setRecarga={setRecarga}
+            tipo="Producto"
+            metodo="post"
+            titulo="Crear Producto"
+            dataCategoria={dataCategoria.data}
+          />
           <hr className="linea-h2" />
           <div className="cont__lista-input"></div>
           <Search
@@ -53,6 +64,8 @@ const Inventario = () => {
                 titulos={title}
                 titulosDetalles={titleDetails}
                 tipo="inv"
+                recarga={recarga}
+                setRecarga={setRecarga}
               />
             )}
           </div>
