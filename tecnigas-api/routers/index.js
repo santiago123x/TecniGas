@@ -42,15 +42,15 @@ const {
   postCompraDet,
 } = require("../controlador/compra.js");
 
+
 const { getCategoria } = require("../controlador/categoria.js");
 
 //Ruta de Iva
 
+
 router.get("/iva", getIva);
 
-const {
-  getIva,
-} = require("../controlador/iva.js");
+
 
 // Rutas de Categoria
 

@@ -11,8 +11,8 @@ import {
   BootstrapInput, MiInput2, MiFilter2
 } from "./estilo_componentes/estilos";
 import { notify } from "../Componentes/notify/Notify";
-import { ToastContainer } from "react-toastify";
 import Formulario from "../cli-prov/formulario/formulario";
+import {validaVentas} from "./validador/ValidaVenta";
 
 
 
@@ -34,6 +34,7 @@ function createRow(codigo, nombre, cantidad, precio, descuento, subtotal) {
 const Ventas = () => {
 
   //Estados iniciales (useState)
+  const [estado, setEstado] = useState(0);
   const [rows, setRows] = useState([]);
   const [url, setUrl] = useState(`/producto/`);
   const data = useAxios(url);
@@ -44,6 +45,7 @@ const Ventas = () => {
     total: 0,
     recibido: 0,
   })
+  const [observacion, setObservacion] = useState("");
   const [recarga, setRecarga] = useState(false);
   const [cambio, setCambio] = useState(0);
   const [subtotal, setSubtotal] = useState(0);
@@ -64,10 +66,54 @@ const Ventas = () => {
   // Constantes iniciales
   const filterOptionsClientes2 = ["nombre_pe", "identificacion"];
   const { iva: { iva } } = useContext(IvaContext);
+  const idVenta = 0;
+  const usuario = 2;
 
 
 
   //Funciones
+
+  const realizarVenta = () => {
+     
+    if(validaVentas(inputClientes.cliente, estado, parseFloat(total.recibido),total.total,rows)){
+      notify("Revise los datos de la venta", "", "error");
+      return
+    }
+    let est = "";
+    if (estado == 10) {
+      est = "Pagado"
+    } else if (estado == 20) {
+      est = "Pendiente"
+    }
+
+    const body = {
+      cliente_id: inputClientes.cliente.id_clipro,
+      usuario_id: usuario,
+      fecha_ve: fecha,
+      iva: totalIva,
+      sub_total: subtotal,
+      total_ve: total.total,
+      observacion_vta: observacion,
+      recibido: parseFloat(total.recibido),
+      cambio: cambio,
+      estado_ve: est,
+
+    }
+
+    rows.forEach((r)=> {
+      const body2 = {
+        id_venta: idVenta,
+        producto_id: r.codigo,
+        descuento: parseFloat(r.descuento),
+        cantidad_ven: parseInt(r.cantidad),
+        precio_ven: r.precio,
+        total_ven: r.subtotal,
+      }
+      console.log(body2);
+    })
+    
+
+  }
 
   const calcularTotal = (antsub) => {
 
@@ -109,8 +155,8 @@ const Ventas = () => {
 
   const creaFilas = () => {
 
-    if (productos == "" || cantidad == 0 || precioSel == "") {
-      notify("Debe llenar todos los campos", "", "error");
+    if (productos == "" || cantidad <= 0 || precioSel == "" || descuento < 0) {
+      notify("Verfique todos los campos", "", "error");
       return;
     } if (validaProd(productos.codigo_pro)) {
       notify("Este producto ya fue agregado a la compra", "", "error");
@@ -137,21 +183,23 @@ const Ventas = () => {
   //UseEffect's!
 
   useEffect(() => {
-    if (total.recibido >= total.total) {
+    if ((total.recibido >= total.total) && estado == 10) {
       setCambio(total.recibido - total.total);
     } else {
-      setCambio("Recibido invalido");
+      setCambio(0);
     }
 
-  }, [total.total, total.recibido])
+  }, [total.total, total.recibido, estado])
 
   useEffect(() => {
     setTotal({ ...total, total: rows.reduce((sum, li) => sum + li.subtotal, 0) })
   }, [rows])
 
   useEffect(() => {
-    setSubtotal(total.total - (total.total * iva));
-    setTotalIva(total.total * iva);
+
+    setSubtotal(total.total - (total.total * (iva != {} ? iva : 0)));
+    setTotalIva(total.total * (iva != {} ? iva : 0));
+
   }, [total.total, iva])
 
 
@@ -163,33 +211,34 @@ const Ventas = () => {
           <form className="formsuperior">
 
             <div className="form__section">
-              <MiFilter2
-                id="cliente"
-                options={dataClientes.data}
-                style={{ width: 240 }}
-                value={inputClientes.cliente}
-                filterOptions={filterOptionsClientes}
-                getOptionLabel={(option) => option ?  option.nombre_pe + " - " + option.identificacion : ''}
-                onChange={(event, newValue) => {
-                  if (newValue !== null) {
-                    setInputClientes({ cliente: newValue, documento: newValue.identificacion })
+              <div className="filterClientes">
+                <MiFilter2
+                  id="cliente"
+                  options={dataClientes.data}
+                  style={{ width: 240 }}
+                  value={inputClientes.cliente}
+                  filterOptions={filterOptionsClientes}
+                  getOptionLabel={(option) => option ? option.nombre_pe + " - " + option.identificacion : ''}
+                  onChange={(event, newValue) => {
+                    if (newValue !== null) {
+                      setInputClientes({ cliente: newValue, documento: newValue.identificacion })
 
-                  } else {
-                    setInputClientes({ cliente: "", documento: "" })
+                    } else {
+                      setInputClientes({ cliente: "", documento: "" })
 
-                  }
-                }}
-                renderInput={(params) => (
-                  <MiInput2
-                    {...params}
-                    id="inputCliente"
-                    label="Cliente"
-                    variant="outlined"
-                    size="small"
-                  />
-                )}
-              />
-              
+                    }
+                  }}
+                  renderInput={(params) => (
+                    <MiInput2
+                      {...params}
+                      id="inputCliente"
+                      label="Cliente"
+                      variant="outlined"
+                      size="small"
+                    />
+                  )}
+                />
+
                 <Formulario
                   recarga={recarga}
                   setRecarga={setRecarga}
@@ -199,9 +248,12 @@ const Ventas = () => {
                   imagen="cli"
                   tipoButton="false"
                 />
-              
-
+              </div>
+              <span className="span text-danger text-small d-block spanventas">
+                {inputClientes.cliente.length == 0 && "Seleccione un Cliente"}
+              </span>
             </div>
+
             <div className="form__section">
               <MiInput2
                 label="Documento"
@@ -241,6 +293,8 @@ const Ventas = () => {
                 label="Nota"
                 placeholder="Digite su Nota"
                 rows={3}
+                value={observacion}
+                onChange={(e) => { setObservacion(e.target.value) }}
                 multiline
                 variant="outlined"
                 size="small" />
@@ -253,14 +307,18 @@ const Ventas = () => {
               <Select
                 defaultValue={0}
                 input={<BootstrapInput />}
+                value={estado}
                 label="Estado"
-
+                onChange={(e) => setEstado(e.target.value)}
               >
                 <MenuItem default value={0} >Estado</MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                <MenuItem value={10}>Pagado</MenuItem>
+                <MenuItem value={20}>Pendiente</MenuItem>
               </Select>
+
+              <span className="span text-danger text-small d-block spanventas">
+                {estado == 0 && "Seleccione un estado para la venta"}
+              </span>
 
             </div>
 
@@ -314,6 +372,9 @@ const Ventas = () => {
                 value={cantidad}
                 onChange={(e) => setCantidad(e.target.value)}
               />
+              <span className="span text-danger text-small d-block spanventas">
+                {cantidad <= 0 && "ingrese una cantidad válida"}
+              </span>
             </div>
             <div className="form__section">
               <MiFilter2
@@ -352,6 +413,9 @@ const Ventas = () => {
                 value={descuento}
                 onChange={(e) => setDescuento(e.target.value)}
               />
+              <span className="span text-danger text-small d-block spanventas">
+                {descuento < 0 && "ingrese una descuento válido"}
+              </span>
             </div>
             <div className="form__section">
               <Button
@@ -409,6 +473,9 @@ const Ventas = () => {
                     setTotal({ ...total, recibido: e.target.value })
                   }}
                 />
+                <span className="span text-danger text-small d-block spanventas">
+                  {total.recibido < total.total && estado == 10 && "Ingrese un valor apropiado"}
+                </span>
               </div>
               <div className="form__section">
 
@@ -424,13 +491,18 @@ const Ventas = () => {
             </div>
 
             <div className="form__section">
-              <Button variant="contained" color="primary" style={{ maxHeight: 30 }} fullWidth>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ maxHeight: 30 }}
+                onClick={() => realizarVenta()}
+                fullWidth>
                 Pagar
               </Button>
             </div>
           </div>
         </div>
-        <ToastContainer />
+
 
       </div>
 

@@ -106,7 +106,7 @@ margin-top: 0;
 
 
 .flex-container-derecho__form{
-    padding: 6%;
+    padding: 4% 6%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -153,3 +153,46 @@ margin-top: 0;
     background-color: rgba(0, 0, 0, 0);
 }
 
+.formsuperior> .form__section:first-child{
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    padding-top: 0.5%;     
+    
+}
+
+.filterClientes {
+    display: flex;
+    align-items: center;
+}
+
+.spanventas {
+    align-self: flex-start;
+    padding-left: 2%;
+}
+
+.formsuperior> .form__section:last-child{
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+       
+    
+}
+
+.flex-container-derecho__form__inputs > .form__section:nth-child(4){
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+     
+}
+
+.formintermedio > .form__section:nth-child(2),.form__section:nth-child(4){
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    padding-top: 0.5%;
+}

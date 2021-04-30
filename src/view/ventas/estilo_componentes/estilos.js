@@ -1,6 +1,5 @@
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/styles';
 import Select from '@material-ui/core/Select';
-
 import InputBase from '@material-ui/core/InputBase';
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from '@material-ui/core/TextField';
@@ -120,18 +119,7 @@ const useStyles = makeStyles((theme) => ({
   
   
   
-  const MiSelect = withStyles({
-    root: {
-      '.MuiSelect-select': {
-        backgroundColor: "rgb(255, 255, 255);",
-        borderRadius: '4px',
-        width: '100px',
-  
-      },
-  
-    },
-  })(Select);
-  
+ 
   const BootstrapInput = withStyles((theme) => ({
     root: {
       'label + &': {
@@ -206,5 +194,5 @@ const useStyles = makeStyles((theme) => ({
   // })(Autocomplete);
 
   export {
-    BootstrapInput, MiSelect, MiInput2, MiInput, useStyles, MiFilter2
+    BootstrapInput, MiInput2, MiInput, useStyles, MiFilter2
   }
