@@ -51,6 +51,8 @@ const { getCategoria } = require("../controlador/categoria.js");
 
 const { 
   getVenta,
+  getDetallebyId,
+  getDetaPro,
 } = require("../controlador/venta.js");
 
 // Rutas de devolución
@@ -61,6 +63,8 @@ router.post("/devolucion", postDevolucion);
 // Rutas de venta
 
 router.get("/venta", getVenta);
+router.get("/ventadetalle/:id_venta", getDetallebyId);
+router.get("detavenpro/:id_venta/:id_pro", getDetaPro);
 
 //Ruta de Iva
 

@@ -4,21 +4,20 @@ import MiInput from "../../Componentes/MiInput/MiInput";
 import Button from "@material-ui/core/Button";
 import useStyles from "./FormDevUseStyles";
 import styleDev from "../styleDev.css";
-import Tablacompra from "../../inventario/Compra/Tablacompra";
+import TablaDev from "./TablaDev";
 import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import axios from "axios";
 import useAxios from "../../Hooks/useAxios";
+import { validaPro, getDetalleVen, getProdDeta } from "./validacionAxios";
 
 const FormularioDev = ({}) => {
 
 // Asignación de los valores escritos en los campos de texto
     const [datos, setDatos] = useState([{
       cod_factura: "",
-      nombre_pro: "",
+      fecha_dev: "",
+      id_producto: "",
       cantidad: "",
-      precio: "",
-      totalDet: "",
+      nota: ""
       }]);
     
 // Función de escucha que obtiene el valor de los campos de texto
@@ -29,15 +28,64 @@ const FormularioDev = ({}) => {
         });
       };
 
-  //Por la inexistencia de una venta, select de persona_id    
-  const personaId = useAxios("/persona");
-  const persona = personaId.data;
+  
 
-  //Lo que debe de ir en el select01
-  // const venta = useAxios("/venta");
-  // const venta_id = venta.data;
+  //Realiza validaciones al enviar el formulario
+  const { register, handleSubmit } = useForm();
+
+  //Lista de id de ventas realizadas. Select01
+   const listVent = useAxios("/venta");
+   const venta = listVent.data;
+
+  //Lista de productos de la venta. Select02
+  let produlist = {}; 
+
+  //Componentes de la tabla
+  const [comp, setComp] = useState([{
+    cod_producto : "",
+    nombre : "",
+    categoria : "",
+    cantidad : "",
+    precio : ""
+  }]);
       
   const classes = useStyles();
+
+  const submitFa =  async (e) => {
+    const idVenta = datos.cod_factura;
+    const valida = await getDetalleVen(idVenta);
+
+      if (valida !== false)
+      {
+        produlist = valida;
+      } else {
+        //error
+      }
+    
+  };
+
+  const subtMarca = async (e) => {
+    const cod_venta = datos.cod_factura;
+    const idPro = datos.id_producto;
+    
+      const producto = await validaPro(idPro);
+      if (producto !== false){
+        const detapro = await getProdDeta(cod_venta, idPro);
+        const cuerpo = {
+          cod_producto : producto.codigo_pro,
+          nombre : producto.nombre_pro,
+          categoria : producto.nombre_catg,
+          cantidad : detapro.cantidad_ven,
+          precio : detapro.precio_ven
+        };
+        
+        setComp(cuerpo);
+
+      } else {
+        //error
+      }
+    
+  };
   
   //Formulario del modal
   const body = (
@@ -51,16 +99,17 @@ const FormularioDev = ({}) => {
                 <Select
                   native
                   className = {classes.select}
-                  name = "venta_id"
+                  name = "codigo_factura"
                   variant = "outlined"
                   size = "small"
+                  onChange = {handleInputChange}
                   inputLabelProps={{
                     shrink: true,
                   }}
                 >
                   <option value={0}>Código Factura</option>
-                  {persona.map((elemento) =>(
-                    <option key={elemento.persona_id} value={elemento.persona_id}>{elemento.persona_id}</option>
+                  {venta.map((elemento) =>(
+                    <option key={elemento.venta_id} value={elemento.venta_id}>{elemento.venta_id}</option>
                   ))}
                 </Select>
                 </div>
@@ -70,7 +119,8 @@ const FormularioDev = ({}) => {
                     size = "small"
                     type = "date"
                     name = "fecha_dev"
-                    label = "Fecha de Devolución"
+                    label = "Fecha Devolución"
+                    onChange = {handleInputChange}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -82,6 +132,7 @@ const FormularioDev = ({}) => {
                   variant ="contained"
                   color ="primary"
                   type = "submit"
+                  onClick={() => submitFa()}
                 >
                   Buscar
                 </Button>
@@ -98,19 +149,21 @@ const FormularioDev = ({}) => {
                   name = "id_producto"
                   variant = "outlined"
                   size = "small"
-                  helperText = "Id Producto"
+                  onChange = {handleInputChange}
                 >
                   <option value={0}>ID Producto</option>
-                  {persona.map((elemento) =>(
-                    <option key={elemento.persona_id} value={elemento.persona_id}>{elemento.persona_id}</option>
+                  {produlist.map((elemento) =>(
+                    <option key={elemento.producto_id} value={elemento.producto_id}>{elemento.producto_id}</option>
                   ))}
                 </Select>
               </div>
-              <div className = "txt03">
+              <div className = "txt02">
                 <MiInput 
                   variant = "outlined"
                   size = "small"
                   label = "Cantidad"
+                  name = "cantidad"
+                  onChange = {handleInputChange}
                 />
               </div>
             </div>
@@ -120,8 +173,10 @@ const FormularioDev = ({}) => {
                   variant = "outlined"
                   size = "small"
                   multiline
-                  rows={4}
+                  rows = {4}
                   label = "Nota De Devolución"
+                  name = "nota"
+                  onChange = {handleInputChange}
                 />
               </div>
               <div className = "btn_marcar">
@@ -136,9 +191,8 @@ const FormularioDev = ({}) => {
               </div>
             </div>
             <div className = "table">
-              <Tablacompra
-                compraDet = {datos}
-                setCompraDet = {setDatos}
+              <TablaDev
+                detaPro = {comp}
               />
             </div>
             <div className = "btn_devolver">

@@ -9,6 +9,32 @@ const getVenta = async (req, res) => {
     }
 };
 
+const getDetallebyId = async (req, res) => {
+    const id_venta = req.params.id_venta;
+    try {
+        const response = await pool.query(
+            `SELECT * FROM "detalle-venta" WHERE id_venta = ${id_venta} order by id_detaven`
+            );
+        res.send(response.rows);
+    } catch (e) {
+        console.error(e);
+    }
+};
+
+const getDetaPro = async (req, res) => {
+    const id_venta = req.params.id_venta;
+    const id_producto = req.params.id_producto
+    try {
+        const response = await pool.query(
+            `SELECT FROM "detalle-venta" WHERE id_venta = ${id_venta} AND producto_id = ${id_producto}`
+            );
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 module.exports = {
     getVenta,
+    getDetallebyId,
+    getDetaPro
 };
