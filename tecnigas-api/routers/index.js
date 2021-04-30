@@ -24,6 +24,10 @@ const {
   postCompraDet,
 } = require("../controlador/compra.js");
 
+
+const { postMovimiento } = require("../controlador/movimiento");
+
+
 //router.get("/", getClientes);
 
 // routes Productos
@@ -46,5 +50,9 @@ router.get("/proveedor", getProveedor);
 //router.get("/compra", getCompra);
 router.post("/compra", postCompra);
 router.post("/compraDet", postCompraDet);
+
+// routes Movimiento
+
+router.post("/movimiento", postMovimiento)
 
 module.exports = router;
