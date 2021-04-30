@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -105,6 +105,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
         <Table className={classes.table} aria-label="customized table" stickyHeader size="small">
           <TableHead>
             <TableRow>
+              <StyledTableCell align="center">Codigo</StyledTableCell>
               <StyledTableCell align="center">Producto</StyledTableCell>
               <StyledTableCell align="center">Cantidad</StyledTableCell>
               <StyledTableCell align="center">Precio</StyledTableCell>
@@ -116,8 +117,9 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
             {compraDet.length === 0 ? (<StyledTableRow />) :
               (compraDet.map((det, index) => (
                 <StyledTableRow key={index}>
-                  <StyledTableCell component="th" scope="row">{det.nombre_pro}</StyledTableCell>
-                  <StyledTableCell align="center" fontSize="bold">{det.cantidad}</StyledTableCell>
+                  <StyledTableCell align="center" >{det.codigo_pro}</StyledTableCell>
+                  <StyledTableCell align="center">{det.nombre_pro}</StyledTableCell>
+                  <StyledTableCell align="center">{det.cantidad}</StyledTableCell>
                   <StyledTableCell align="center">{moneda(det.precio)}</StyledTableCell>
                   <StyledTableCell align="center">{moneda(det.totalDet)}</StyledTableCell>
                   <StyledTableCell align="center">
@@ -154,8 +156,8 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
       >
         <DialogTitle className={classes.scrollPaper}>{
           produSelec !== null &&
-            produSelec.nombre_pro
-            }</DialogTitle>
+          produSelec.nombre_pro
+        }</DialogTitle>
         <DialogContent className={classes.scrollPaper}>
           <form className={classes.formControl} onSubmit={(e) => editDetalle(e)}>
             <TextField

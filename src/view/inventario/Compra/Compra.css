@@ -39,7 +39,7 @@
 }
 
 .MuiInputBase-input::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
 }
 
 .MuiPaper-root::-webkit-scrollbar {

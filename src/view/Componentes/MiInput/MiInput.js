@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 
 const MiInput = withStyles({
   root: {
     "& .MuiOutlinedInput-inputMarginDense": {
-      padding: "8.5px ",
+      padding: "8.5px 14px ",
+    },
+    '& .MuiOutlinedInput-notchedOutline': {
+      top: '0'
     },
     "& .MuiFormLabel-root": {
       color: "black",
-    },
-    "& .PrivateNotchedOutline-root-2": {
-      top: "0px",
     },
     '& .MuiInputBase-input': {
       backgroundColor: "rgba(255, 255, 255, 0.25);",
@@ -19,7 +19,7 @@ const MiInput = withStyles({
       color: 'black',
     },
     "& .MuiOutlinedInput-multiline": {
-      padding: "0px",
+      padding: "0",
     },
     "& .MuiTypography-colorTextSecondary": {
       color: "rgba(0, 0, 0, 0.6)",
@@ -29,10 +29,7 @@ const MiInput = withStyles({
       backgroundColor: "rgb(72 147 210)",
     },
     "& .MuiAutocomplete-inputRoot": {
-      padding: "0%",
-    },
-    '& .PrivateNotchedOutline-root-3': {
-      top: "0%",
+      padding: "0",
     },
   },
 })(TextField);

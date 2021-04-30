@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Compra.css";
 import Tablacompra from "./Tablacompra"
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
 import useAxios from "../../Hooks/useAxios";
 import moneda from '../../utilidades/moneda';
@@ -27,7 +27,6 @@ const Compra = () => {
   const [cantidad, setCantidad] = useState();
   const [totalDet, setTotalDet] = useState(0);
   const [totalCompra, setTotalCompra] = useState(0);
-  const [compra_id, setCompra_id] = useState(null);
 
   const calcularTotalDetalle = () => {
     setTotalDet(cantidad * precio);
@@ -115,10 +114,10 @@ const Compra = () => {
   }
 
   const optionLabelProduc = (opcion) => {
-    return `${opcion.nombre_pro}`
+    return `${opcion.codigo_pro} - ${opcion.nombre_pro}`
   }
 
-  const filtroProveedor = ['nombre_pe', 'identificacion', 'apellido'];
+  const filtroProveedor = ['nombre_pe', 'identificacion'];
 
   const filtroProducto = ['nombre_pro', 'codigo_pro'];
 
@@ -251,54 +250,3 @@ const MiButton = withStyles((theme) => ({
     height: "30px",
   },
 }))(Button);
-
-/* const MiInput2 = withStyles({
-  root: {
-    "& .MuiOutlinedInput-inputMarginDense": {
-      padding: "8.5px ",
-    },
-    "& .MuiFormLabel-root": {
-      color: "black",
-    },
-    "& .PrivateNotchedOutline-root-2": {
-      top: "0px",
-    },
-    '& .MuiInputBase-input': {
-      backgroundColor: "rgba(255, 255, 255, 0.25);",
-      borderRadius: "4px",
-      color: 'black',
-    },
-    "& .MuiOutlinedInput-multiline": {
-      padding: "0px",
-    },
-    "& .MuiTypography-colorTextSecondary": {
-      color: "rgba(0, 0, 0, 0.6)",
-      fontWeight: "bold",
-    },
-    "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
-      backgroundColor: "rgb(72 147 210)",
-    },
-    "& .MuiAutocomplete-inputRoot": {
-      padding: "0%",
-    },
-    '& .PrivateNotchedOutline-root-3': {
-      top: "0%",
-    },
-  },
-})(TextField);
- */
-
-/* const MiFilter2 = withStyles({
-  root: {
-    '& .MuiFormControl-fullWidth': {
-      backgroundColor: 'rgba(255, 255, 255, 0.25)',
-      borderRadius: '4px',
-    },
-    '& .MuiInputBase-input': {
-      backgroundColor: 'rgba(0, 0, 0, 0);',
-    },
-    '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"] .MuiAutocomplete-input': {
-      padding: '2.5px',
-    }
-  },
-})(Autocomplete); */
