@@ -14,12 +14,12 @@
   }
 
   .MuiOutlinedInput-root {
-    border-radius: 15px !important;
+    border-radius: 15px ;
   }
 
   .option {
     
-    background-color: #65b1f367 !important;
+    background-color: #65b1f367 ;
   }
   
   .foco {
