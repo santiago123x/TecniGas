@@ -3,11 +3,19 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import Rutas from "./view/Rutas";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { ThemeProvider } from "@material-ui/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
+const theme = createMuiTheme({
+  status: {},
+});
+
+
+
 
 ReactDOM.render(
-  <React.StrictMode>
+  <ThemeProvider theme={theme}>
     <Rutas />
-  </React.StrictMode>,
+  </ThemeProvider>,
   document.getElementById("root")
 );
 
