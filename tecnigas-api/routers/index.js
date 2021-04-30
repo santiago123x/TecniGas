@@ -8,6 +8,7 @@ const {
   postPersona,
   putPersona,
   delPersona,
+  putPersonaId,
 } = require("../controlador/persona");
 
 const {
@@ -18,6 +19,16 @@ const {
   getClientePer,
   activaCliPro,
 } = require("../controlador/clientes");
+
+const { getIva } = require("../controlador/iva");
+
+const {
+  getUsuarioId,
+  putUsuarioId,
+  getUsuario,
+  hideUsuario,
+  putRol,
+} = require("../controlador/usuario.js");
 
 const { getProveedor } = require("../controlador/proveedores");
 
@@ -31,7 +42,7 @@ const {
   putProducto,
   delProducto,
   hideProducto,
-  getProductoAll, 
+  getProductoAll,
 } = require("../controlador/producto.js");
 
 const {
@@ -43,9 +54,20 @@ const {
 
 const { postMovimiento } = require("../controlador/movimiento");
 
-const {
-  getCategoria,
-} = require("../controlador/categoria.js");
+
+const { getCategoria } = require("../controlador/categoria.js");
+
+//Ruta de Usuario
+
+router.get("/usuario", getUsuario);
+router.get("/usuario/:id", getUsuarioId);
+router.put("/usuario/:id", putUsuarioId);
+router.put("/usurol/:id", putRol);
+router.put("/delusuario/:id", hideUsuario);
+
+//Ruta de Iva
+
+router.get("/iva", getIva);
 
 // Rutas de Categoria
 
@@ -66,6 +88,7 @@ router.get("/persona/:id", getPersById);
 router.get("/personac/:cedula", getPersonaCedula);
 router.post("/persona", postPersona);
 router.put("/persona/:id", putPersona);
+router.put("/personaid/:id", putPersonaId);
 router.delete("/persona/:id", delPersona);
 
 // Rutas de clientes-proveedores

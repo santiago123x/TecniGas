@@ -8,14 +8,16 @@ import { Modal } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import {schema, schema2} from "./validacionInp";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { setLocale } from "yup";
+import {
+  validarTelefono,
+  validarEmail,
+  validaTodo,
+  validaMenor0,
+} from "./validacionInp";
 import { validaPut, put } from "../formulario/Validacion";
 import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
-import { FaUserEdit } from "react-icons/fa";
-import { RiDeleteBin5Fill } from "react-icons/ri";
+import { notify } from "../../Componentes/notify/Notify";
+import { MdModeEdit } from "react-icons/md";
 import useStyles from "./ControlUseStyle";
 import Inputs from "./Inputs";
 import { validarProd, putP } from "../../inventario/ModalProducto/ValidaProd";
@@ -67,23 +69,20 @@ const Control_Form = ({
   };
 
   //Diccionario que cambia los mensajes predeterminados de la función schema
-  setLocale({
-    mixed: {
-      notType: "Por favor ingrese datos válidos",
-    },
-    number: {
-      min: "Debe contener más de 9 digitos",
-    },
-  });
-
-  
 
   //Realiza validaciones al enviar el formulario
-  const { register, errors, handleSubmit } = useForm({
-    resolver: yupResolver(tipo== "inv"? schema2 :schema),
-  });
+  const { register, handleSubmit } = useForm({});
 
   const onSubmit2 = async (data, event) => {
+    if (
+      validaTodo(data) ||
+      validaMenor0(parseFloat(data.precio_uni)) ||
+      validaMenor0(parseFloat(data.precio_may)) ||
+      validaMenor0(parseInt(data.stock_min)) ||
+      validaMenor0(parseInt(data.cantidad_pro))
+    ) {
+      return;
+    }
     const codigoProdOld = objeto.codigo_pro;
     const idProd = objeto.producto_id;
     const body = {
@@ -96,10 +95,9 @@ const Control_Form = ({
     };
 
     const validar = await validarProd(data.nombre_pro, codigoProdOld);
-    
+
     if (!validar) {
-      try {  
-           
+      try {
         await putP(idProd, body);
         reset(event);
         setRecarga(!recarga);
@@ -114,16 +112,22 @@ const Control_Form = ({
 
   const onSubmit = async (data, event) => {
     event.preventDefault();
-    
-    if(tipo !== 'inv'){
-      let tp;
 
+    if (tipo !== "inv") {
+      let tp;
+      if (
+        validaTodo(data) ||
+        validarEmail(data.email) ||
+        validarTelefono(data.telefono.toString())
+      ) {
+        return;
+      }
       if (tipo === "cli") {
         tp = "cliente";
       } else {
         tp = "proveedor";
       }
-  
+
       const idCliPro = objeto.identificacion;
       const body = {
         nombre_pe: data.nombre_pe,
@@ -133,9 +137,9 @@ const Control_Form = ({
         telefono: data.telefono.toString(),
       };
       const validaP = await validaPut(idCliPro, data.identificacion, tp);
-  
+
       if (validaP) {
-        try {        
+        try {
           await put(idCliPro, body);
           reset(event);
           setRecarga(!recarga);
@@ -146,11 +150,9 @@ const Control_Form = ({
       } else if (!validaP) {
         notify("Error al modificar, datos invalidos.", "error");
       }
-    }else{
-      
+    } else {
       onSubmit2(data, event);
     }
-    
   };
 
   const alertaexito =
@@ -160,30 +162,6 @@ const Control_Form = ({
       ? "Se ha actualizado el cliente correctamente "
       : "Se ha actualizado el proveedor correctamente ";
   const alertamistake = "Error al intentar modificar, intente de nuevo.";
-
-  const notify = (suffix, identificacion = "", tipo) => {
-    if (tipo === "info") {
-      toast.info(`${suffix}`, {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    } else {
-      toast.error(`${suffix} ${identificacion}`, {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-  };
 
   const classes = useStyles();
 
@@ -227,13 +205,6 @@ const Control_Form = ({
                 >
                   Cancelar
                 </Button>
-                <Button
-                onClick= {() =>{
-                  console.log(datos);
-                }}
-                >
-                  holi
-                </Button>
               </div>
             </form>
 
@@ -249,7 +220,6 @@ const Control_Form = ({
                   handleInputChange={handleInputChange}
                   datos={datos}
                   tipo={tipo}
-                  errors={errors}
                   dataCategoria={dataCategoria.data}
                 />
               </form>
@@ -269,7 +239,7 @@ const Control_Form = ({
           color="primary"
           onClick={() => abrirCerrarModal()}
         >
-          <FaUserEdit />
+          <MdModeEdit />
         </IconButton>
       </Tooltip>
 

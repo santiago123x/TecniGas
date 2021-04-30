@@ -98,7 +98,7 @@ const Nav = ({ tipo }) => {
               suffix={active.perfil}
               icon={<FcPortraitMode className="menu-icons" />}
             >
-              Perfil <Link to="/" />
+              Perfil <Link to="/perfil" />
             </MenuItem>
             <SubMenu
               title="Inventario"
