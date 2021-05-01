@@ -26,6 +26,7 @@ const MiInput = withStyles({
     },
     "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
       backgroundColor: "rgb(72 147 210)",
+      fontWeight: "bold",
     },
     "& .MuiAutocomplete-inputRoot": {
       padding: "0",
