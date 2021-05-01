@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#dee2e6",
   },
   scrollPaper: {
-    background: "cornflowerblue",    
+    background: "cornflowerblue",
     '& .MuiDialogActions-root': {
       justifyContent: "center",
     },
@@ -201,7 +201,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
               required
             />
             <DialogActions >
-              <Button type="submit"  variant="contained" color="primary" >
+              <Button type="submit" variant="contained" color="primary" >
                 Terminar
           </Button>
             </DialogActions>

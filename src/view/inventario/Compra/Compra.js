@@ -82,24 +82,24 @@ const Compra = () => {
   const guardarCompra = async () => {
     try {
       const body = {
-      id_usuario: 2,
-      fecha_ent: fecha,
-      coment_cpra: observacion,
-      total_gral: totalCompra,
-      proveedor_id: proveedor.id_clipro,
-    };
-    await axios.post("http://localhost:5000/compra/", body).
-    then((response) => {
-      if (response.status === 200) {
-        const id = response.data[0].compra_id;
-        guardarDetalles(id);
-        notify("Compra regitrada con exito",'','info')
-      } else notify("Ha susedido un problema intente mas tarde",'','error');
-    });
+        id_usuario: 2,
+        fecha_ent: fecha,
+        coment_cpra: observacion,
+        total_gral: totalCompra,
+        proveedor_id: proveedor.id_clipro,
+      };
+      await axios.post("http://localhost:5000/compra/", body).
+        then((response) => {
+          if (response.status === 200) {
+            const id = response.data[0].compra_id;
+            guardarDetalles(id);
+            notify("Compra regitrada con exito", '', 'info')
+          } else notify("Ha susedido un problema intente mas tarde", '', 'error');
+        });
 
     } catch (error) {
-      notify("Ha susedido un problema intente mas tarde, error: ",error,'error')
-    }    
+      notify("Ha susedido un problema intente mas tarde, error: ", error, 'error')
+    }
   };
 
   //guarda cada detalle de la compra en la BD
@@ -117,12 +117,12 @@ const Compra = () => {
     });
   };
 
-   //Opciones que aparecen en el filter proveedor
+  //Opciones que aparecen en el filter proveedor
   const optionLabelProvee = (opcion) => {
     return `${opcion.nombre_pe}`;
   };
 
-   //Opciones que aparecen en el filter producto
+  //Opciones que aparecen en el filter producto
   const optionLabelProduc = (opcion) => {
     return `${opcion.codigo_pro} - ${opcion.nombre_pro}`
   }
