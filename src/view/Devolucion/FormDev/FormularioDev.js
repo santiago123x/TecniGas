@@ -38,7 +38,8 @@ const FormularioDev = ({}) => {
    const venta = listVent.data;
 
   //Lista de productos de la venta. Select02
-  let produlist = {}; 
+  let produList = {};
+  const [pro, setPro] = useState ([]);
 
   //Componentes de la tabla
   const [comp, setComp] = useState([{
@@ -54,35 +55,46 @@ const FormularioDev = ({}) => {
   const submitFa =  async (e) => {
     const idVenta = datos.cod_factura;
     const valida = await getDetalleVen(idVenta);
-
+    console.log(valida);
       if (valida !== false)
       {
-        produlist = valida;
+        produList = valida;
+        setPro(valida);
+        console.log(produList);
       } else {
-        //error
+        console.log("Error: valida == false");
       }
     
   };
 
   const subtMarca = async (e) => {
     const cod_venta = datos.cod_factura;
+    console.log(cod_venta);
     const idPro = datos.id_producto;
+    console.log(idPro);
     
       const producto = await validaPro(idPro);
-      if (producto !== false){
-        const detapro = await getProdDeta(cod_venta, idPro);
-        const cuerpo = {
-          cod_producto : producto.codigo_pro,
-          nombre : producto.nombre_pro,
-          categoria : producto.nombre_catg,
-          cantidad : detapro.cantidad_ven,
-          precio : detapro.precio_ven
-        };
-        
-        setComp(cuerpo);
-
+      console.log(producto);
+      console.log("viste a producto");
+      const detapro = await getProdDeta(cod_venta, idPro);
+        console.log(detapro);
+        console.log("viste a detalle producto");
+      if (producto !== false && producto !== ""){
+        if (detapro !== false && detapro !== "") {
+          const cuerpo = [{
+            cod_producto : producto[0].codigo_pro,
+            nombre : producto[0].nombre_pro,
+            categoria : producto[0].nombre_catg,
+            cantidad : datos.cantidad,
+            precio : detapro[0].precio_ven
+          }];
+          setComp(cuerpo);
+          console.log(cuerpo);
+        } else {
+          console.log("Error: detaPro !== true ");
+        } 
       } else {
-        //error
+        console.log("Error: Producto == false o vacío");
       }
     
   };
@@ -99,17 +111,14 @@ const FormularioDev = ({}) => {
                 <Select
                   native
                   className = {classes.select}
-                  name = "codigo_factura"
+                  name = "cod_factura"
                   variant = "outlined"
                   size = "small"
                   onChange = {handleInputChange}
-                  inputLabelProps={{
-                    shrink: true,
-                  }}
                 >
                   <option value={0}>Código Factura</option>
                   {venta.map((elemento) =>(
-                    <option key={elemento.venta_id} value={elemento.venta_id}>{elemento.venta_id}</option>
+                    <option key={elemento.id_venta} value={elemento.id_venta}>{elemento.id_venta}</option>
                   ))}
                 </Select>
                 </div>
@@ -131,7 +140,7 @@ const FormularioDev = ({}) => {
                   size = "large"
                   variant ="contained"
                   color ="primary"
-                  type = "submit"
+                  type = "button"
                   onClick={() => submitFa()}
                 >
                   Buscar
@@ -151,10 +160,11 @@ const FormularioDev = ({}) => {
                   size = "small"
                   onChange = {handleInputChange}
                 >
-                  <option value={0}>ID Producto</option>
-                  {produlist.map((elemento) =>(
+                  <option value={0}>ID Producto</option> 
+                  {pro.map((elemento) =>(
                     <option key={elemento.producto_id} value={elemento.producto_id}>{elemento.producto_id}</option>
                   ))}
+                  
                 </Select>
               </div>
               <div className = "txt02">
@@ -184,7 +194,8 @@ const FormularioDev = ({}) => {
                   size = "medium"
                   variant ="contained"
                   color ="primary"
-                  type = "submit"
+                  type = "button"
+                  onClick={() => subtMarca()}
                 >
                   Marcar Producto
                 </Button>

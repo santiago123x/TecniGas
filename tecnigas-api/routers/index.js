@@ -64,7 +64,7 @@ router.post("/devolucion", postDevolucion);
 
 router.get("/venta", getVenta);
 router.get("/ventadetalle/:id_venta", getDetallebyId);
-router.get("detavenpro/:id_venta/:id_pro", getDetaPro);
+router.get("/detavenp/:id_venta/:id_producto", getDetaPro);
 
 //Ruta de Iva
 

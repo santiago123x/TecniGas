@@ -3,7 +3,7 @@ import axios from "axios";
 const URL = "http://localhost:5000/";
 
 const getDetalleVen = async (cod_venta) => {
-    const detalle = {};
+    let detalle = {};
     try {
         const response = await axios.get(`${URL}ventadetalle/${cod_venta}`);
         detalle = response.data;
@@ -20,7 +20,7 @@ const getDetalleVen = async (cod_venta) => {
 };
 
 const validaPro = async (idPro) => {
-    const dato = {};
+    let dato = {};
     try {
         const response = await axios.get(`${URL}producto/id/${idPro}`);
         dato = response.data;
@@ -36,14 +36,18 @@ const validaPro = async (idPro) => {
 };
 
 const getProdDeta = async (idVent, idPro) => {
-    const info = {};
+    let info = {};
     try {
-        const response = await axios.get(`${URL}detavenpro/${idVent}/${idPro}`);
+        const response = await axios.get(`${URL}detavenp/${idVent}/${idPro}`);
         info = response.data;
-        return info;
-
     } catch (error) {
         console.error(error);
+    }
+
+    if (info !== "") {
+        return info;
+    } else {
+        return false;
     }
 };
 
