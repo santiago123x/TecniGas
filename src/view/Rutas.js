@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Ventas from "./ventas/Ventas";
 import Inventario from "./inventario/Inv/Inventario";
+import Devolucion from "./Devolucion/Devolucion";
 import Clientes from "./cli-prov/Clientes";
 import Proveedores from "./cli-prov/Proveedores";
 import Compra from "./inventario/Compra/Compra";
@@ -33,11 +34,17 @@ function Rutas() {
                 </Layout>
               </Route>
 
-              <Route path="/clientes">
-                <Layout tipo="cli">
-                  <Clientes />
-                </Layout>
-              </Route>
+            <Route path="/devolucion">
+            <Layout tipo="dev">
+              <Devolucion />
+            </Layout>
+          </Route>
+
+          <Route path="/clientes">
+            <Layout tipo="cli">
+              <Clientes />
+            </Layout>
+          </Route>
 
               <Route path="/proveedores">
                 <Layout tipo="prov">

@@ -42,8 +42,29 @@ const {
   postCompraDet,
 } = require("../controlador/compra.js");
 
+const {
+  getDevolucion,
+  postDevolucion,
+} = require("../controlador/devolucion.js");
 
 const { getCategoria } = require("../controlador/categoria.js");
+
+const { 
+  getVenta,
+  getDetallebyId,
+  getDetaPro,
+} = require("../controlador/venta.js");
+
+// Rutas de devolución
+
+router.get("/devolucion", getDevolucion);
+router.post("/devolucion", postDevolucion);
+
+// Rutas de venta
+
+router.get("/venta", getVenta);
+router.get("/ventadetalle/:id_venta", getDetallebyId);
+router.get("/detavenp/:id_venta/:id_producto", getDetaPro);
 
 //Ruta de Iva
 
