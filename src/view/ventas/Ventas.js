@@ -14,6 +14,7 @@ import { notify } from "../Componentes/notify/Notify";
 import Formulario from "../cli-prov/formulario/formulario";
 import {validaVentas} from "./validador/ValidaVenta";
 import { RiCoinsLine } from "react-icons/ri";
+import axios from 'axios';
 
 
 
@@ -55,6 +56,7 @@ const Ventas = () => {
   const [descuento, setDescuento] = useState(0);
   const [urlClientes, setUrlClientes] = useState(`/clipers`);
   const [inputClientes, setInputClientes] = useState({ cliente: "", documento: "" });
+  const [idVenta, setIdVenta] = useState("");
   const date = new Date();
   const fechaActu = new Date(
     date.getFullYear(),
@@ -67,12 +69,36 @@ const Ventas = () => {
   // Constantes iniciales
   const filterOptionsClientes2 = ["nombre_pe", "identificacion"];
   const { iva: { iva } } = useContext(IvaContext);
-  const idVenta = useAxios("/lastventa", recarga).data.max + 1;
+  const idVentaAnt = useAxios("/lastventa", recarga).data.max;
   const usuario = 2;
   
 
 
   //Funciones
+
+  const limpiaVenta = () => {
+     setInputClientes({ cliente: "", documento: "" });
+     setIdVenta(idVenta + 1);
+     setObservacion("");
+     setEstado(0);
+     setSubtotal(0);
+     setTotalIva(0);
+     setTotal(0);
+     setTotal({
+       ...total, total: 0, recibido: 0
+     });
+     setCambio(0);
+    setRows([]);    
+  }
+
+  const postVenta = async (body) => {
+    try {
+      const response = await axios.post(`http://localhost:5000/postventa`, body);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
 
   const realizarVenta = () => {
      
@@ -98,7 +124,11 @@ const Ventas = () => {
       recibido: parseFloat(total.recibido),
       cambio: cambio,
       estado_ve: est,
+    }
 
+    if(postVenta(body)){
+      limpiaVenta();
+      notify("Compra exitosa", "", "info");
     }
 
     rows.forEach((r)=> {
@@ -218,6 +248,14 @@ const Ventas = () => {
     setTotalIva(total.total * (iva != {} ? iva : 0));
 
   }, [total.total, iva])
+
+  useEffect(() => {
+  if(inputClientes.cliente == ""){
+    setIdVenta("");
+  }else{
+  setIdVenta(idVentaAnt+1);
+  }   
+  }, [inputClientes])
 
 
   return (
@@ -512,11 +550,13 @@ const Ventas = () => {
 
             <div className="form__section">
               <Button
+                type="submit"
                 variant="contained"
                 color="primary"
                 style={{ maxHeight: 30 }}
                 onClick={() => realizarVenta()}
                 fullWidth>
+          
                 Pagar
               </Button>
             </div>

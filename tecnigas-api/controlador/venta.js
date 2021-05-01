@@ -44,9 +44,23 @@ const getDetaPro = async (req, res) => {
     }
 };
 
+const postVenta = async (req, res) => {
+    try {
+      const { cliente_id, usuario_id, fecha_ve, iva, sub_total, total_ve, observacion_vta, recibido, cambio, estado_ve } = req.body;
+      const response = await pool.query(
+        "INSERT INTO venta (cliente_id, usuario_id, fecha_ve, iva, sub_total, total_ve, observacion_vta, recibido, cambio, estado_ve) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning id_venta",
+        [cliente_id, usuario_id, fecha_ve, iva, sub_total, total_ve, observacion_vta, recibido, cambio, estado_ve]
+      );
+      res.send(response.rows[0]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
 module.exports = {
     getVenta,
     getDetallebyId,
     getDetaPro,
-    getLastVenta
+    getLastVenta,
+    postVenta
 };
