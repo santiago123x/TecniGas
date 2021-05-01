@@ -15,8 +15,8 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import TextField from '@material-ui/core/TextField';
 import Button from "@material-ui/core/Button";
+import MiInput from '../../Componentes/MiInput/MiInput';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -31,7 +31,7 @@ const StyledTableCell = withStyles((theme) => ({
 const StyledTableRow = withStyles((theme) => ({
   root: {
     '&:nth-of-type(odd)': {
-      backgroundColor: "#5aacf8",
+      backgroundColor: "cornflowerblue",
     },
     '& .MuiIconButton-root': {
       padding: '0%',
@@ -49,14 +49,23 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#dee2e6",
   },
   scrollPaper: {
-    background: "#2965aa2e",
+    background: "cornflowerblue",    
+    '& .MuiDialogActions-root': {
+      justifyContent: "center",
+    },
+    '& .MuiTypography-root': {
+      textAlign: "center",
+      fontWeight: "bold"
+    },
     '& .MuiFormControl-root': {
-      display: "block",
+      display: "flex",
     },
   },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 200,
+    display: "grid",
+    rowGap: "20px"
   },
   button: {
     backgroundColor: "rgb(11 52 91)",
@@ -89,6 +98,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
     const nuevoDet = {
       producto_id: produSelec.producto_id,
       nombre_pro: produSelec.nombre_pro,
+      codigo_pro: produSelec.codigo_pro,
       precio: precio,
       cantidad: cantidad,
       totalDet: totalDet,
@@ -117,7 +127,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
             {compraDet.length === 0 ? (<StyledTableRow />) :
               (compraDet.map((det, index) => (
                 <StyledTableRow key={index}>
-                  <StyledTableCell align="center" >{det.codigo_pro}</StyledTableCell>
+                  <StyledTableCell align="center">{det.codigo_pro}</StyledTableCell>
                   <StyledTableCell align="center">{det.nombre_pro}</StyledTableCell>
                   <StyledTableCell align="center">{det.cantidad}</StyledTableCell>
                   <StyledTableCell align="center">{moneda(det.precio)}</StyledTableCell>
@@ -139,7 +149,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
                         eliminarDet(det);
                       }}
                     >
-                      <FaTrashAlt className="icono" />
+                      <FaTrashAlt className="icono iconoDelete" />
                     </IconButton>
                   </StyledTableCell>
                 </StyledTableRow>
@@ -160,11 +170,12 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
         }</DialogTitle>
         <DialogContent className={classes.scrollPaper}>
           <form className={classes.formControl} onSubmit={(e) => editDetalle(e)}>
-            <TextField
+            <MiInput
               id="cantidad"
               label="Cantidad"
               size="small"
               type="number"
+              variant="outlined"
               value={cantidad}
               onChange={(evento) => {
                 setCantidad(parseInt(evento.target.value))
@@ -174,11 +185,12 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
               }}
               required
             />
-            <TextField
+            <MiInput
               id="precio"
               label="Precio"
               size="small"
               type="number"
+              variant="outlined"
               value={precio}
               onChange={(evento) => {
                 setPrecio(parseInt(evento.target.value))
@@ -189,7 +201,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
               required
             />
             <DialogActions >
-              <Button type="submit" color="primary" >
+              <Button type="submit"  variant="contained" color="primary" >
                 Terminar
           </Button>
             </DialogActions>
