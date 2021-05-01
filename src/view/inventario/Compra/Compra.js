@@ -9,6 +9,7 @@ import axios from "axios";
 import MiFilter from "../../Componentes/MiFilter/Mifilter";
 import MiInput from "../../Componentes/MiInput/MiInput";
 import { notify } from "../../Componentes/notify/Notify";
+import { ToastContainer } from "react-toastify";
 
 const Compra = () => {
   const productos = useAxios(`/producto/`);
@@ -71,9 +72,9 @@ const Compra = () => {
       cantidad: cantidad,
       totalDet: totalDet,
     };
-    const detalles = [...compraDet, nuevoDet];
-    setPrecio("");
+    const detalles = [...compraDet, nuevoDet];   
     setCantidad("");
+    setPrecio("");
     setProdu(null);
     setCompraDet(detalles);
   };
@@ -93,12 +94,15 @@ const Compra = () => {
           if (response.status === 200) {
             const id = response.data[0].compra_id;
             guardarDetalles(id);
-            notify("Compra regitrada con exito", '', 'info')
-          } else notify("Ha susedido un problema intente mas tarde", '', 'error');
+            console.log('viene la notificacion')
+            notify("Compra regitrada con exito", "", "info");
+            seteo();
+          } else notify("Ha susedido un problema intente mas tarde","", "error");
         });
-
     } catch (error) {
-      notify("Ha susedido un problema intente mas tarde, error: ", error, 'error')
+      
+      console.log('viene la notificacion de error')
+      notify("Ha susedido un problema intente mas tarde, error: ", error, "error")
     }
   };
 
@@ -116,6 +120,13 @@ const Compra = () => {
       const response = await axios.post("http://localhost:5000/compraDet/", nuevoBodyDet);
     });
   };
+
+  //setea todo al terminar la compra
+  const seteo = () => {
+    setCompraDet([]);
+    setObservacion("");
+    setProveedor(null);
+  }
 
   //Opciones que aparecen en el filter proveedor
   const optionLabelProvee = (opcion) => {
@@ -135,6 +146,7 @@ const Compra = () => {
 
   return (
     <div className="conten-compras" id="compra">
+      <ToastContainer/>
       <div className="formularios">
         <div className="conten-form info">
           <form className="form" id="form-info">
@@ -197,7 +209,7 @@ const Compra = () => {
             <MiFilter
               id="producto"
               label="Producto"
-              tamaño={200}
+              tamaño={250}
               data={productos.data}
               value={produ}
               optionesFiltro={filtroProducto}
@@ -218,6 +230,7 @@ const Compra = () => {
                 min: 1,
               }}
               required
+              style={{ maxWidth: 170}}
             />
             <MiInput
               id="precio"
@@ -233,6 +246,7 @@ const Compra = () => {
                 min: 1,
               }}
               required
+              style={{ maxWidth: 170}}
             />
             <MiButton variant="contained" color="primary" type="submit">
               Agregar
