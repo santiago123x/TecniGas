@@ -25,6 +25,7 @@ export default function MiFilter({ data, optionesFiltro, value, setValue, tamañ
       onChange={(event, newValue) => {
         setValue(newValue)
       }}
+      getOptionSelected={(option, value) => option.value === value.value}
       renderInput={params => (
         <MiInput
           {...params}
