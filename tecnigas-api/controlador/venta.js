@@ -13,7 +13,8 @@ const getVenta = async (req, res) => {
 const getLastVenta = async (req, res) => {
     try {
         const response = await pool.query(`SELECT max(id_venta) FROM venta`);
-        res.send(response.rows[0]);
+        
+        res.send(response.rows[0].max == null? {max: 0} :  response.rows[0].max);
     } catch (e){
         console.error(e);
     }

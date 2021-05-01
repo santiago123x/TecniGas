@@ -15,6 +15,7 @@ import Formulario from "../cli-prov/formulario/formulario";
 import {validaVentas} from "./validador/ValidaVenta";
 import { RiCoinsLine } from "react-icons/ri";
 import axios from 'axios';
+import { object } from "yup/lib/locale";
 
 
 
@@ -49,6 +50,7 @@ const Ventas = () => {
   })
   const [observacion, setObservacion] = useState("");
   const [recarga, setRecarga] = useState(false);
+  const [recarga2, setRecarga2] = useState(false);
   const [cambio, setCambio] = useState(0);
   const [subtotal, setSubtotal] = useState(0);
   const [totalIva, setTotalIva] = useState(0);
@@ -69,7 +71,7 @@ const Ventas = () => {
   // Constantes iniciales
   const filterOptionsClientes2 = ["nombre_pe", "identificacion"];
   const { iva: { iva } } = useContext(IvaContext);
-  const idVentaAnt = useAxios("/lastventa", recarga).data.max;
+  const idVentaAnt = useAxios("/lastventa", recarga2).data.max;
   const usuario = 2;
   
 
@@ -78,7 +80,7 @@ const Ventas = () => {
 
   const limpiaVenta = () => {
      setInputClientes({ cliente: "", documento: "" });
-     setIdVenta(idVenta + 1);
+     setRecarga2(!recarga2);
      setObservacion("");
      setEstado(0);
      setSubtotal(0);
@@ -126,10 +128,7 @@ const Ventas = () => {
       estado_ve: est,
     }
 
-    if(postVenta(body)){
-      limpiaVenta();
-      notify("Compra exitosa", "", "info");
-    }
+    
 
     rows.forEach((r)=> {
       const body2 = {
@@ -142,6 +141,10 @@ const Ventas = () => {
       }
       
     })
+    if(postVenta(body)){
+      limpiaVenta();
+      notify("Compra exitosa", "", "info");
+    }
     
 
   }
@@ -243,19 +246,21 @@ const Ventas = () => {
   }, [rows])
 
   useEffect(() => {
-
-    setSubtotal(total.total - (total.total * (iva != {} ? iva : 0)));
-    setTotalIva(total.total * (iva != {} ? iva : 0));
+    console.log();
+    
+    setSubtotal(isNaN(total.total - (total.total * iva)) ? 0 : total.total - (total.total * iva));
+    setTotalIva(isNaN(total.total * iva) ? 0 :total.total * iva );
 
   }, [total.total, iva])
 
   useEffect(() => {
-  if(inputClientes.cliente == ""){
-    setIdVenta("");
-  }else{
-  setIdVenta(idVentaAnt+1);
-  }   
-  }, [inputClientes])
+    if(idVentaAnt == undefined){
+      setIdVenta("");
+    }else{
+      setIdVenta(idVentaAnt+1); 
+    }
+      
+  }, [idVentaAnt])
 
 
   return (
