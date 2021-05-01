@@ -17,6 +17,8 @@ import MiInput from "../../Componentes/MiInput/MiInput";
 import useAxios from "../../Hooks/useAxios";
 import "./Movimiento.css";
 import validarStock from "../../utilidades/validaInventario";
+import axios from "axios";
+import { notify } from "../../Componentes/notify/Notify";
 
 const Movimiento = () => {
   const productos = useAxios(`/producto/`);
@@ -34,10 +36,8 @@ const Movimiento = () => {
   const [tipo, setTipo] = useState("");
   const [modal, setModal] = useState(false);
   const classes = useStyles();
-  const [validar, setValidar] = useState(false);
-  const [body, setBody] = useState();
-  const movi = useAxios("/movimiento", validar, "post", body);
 
+  //Guarda el movimiento en la base de datos o informa del error de ser el caso
   const guardarMovi = async (e) => {
     e.preventDefault();
     const nuevoMovi = {
@@ -48,30 +48,43 @@ const Movimiento = () => {
       observacion: observacion,
     };
 
-    const res = await validarStock(produ.producto_id, cantidad);
-
-    if (res || tipo == "entrada") {
-      setValidar(true);
-      setBody(nuevoMovi);
-      alert("movimiento realizado");
+    try {
+      const res = await validarStock(produ.producto_id, cantidad);
+      if (tipo == "entrada" || res) {
+        await axios.post("http://localhost:5000/movimiento/", nuevoMovi).
+          then((response) => {
+            if (response.status === 200) {
+              seteo();
+              notify('Movimiento realizado con exito', '', "info");
+            } else {
+              seteo();
+              notify("Ha susedido un problema intente mas tarde", '', 'error');
+            }
+          });
+      } else
+        notify('No hay stock suficiente de:', produ.nombre_pro, "error");
+    } catch (err) {
       seteo();
-      console.log(movi);
-    } else alert("no hay stock suficiente");
+      notify("Ha susedido un problema intente mas tarde, error", err, 'error');
+    }
+
   };
 
+  /** Setea todos los campos y cierra el modal */
   const seteo = () => {
     setCantidad("");
     setProdu(null);
     setTipo("");
     setObservacion("");
-    setValidar(false);
-    setModal(!modal);
+    setModal(false);
   };
 
+  //Opciones que aparecen en el filter producto
   const optionLabelProduc = (opcion) => {
     return `${opcion.codigo_pro} - ${opcion.nombre_pro}`;
   };
 
+  //Opciones por las que se podra filtar en el filter producto
   const filtroProducto = ["nombre_pro", "codigo_pro"];
 
   return (
@@ -165,12 +178,12 @@ const Movimiento = () => {
                 }}
               />
               <DialogActions>
-                <MiButton type="submit" color="primary">
+                <Button variant="contained" type="submit" color="primary">
                   Terminar
-                </MiButton>
-                <MiButton color="warning" onClick={() => seteo()}>
+                </Button>
+                <Button variant="contained" color="secondary" onClick={() => seteo()} >
                   Cancelar
-                </MiButton>
+                </Button>
               </DialogActions>
             </form>
           </DialogContent>
@@ -191,6 +204,12 @@ const MiButton = withStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
   scrollPaper: {
     background: "cornflowerblue",
+    '& .MuiDialogActions-root': {
+      justifyContent: "center",
+    },
+    '& .MuiTypography-root': {
+      textAlign: "center",
+    },
   },
   formControl: {
     "& .MuiInputLabel-formControl": {
@@ -200,12 +219,17 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiInputLabel-shrink": {
       transform: "translate(14px, -5.5px) scale(0.75)",
       backgroundColor: "rgb(72 147 210)",
+      fontWeight: "bold",
     },
   },
 }));
 
 const BootstrapInput = withStyles((theme) => ({
-  root: {},
+  root: {
+    '& .MuiSelect-icon': {
+      marginRight: "7px",
+    },
+  },
   input: {
     size: "small",
     height: "21px",
@@ -214,8 +238,15 @@ const BootstrapInput = withStyles((theme) => ({
     borderRadius: "4px",
     border: "solid 1px #342e2e71",
     paddingLeft: "14px",
+    '&:hover': {
+      borderColor: "rgba(0, 0, 0, 0.87)",
+    },
     "&:focus": {
       backgroundColor: "rgba(255, 255, 255, 0.25)",
+      borderColor: "#3f51b5",
+      borderWidth: "2px",
+      borderRadius: "4px",
+      height: "19px",
     },
     color: "black",
   },
