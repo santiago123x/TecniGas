@@ -13,6 +13,7 @@ import {
 import { notify } from "../Componentes/notify/Notify";
 import Formulario from "../cli-prov/formulario/formulario";
 import {validaVentas} from "./validador/ValidaVenta";
+import { RiCoinsLine } from "react-icons/ri";
 
 
 
@@ -66,9 +67,9 @@ const Ventas = () => {
   // Constantes iniciales
   const filterOptionsClientes2 = ["nombre_pe", "identificacion"];
   const { iva: { iva } } = useContext(IvaContext);
-  const idVenta = 0;
+  const idVenta = useAxios("/lastventa", recarga).data.max + 1;
   const usuario = 2;
-
+  
 
 
   //Funciones
@@ -109,7 +110,7 @@ const Ventas = () => {
         precio_ven: r.precio,
         total_ven: r.subtotal,
       }
-      console.log(body2);
+      
     })
     
 
@@ -143,11 +144,23 @@ const Ventas = () => {
     rows.forEach((row) => {
 
       if (row.codigo == codigo) {
-
         result = true;
       }
 
+
     })
+    return result;
+  }
+
+  const validaExistencias= (codigo, cantidad) => {
+    let result = false;
+    let producto = data.data.filter(p => p.codigo_pro == codigo);    
+
+       if ( producto[0].cantidad_pro < cantidad) {
+         result = true;
+       }  
+      
+    
     return result;
   }
 
@@ -164,6 +177,10 @@ const Ventas = () => {
       setDescuento(0);
       setProductos("");
       setPrecioSel("");
+      return;
+    }if(validaExistencias(productos.codigo_pro, cantidad)){
+      notify("Este producto no tiene suficientes existencias", "", "error");
+      setCantidad(0);
       return;
     }
 
@@ -265,9 +282,11 @@ const Ventas = () => {
             </div>
             <div className="form__section">
               <MiInput2
+                disabled
                 label="Nro venta"
                 variant="outlined"
                 size="small"
+                value={idVenta}
               />
             </div>
 
@@ -405,6 +424,7 @@ const Ventas = () => {
               />
             </div>
             <div className="form__section">
+              
               <MiInput2
                 type="number"
                 label="Descuento"

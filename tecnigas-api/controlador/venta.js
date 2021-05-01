@@ -9,6 +9,16 @@ const getVenta = async (req, res) => {
     }
 };
 
+
+const getLastVenta = async (req, res) => {
+    try {
+        const response = await pool.query(`SELECT max(id_venta) FROM venta`);
+        res.send(response.rows[0]);
+    } catch (e){
+        console.error(e);
+    }
+};
+
 const getDetallebyId = async (req, res) => {
     const id_venta = req.params.id_venta;
     try {
@@ -37,5 +47,6 @@ const getDetaPro = async (req, res) => {
 module.exports = {
     getVenta,
     getDetallebyId,
-    getDetaPro
+    getDetaPro,
+    getLastVenta
 };
