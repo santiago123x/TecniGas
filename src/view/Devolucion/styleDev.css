@@ -36,18 +36,20 @@
 
 .select01 {
   display: flex;
-  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .select02 {
   display: flex;
-  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .txt01 {
   display: flex;
-  align-items: center;
-  width: 30%;
+  flex-direction: column;
+  width: 28%;
   min-width: 158px;
 }
 
@@ -89,4 +91,61 @@
   width: 90%;
   height: 45%;
   margin-top: 3%;
+  max-height: 208px;
 }
+
+.contePpal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 315px;
+  min-width: 315px;
+  min-height: 200px;
+  height: 200px;
+  border-radius: 23px;
+  padding: 2%;
+}
+
+.titleEdi{
+  display: flex;
+  width: 300px;
+  height: 47px;
+  
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  min-width: 167px;
+}
+
+.btnesEditar{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 50px;
+  width: 200px;
+}
+
+.titleEdi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #eeecee;
+}
+
+.inputsMod {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3%;
+}
+
+.modPr {
+  padding: 5%;
+}
+
+
+
+

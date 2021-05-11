@@ -93,6 +93,8 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
     e.preventDefault();
     const valida = await validarCliente(data.identificacion, tipo);
     const validaCliPro = await validaActCliPro(data.identificacion, tipo);
+    console.log(valida);
+    console.log(validaCliPro);
     const body = {
       nombre_pe: data.nombre,
       identificacion: data.identificacion,
@@ -123,8 +125,10 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
             setRecarga(!recarga);
             notify(alertasucces, data.nombre, "info");
           }
-          break;
+        } else {
+          notify(alertaerror, data.nombre, "error");
         }
+        break;
       case "put":
         await put(data.identificacion, body);
         await putCliProTipo(data.identificacion, body_CliPro);

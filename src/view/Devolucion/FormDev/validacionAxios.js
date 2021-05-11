@@ -7,15 +7,13 @@ const getDetalleVen = async (cod_venta) => {
     try {
         const response = await axios.get(`${URL}ventadetalle/${cod_venta}`);
         detalle = response.data;
+        if (detalle !== "" && detalle !== null){
+            return detalle;
+            } else {
+              return false;
+        }
     } catch (error) {
         console.error(error);
-    }
-
-    if (detalle !== "")
-    {
-        return detalle;
-    } else {
-        return false;
     }
 };
 
@@ -24,14 +22,13 @@ const validaPro = async (idPro) => {
     try {
         const response = await axios.get(`${URL}producto/id/${idPro}`);
         dato = response.data;
+        if (dato !== "" && dato !== null){
+            return dato;
+        } else {
+            return false;
+        }
     } catch (error) {
        console.error(error); 
-    }
-
-    if (dato !== ""){
-        return dato;
-    } else {
-        return false;
     }
 };
 
@@ -40,14 +37,13 @@ const getProdDeta = async (idVent, idPro) => {
     try {
         const response = await axios.get(`${URL}detavenp/${idVent}/${idPro}`);
         info = response.data;
+        if (info !== "" && info !== null) {
+            return info;
+        } else {
+            return false;
+        }
     } catch (error) {
         console.error(error);
-    }
-
-    if (info !== "") {
-        return info;
-    } else {
-        return false;
     }
 };
 
