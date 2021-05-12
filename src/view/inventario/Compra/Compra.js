@@ -94,14 +94,11 @@ const Compra = () => {
           if (response.status === 200) {
             const id = response.data[0].compra_id;
             guardarDetalles(id);
-            console.log('viene la notificacion')
             notify("Compra regitrada con exito", "", "info");
             seteo();
           } else notify("Ha susedido un problema intente mas tarde","", "error");
         });
     } catch (error) {
-      
-      console.log('viene la notificacion de error')
       notify("Ha susedido un problema intente mas tarde, error: ", error, "error")
     }
   };
