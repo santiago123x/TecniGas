@@ -7,9 +7,18 @@ import styleDev from "../styleDev.css";
 import TablaDev from "./TablaDev";
 import Select from "@material-ui/core/Select";
 import useAxios from "../../Hooks/useAxios";
-import { validaPro, getDetalleVen, getProdDeta } from "./validacionAxios";
 import { notify } from "../../Componentes/notify/Notify";
 import { ToastContainer } from "react-toastify";
+import { 
+    validaPro,
+    getDetalleVen,
+    getProdDeta,
+    putDetaVent,
+    putVenta,
+    putProducto,
+    devolucion,
+    detalleDev} from "./validacionAxios";
+
 
 const feDa = new Date();
 const fechaAct = new Date(
@@ -62,13 +71,17 @@ const FormularioDev = ({}) => {
 
   //Componentes de la tabla
   const [detaPro, setDetaPro] = useState([]);
+
   
   //Mensajes para el usuario
   const busca = "¡Ya puedes seleccionar un producto!";
   const error_cant = "La cantidad máxima para devolver de este producto es de: ";
   const error_list = "!Solo puedes elegir el mismo producto una vez!";
   const error_gral = "¡Ha ocurrido un error! Por favor recarga la página";
+  const success = "¡Usted ha realizado una devolución exitosa!";
   let type = "";
+
+  let fecha_re = new Date();
 
   const classes = useStyles();
 
@@ -76,7 +89,8 @@ const FormularioDev = ({}) => {
     const año = fechaAct.getFullYear();
     const mes = fechaAct.getMonth() + 1;
     const dia = fechaAct.getDate();
-    const fechaV = año + "-" + mes + "-" + dia;
+    const fechaV = año + '-' + mes + '-' + dia;
+    fecha_re = fechaV;
     if(datos.fecha_dev > fechaV) {
       return false;
     } else {
@@ -209,6 +223,125 @@ const FormularioDev = ({}) => {
         }
     }
   };
+
+  const submitDev = async () =>{
+    let testDetaV = true;
+    let cantidadPro = 0;
+    let total_gral_d = 0;
+    let bodyProducto = {};
+    let bodyVenta = {};
+    let bodyDevolucion = {};
+    let bodyDetalle = {};
+    let id_producto = {};
+    let iva = 0;
+    let editaPro = {};
+    let detalle = {};
+    let observacion_vta = "";
+    let testDetalle = true;
+    const id_venta = datos.cod_factura;
+    
+    detaPro.forEach(async (element) => {
+      pro.forEach((elemento) => {
+      if(elemento.codigo_pro === element.cod_producto){
+        id_producto = elemento.producto_id;
+      }
+    });
+      bodyProducto = {
+        cantidad_ven : element.cantidad,
+        precio_ven : element.precio,
+        total_ven : element.cantidad * element.precio
+      };
+      total_gral_d = total_gral_d + bodyProducto.total_ven;
+      const putDetalleV = await putDetaVent(id_venta, id_producto, bodyProducto);
+      if(putDetalleV !== true){
+        testDetaV = false;
+        return;
+      }
+    });
+    if(testDetaV){
+      bodyDevolucion = {
+        id_venta : id_venta,
+        comentario_dev : datos.nota,
+        fecha_dev : datos.fecha_dev,
+        total_gral_d : total_gral_d 
+      };
+      const nuevaDevo = await devolucion(id_venta, bodyDevolucion);
+      if(nuevaDevo !== false && nuevaDevo !== ""){
+        observacion_vta = "Se ha registrado una devolución con el identificador : " + nuevaDevo.devolucion_id;
+        venta.forEach((element) =>{
+          if(element.id_venta == id_venta){
+            iva = element.iva;
+            bodyVenta = {
+              sub_total : element.sub_total - total_gral_d,
+              total_ve : (element.sub_total - total_gral_d) + iva,
+              observacion_vta : observacion_vta
+            };
+            return;
+          }
+        });
+        const editaVenta = await putVenta(id_venta, bodyVenta);
+        
+        if(editaVenta){
+          detaPro.forEach(async (element) => {
+            pro.forEach((elemento) => {
+              if(elemento.cod_producto == element.cod_producto){
+                id_producto = elemento.producto_id;
+              }
+            });
+            cantidadPro = element.cantidad;
+            editaPro = await putProducto(id_producto, cantidadPro);
+          });
+          if(editaPro){
+            detaPro.forEach(async(element) =>{
+              pro.forEach((elemento) => {
+                if(elemento.cod_producto == element.cod_producto){
+                  id_producto = elemento.producto_id;
+                }
+              });
+              bodyDetalle = {
+                cantidad_det : element.cantidad,
+                precio_uni : element.precio,
+                precio_total : element.cantidad * element.precio
+              };
+              detalle = await detalleDev(id_producto, bodyDetalle);
+              if(detalle == false){
+                testDetalle = false; 
+                return;
+              }
+            });
+
+            if(testDetalle){
+              type = "info";
+              notify(success, "", type);
+              setDatos({
+                cod_factura: 0,
+                fecha_dev: fechaAct.toISOString().substr(0, 10),
+                codigo_pro: 0,
+                cantidad: "",
+                nota: ""
+              });
+              window.location.reload();
+            } else if(detalle === false) {
+              type = "error";
+              notify(error_gral, "", type);
+            }
+          } else if(detaPro === false){
+            type = "error";
+            notify(error_gral, "", type);
+          }
+        } else if(editaVenta === false){
+          type = "error";
+          notify(error_gral, "", type);
+        }
+      } else if(nuevaDevo === false){
+        type = "error";
+        notify(error_gral, "", type);
+      }
+    } else if (testDetaV === false){
+      type = "error";
+      notify(error_gral, "", type);
+    }
+  };
   
   //Formulario del modal
   const body = (
@@ -309,7 +442,7 @@ const FormularioDev = ({}) => {
                 <span className="span text-danger text-small d-block">
                   Campo obligatorio.
                 </span>
-                : errores && errores.cantidad && datos.cantidad <= 0 && 
+                : errores && errores.cantidad && datos.cantidad <= 0 &&
                 <span className="span text-danger text-small d-block">
                   Ingrese números mayores que cero.
                 </span>
@@ -352,7 +485,8 @@ const FormularioDev = ({}) => {
               size = "medium"
               variant ="contained"
               color ="primary"
-              type = "submit"
+              type = "button"
+              onClick={() => submitDev()}
               >
                 Devolver Productos
               </Button>

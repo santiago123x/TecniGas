@@ -34,6 +34,8 @@ const {
   delProducto,
   hideProducto,
   getProductoAll,
+  getDetaPro,
+  putProDev
 } = require("../controlador/producto.js");
 
 const {
@@ -44,7 +46,12 @@ const {
 
 const {
   getDevolucion,
+  getDev,
+  getDetaDev,
   postDevolucion,
+  postDetaDev,
+  putDevolucion,
+  putDetaDev
 } = require("../controlador/devolucion.js");
 
 const { getCategoria } = require("../controlador/categoria.js");
@@ -52,19 +59,28 @@ const { getCategoria } = require("../controlador/categoria.js");
 const { 
   getVenta,
   getDetallebyId,
-  getDetaPro,
+  getDetallebyVP,
+  putVenta,
+  putDetaVent
 } = require("../controlador/venta.js");
 
 // Rutas de devolución
 
 router.get("/devolucion", getDevolucion);
+router.get("/devolucion/:id_venta", getDev);
+router.get("/detadevo/:devolucion_id/:producto_id", getDetaDev);
 router.post("/devolucion", postDevolucion);
+router.post("/detadevo", postDetaDev);
+router.put("/devolucion/:devolucion_id", putDevolucion);
+router.put("/detadevo/:id_detalle", putDetaDev);
 
 // Rutas de venta
 
 router.get("/venta", getVenta);
 router.get("/ventadetalle/:id_venta", getDetallebyId);
-router.get("/detavenp/:id_venta/:id_producto", getDetaPro);
+router.get("/ventadetalle/:id_venta/:producto_id", getDetallebyVP);
+router.put("/venta/:id_venta", putVenta);
+router.put("/ventadetalle/:id_venta/:producto_id", putDetaVent);
 
 //Ruta de Iva
 
@@ -115,6 +131,8 @@ router.post("/producto", postProducto);
 router.put("/producto/:producto_id", putProducto);
 router.delete("/producto/:producto_id", delProducto);
 router.put("/product/:producto_id", hideProducto);
+router.get("/detapro/:id_venta/:id_producto", getDetaPro);
+router.put("/productodev/:producto_id/:cantidad_pro", putProDev);
 
 // routes Compra
 
