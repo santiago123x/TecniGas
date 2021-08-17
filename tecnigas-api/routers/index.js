@@ -28,6 +28,7 @@ const {
   getUsuario,
   hideUsuario,
   putRol,
+  verifiUsuario,
 } = require("../controlador/usuario.js");
 
 const { getProveedor } = require("../controlador/proveedores");
@@ -64,6 +65,7 @@ router.get("/usuario/:id", getUsuarioId);
 router.put("/usuario/:id", putUsuarioId);
 router.put("/usurol/:id", putRol);
 router.put("/delusuario/:id", hideUsuario);
+router.post("/verifiusu/", verifiUsuario)
 
 //Ruta de Iva
 
