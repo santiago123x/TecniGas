@@ -98,7 +98,11 @@ const Movimiento = () => {
           Movimiento
         </MiButton>
         <div id="modal" />
-        <Dialog disableBackdropClick disableEscapeKeyDown open={modal}>
+        <Dialog
+          disableBackdropClick
+          disableEscapeKeyDown
+          open={modal}
+          className={classes.conte}>
           <DialogTitle className={classes.scrollPaper}>
             Movimiento Producto
           </DialogTitle>
@@ -202,8 +206,13 @@ const MiButton = withStyles((theme) => ({
 }))(Button);
 
 const useStyles = makeStyles((theme) => ({
+  conte: {
+    '& .MuiDialog-paperWidthSm': {
+      borderRadius: "23px",
+    }
+  },
   scrollPaper: {
-    background: "cornflowerblue",
+    background: "#bbdeef",
     '& .MuiDialogActions-root': {
       justifyContent: "center",
     },
