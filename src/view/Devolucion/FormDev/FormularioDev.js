@@ -20,11 +20,12 @@ import {
     detalleDev} from "./validacionAxios";
 
 
+
 const feDa = new Date();
 const fechaAct = new Date(
-  feDa.getDate(),
-  feDa.getMonth(),
   feDa.getFullYear(),
+  feDa.getMonth(),
+    feDa.getDate()
 );
 
 const FormularioDev = ({}) => {
