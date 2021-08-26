@@ -65,7 +65,7 @@ router.get("/usuario/:id", getUsuarioId);
 router.put("/usuario/:id", putUsuarioId);
 router.put("/usurol/:id", putRol);
 router.put("/delusuario/:id", hideUsuario);
-router.post("/verifiusu/", verifiUsuario)
+router.post("/verifiusu/", verifiUsuario);
 
 //Ruta de Iva
 

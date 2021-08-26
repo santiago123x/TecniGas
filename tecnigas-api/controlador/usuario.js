@@ -114,7 +114,7 @@ const verifiUsuario = async (req, res) => {
           usuario_id: usuario.usuario_id,
           nombre_pe: usuario.nombre_pe,
           rol: usuario.rol}
-        return res.send({token: crearToken(usuario),
+        return res.send({token: crearToken(user),
         isAuth: true,
         user});
       }
@@ -134,7 +134,7 @@ const addUsuario = async (req, res) => {
         VALUES (${persona_id}, ${nombre_usr}, ${contraCipher}, ${rol}, "activado")
         returning usuario_id`
     );
-    res.status(200).send(response.rows);
+    res.status(201).send(response.rows);
   } catch (error) {
     console.error(error);
   }
