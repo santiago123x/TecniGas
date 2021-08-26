@@ -82,6 +82,7 @@ const Ventas = () => {
      setInputClientes({ cliente: "", documento: "" });
      setRecarga2(!recarga2);
      setObservacion("");
+     setIdVenta(idVenta + 1);
      setEstado(0);
      setSubtotal(0);
      setTotalIva(0);
@@ -102,6 +103,13 @@ const Ventas = () => {
     }
   };
 
+  const postDetalleVenta = async (body) => {
+    try {
+      const response = await axios.post(`http://localhost:5000/postdetalleventa`, body);      
+    } catch (error) {      
+    }
+  };
+
   const realizarVenta = () => {
      
     if(validaVentas(inputClientes.cliente, estado, parseFloat(total.recibido),total.total,rows)){
@@ -119,7 +127,8 @@ const Ventas = () => {
       cliente_id: inputClientes.cliente.id_clipro,
       usuario_id: usuario,
       fecha_ve: fecha,
-      iva: totalIva,
+      iva: 1,
+      total_iva: totalIva, 
       sub_total: subtotal,
       total_ve: total.total,
       observacion_vta: observacion,
@@ -128,8 +137,8 @@ const Ventas = () => {
       estado_ve: est,
     }
 
-    
-
+    let vendido = postVenta(body);    
+    let idproducto = 0;
     rows.forEach((r)=> {
       const body2 = {
         id_venta: idVenta,
@@ -139,9 +148,18 @@ const Ventas = () => {
         precio_ven: r.precio,
         total_ven: r.subtotal,
       }
-      
+      //estaba aquiiiiiii
+      data.data.map((d)=>{
+        if(d.codigo_pro == r.codigo){
+          idproducto = d.codigo_pro;
+        }
+      })
+
+      console.log(idproducto);      
+      //postDetalleVenta(body2);      
     })
-    if(postVenta(body)){
+    
+    if(vendido){
       limpiaVenta();
       notify("Compra exitosa", "", "info");
     }
@@ -254,8 +272,10 @@ const Ventas = () => {
   }, [total.total, iva])
 
   useEffect(() => {
-    if(idVentaAnt == undefined){
-      setIdVenta("");
+    console.log(idVentaAnt);
+
+    if(idVentaAnt == null){
+      setIdVenta(1);
     }else{
       setIdVenta(idVentaAnt+1); 
     }

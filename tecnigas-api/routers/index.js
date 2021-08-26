@@ -55,6 +55,7 @@ const {
   getDetaPro,
   getLastVenta,
   postVenta,
+  postDetalleVenta,
 } = require("../controlador/venta.js");
 
 // Rutas de devolución
@@ -69,6 +70,7 @@ router.get("/ventadetalle/:id_venta", getDetallebyId);
 router.get("/detavenp/:id_venta/:id_producto", getDetaPro);
 router.get("/lastventa",getLastVenta);
 router.post("/postventa", postVenta);
+router.post("/postdetalleventa", postDetalleVenta);
 
 //Ruta de Iva
 
