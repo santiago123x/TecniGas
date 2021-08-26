@@ -64,6 +64,9 @@ const StyledTableCell = withStyles((theme) => ({
     container: {
       height: '100%',
       backgroundColor: "#dee2e6",
+      '& .MuiTableRow-root': {
+        verticalAlign : 'top',
+      },
     },
     scrollPaper: {
       background: "#2965aa2e",

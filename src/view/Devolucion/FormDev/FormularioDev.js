@@ -25,7 +25,7 @@ const feDa = new Date();
 const fechaAct = new Date(
   feDa.getFullYear(),
   feDa.getMonth(),
-    feDa.getDate()
+  feDa.getDate()
 );
 
 const FormularioDev = ({}) => {
@@ -65,7 +65,7 @@ const FormularioDev = ({}) => {
    const venta = listVent.data;
 
   //Lista de productos de la venta. Select02
-  const [pro, setPro] = useState ([]);
+  const [pro, setPro] = useState([]);
 
   //Detalles de la venta
   const [detaVen, setDetaVen] = useState([]);
@@ -101,6 +101,8 @@ const FormularioDev = ({}) => {
 
   const submitFa =  async (e) => {
     e.preventDefault();
+    setPro([]);
+    var producto = [];
     if (datos.cod_factura === 0 && (!validaFecha())){
        setErrores({
         ...errores,
@@ -127,19 +129,24 @@ const FormularioDev = ({}) => {
         });
         
         const idVenta = datos.cod_factura;
-        pro.length = 0;
+        
         const valida = await getDetalleVen(idVenta);
           if (valida)
           {
             valida.forEach(async (element) => {
-              const producto = await validaPro(element.producto_id);
-              setPro([
-                ...pro,
-              producto[0]]);
+               producto = await validaPro(element.producto_id);
+                producto.forEach((element, index) => {
+                  console.log(element);
+                  setPro([
+                    ...pro,
+                    producto
+                  ]);
+                  
+                });
             });
             setDetaVen([valida[0]]);
             type = "info";
-            notify(busca, "", type); 
+            notify(busca, "", type)
           } else {
            type = "error";
            notify(error_gral, "", type);
@@ -153,6 +160,7 @@ const FormularioDev = ({}) => {
       let producto = {};
       let res = false;
       let detap = {};
+      console.log(pro);
     if (datos.codigo_pro === 0 && (datos.cantidad === "" || datos.cantidad <= 0)){
       setErrores({
        ...errores,
@@ -418,7 +426,7 @@ const FormularioDev = ({}) => {
                   value = {datos.codigo_pro}
                   onChange = {handleInputChange}
                 >
-                  <option value={0}>Producto</option> 
+                  <option value={0}>Producto</option>
                   {pro.map((elemento, index) =>(
                     <option key={index} value={elemento.codigo_pro}>{`${elemento.codigo_pro} - ${elemento.nombre_pro}`}</option>
                   ))}
@@ -491,6 +499,7 @@ const FormularioDev = ({}) => {
               >
                 Devolver Productos
               </Button>
+
             </div> 
         </form>
       </div>
