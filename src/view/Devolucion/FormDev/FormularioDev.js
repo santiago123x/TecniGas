@@ -21,6 +21,7 @@ import {
 
 
 
+
 const feDa = new Date();
 const fechaAct = new Date(
   feDa.getFullYear(),
@@ -86,6 +87,8 @@ const FormularioDev = ({}) => {
 
   const classes = useStyles();
 
+  
+
   const validaFecha = () => {
     const año = fechaAct.getFullYear();
     const mes = fechaAct.getMonth() + 1;
@@ -129,21 +132,27 @@ const FormularioDev = ({}) => {
         });
         
         const idVenta = datos.cod_factura;
+        let productod = [];
+        var productito = null;
         
         const valida = await getDetalleVen(idVenta);
           if (valida)
           {
-            valida.forEach(async (element) => {
-               producto = await validaPro(element.producto_id);
-                producto.forEach((element, index) => {
-                  console.log(element);
-                  setPro([
-                    ...pro,
-                    producto
-                  ]);
-                  
-                });
-            });
+            
+           
+             
+              console.log(valida)
+              setPro(...pro, valida)
+
+                         
+            
+            
+            
+            
+
+            
+            
+            
             setDetaVen([valida[0]]);
             type = "info";
             notify(busca, "", type)

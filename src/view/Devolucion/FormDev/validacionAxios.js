@@ -19,17 +19,19 @@ const getDetalleVen = async (cod_venta) => {
 };
 
 const validaPro = async (idPro) => {
-    let dato = {};
+    let dato = [];
     try {
         const response = await axios.get(`${URL}producto/id/${idPro}`);
         dato = response.data;
+        
         if (dato !== "" && dato !== null){
             return dato;
         } else {
             return false;
         }
     } catch (error) {
-       console.error(error); 
+       console.error(error);
+       return null 
     }
 };
 
