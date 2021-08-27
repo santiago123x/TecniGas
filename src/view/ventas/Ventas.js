@@ -148,7 +148,7 @@ const Ventas = () => {
         precio_ven: r.precio,
         total_ven: r.subtotal,
       }
-      //estaba aquiiiiiii
+      //estaba aquiiiiiii holi
       data.data.map((d)=>{
         if(d.codigo_pro == r.codigo){
           idproducto = d.codigo_pro;
