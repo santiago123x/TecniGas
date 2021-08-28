@@ -110,6 +110,17 @@ const Ventas = () => {
     }
   };
 
+  
+  const putDescuentaUnidades = async (idProd, body) => {
+    //console.log(idProd, body)
+    try {
+      const response = await axios.put(`http://localhost:5000/productocantidad/${idProd}`, body);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
+
   const realizarVenta = () => {
      
     if(validaVentas(inputClientes.cliente, estado, parseFloat(total.recibido),total.total,rows)){
@@ -139,25 +150,40 @@ const Ventas = () => {
 
     let vendido = postVenta(body);    
     let idproducto = 0;
+    let cantidadProd = 0;
+   
     rows.forEach((r)=> {
+      data.data.map((d)=>{
+        if(d.codigo_pro == r.codigo){
+          idproducto = d.producto_id;
+          cantidadProd = d.cantidad_pro;
+                   
+        }        
+      })
+      
+      
+
       const body2 = {
         id_venta: idVenta,
-        producto_id: r.codigo,
+        producto_id: idproducto,
         descuento: parseFloat(r.descuento),
         cantidad_ven: parseInt(r.cantidad),
         precio_ven: r.precio,
         total_ven: r.subtotal,
       }
-      //estaba aquiiiiiii holi
-      data.data.map((d)=>{
-        if(d.codigo_pro == r.codigo){
-          idproducto = d.codigo_pro;
-        }
-      })
 
-      console.log(idproducto);      
-      //postDetalleVenta(body2);      
+      const body3 = {
+        cantidad_pro: (cantidadProd - parseInt(r.cantidad))
+      }
+
+      
+      
+      putDescuentaUnidades(idproducto, body3)  
+           
+      postDetalleVenta(body2);      
     })
+
+      
     
     if(vendido){
       limpiaVenta();
@@ -272,7 +298,7 @@ const Ventas = () => {
   }, [total.total, iva])
 
   useEffect(() => {
-    console.log(idVentaAnt);
+    //console.log(idVentaAnt);
 
     if(idVentaAnt == null){
       setIdVenta(1);

@@ -128,6 +128,23 @@ const putProducto = async (req, res) => {
   }
 };
 
+const putCantidadProducto = async (req, res) => {
+  try {
+    const { producto_id } = req.params;
+    const {
+      cantidad_pro
+    } = req.body;
+    
+    const response = await pool.query(
+      `UPDATE producto SET cantidad_pro  = ${cantidad_pro}
+     WHERE producto_id = ${producto_id}`
+    );
+    res.json("Se Actualizo el Producto");
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 const delProducto = async (req, res) => {
   try {
     const { producto_id } = req.params;
@@ -161,6 +178,7 @@ module.exports = {
   getProductoNom,
   getProductoCat,
   putProducto,
+  putCantidadProducto,
   postProducto,
   delProducto,
   hideProducto,

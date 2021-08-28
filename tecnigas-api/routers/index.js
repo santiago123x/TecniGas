@@ -31,6 +31,7 @@ const {
   getProductoCat,
   postProducto,
   putProducto,
+  putCantidadProducto,
   delProducto,
   hideProducto,
   getProductoAll,
@@ -126,6 +127,7 @@ router.get("/producto/cod/:codigo_pro", getProductoCod);
 router.get("/producto/cat/:nombre_catg", getProductoCat);
 router.post("/producto", postProducto);
 router.put("/producto/:producto_id", putProducto);
+router.put("/productocantidad/:producto_id", putCantidadProducto);
 router.delete("/producto/:producto_id", delProducto);
 router.put("/product/:producto_id", hideProducto);
 
