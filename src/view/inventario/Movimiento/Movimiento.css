@@ -1,0 +1,8 @@
+.formularioMovi {
+  display: grid;
+  row-gap: 15px;
+}
+
+.modal {
+  background-color: cornflowerblue;
+}

@@ -28,6 +28,7 @@ const {
   getUsuario,
   hideUsuario,
   putRol,
+  verifiUsuario,
 } = require("../controlador/usuario.js");
 
 const { getProveedor } = require("../controlador/proveedores");
@@ -51,6 +52,10 @@ const {
   postCompraDet,
 } = require("../controlador/compra.js");
 
+
+const { postMovimiento } = require("../controlador/movimiento");
+
+
 const { getCategoria } = require("../controlador/categoria.js");
 
 //Ruta de Usuario
@@ -60,6 +65,7 @@ router.get("/usuario/:id", getUsuarioId);
 router.put("/usuario/:id", putUsuarioId);
 router.put("/usurol/:id", putRol);
 router.put("/delusuario/:id", hideUsuario);
+router.post("/verifiusu/", verifiUsuario);
 
 //Ruta de Iva
 
@@ -115,5 +121,9 @@ router.put("/product/:producto_id", hideProducto);
 //router.get("/compra", getCompra);
 router.post("/compra", postCompra);
 router.post("/compraDet", postCompraDet);
+
+// routes Movimiento
+
+router.post("/movimiento", postMovimiento)
 
 module.exports = router;

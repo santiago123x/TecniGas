@@ -6,13 +6,14 @@ import Button from "@material-ui/core/Button";
 import useAxios from "../../Hooks/useAxios";
 import moneda from "../../utilidades/moneda";
 import axios from "axios";
-import { Alert } from "bootstrap";
 import MiFilter from "../../Componentes/MiFilter/Mifilter";
 import MiInput from "../../Componentes/MiInput/MiInput";
+import { notify } from "../../Componentes/notify/Notify";
+import { ToastContainer } from "react-toastify";
 
 const Compra = () => {
   const productos = useAxios(`/producto/`);
-  const proveedores = useAxios(`/proveedor/`);
+  const proveedores = useAxios(`/provpers/`);
   const date = new Date();
   const fechaActu = new Date(
     date.getFullYear(),
@@ -30,18 +31,20 @@ const Compra = () => {
   const [cantidad, setCantidad] = useState();
   const [totalDet, setTotalDet] = useState(0);
   const [totalCompra, setTotalCompra] = useState(0);
-  const [compra_id, setCompra_id] = useState(null);
 
+  //calcula el total de cada detalle
   const calcularTotalDetalle = () => {
     setTotalDet(cantidad * precio);
   };
 
+  //calcula el todal de toda la compra
   const calcularTotalCompra = () => {
     let suma = 0;
     compraDet.map((det) => (suma = det.totalDet + suma));
     setTotalCompra(suma);
   };
 
+  //verifica que al menos se ingrese un producto y se escoja un proveedor  
   const verificaCompra = () => {
     if (compraDet.length > 0 && proveedor != null) setCompraVacia(false);
     else setCompraVacia(true);
@@ -51,47 +54,56 @@ const Compra = () => {
     calcularTotalDetalle();
   }, [precio, cantidad]);
 
+  //actualiza el total y verifica si se puede realizar la venta
+  //cada vez que cambia el proveedor o los detalles de compra
   useEffect(() => {
     calcularTotalCompra();
     verificaCompra();
   }, [compraDet, proveedor]);
 
+  //Registra los detalles de la compra
   const registrarDet = (e) => {
     e.preventDefault();
     const nuevoDet = {
       producto_id: produ.producto_id,
+      codigo_pro: produ.codigo_pro,
       nombre_pro: produ.nombre_pro,
       precio: precio,
       cantidad: cantidad,
       totalDet: totalDet,
     };
-    const detalles = [...compraDet, nuevoDet];
-    setPrecio("");
+    const detalles = [...compraDet, nuevoDet];   
     setCantidad("");
+    setPrecio("");
     setProdu(null);
     setCompraDet(detalles);
   };
 
+  //guarda la compra en la base de datos
   const guardarCompra = async () => {
-    const body = {
-      id_usuario: 2,
-      fecha_ent: fecha,
-      coment_cpra: observacion,
-      total_gral: totalCompra,
-      proveedor_id: proveedor.id_clipro,
-    };
-    await axios({
-      method: "post",
-      url: "http://localhost:5000/compra/",
-      data: body,
-    }).then((response) => {
-      if (response.status === 200) {
-        const id = response.data[0].compra_id;
-        guardarDetalles(id);
-      } else alert("Ha susedido un problema intente mas tarde");
-    });
+    try {
+      const body = {
+        id_usuario: 2,
+        fecha_ent: fecha,
+        coment_cpra: observacion,
+        total_gral: totalCompra,
+        proveedor_id: proveedor.id_clipro,
+      };
+      await axios.post("http://localhost:5000/compra/", body).
+        then((response) => {
+          if (response.status === 200) {
+            const id = response.data[0].compra_id;
+            guardarDetalles(id);
+            notify("Compra regitrada con exito", "", "info");
+            seteo();
+          } else notify("Ha susedido un problema intente mas tarde","", "error");
+        });
+    } catch (error) {
+      notify("Ha susedido un problema intente mas tarde, error: ", error, "error")
+    }
   };
 
+  //guarda cada detalle de la compra en la BD
   const guardarDetalles = (id) => {
     let nuevoBodyDet;
     compraDet.map(async (det) => {
@@ -102,32 +114,36 @@ const Compra = () => {
         total_pd: det.totalDet,
         compra_id: id,
       };
-      const response = await axios({
-        method: "post",
-        url: "http://localhost:5000/compraDet/",
-        data: nuevoBodyDet,
-      });
+      const response = await axios.post("http://localhost:5000/compraDet/", nuevoBodyDet);
     });
   };
 
+  //setea todo al terminar la compra
+  const seteo = () => {
+    setCompraDet([]);
+    setObservacion("");
+    setProveedor(null);
+  }
+
+  //Opciones que aparecen en el filter proveedor
   const optionLabelProvee = (opcion) => {
     return `${opcion.nombre_pe}`;
   };
 
+  //Opciones que aparecen en el filter producto
   const optionLabelProduc = (opcion) => {
-    return `${opcion.nombre_pro}`;
-  };
+    return `${opcion.codigo_pro} - ${opcion.nombre_pro}`
+  }
 
-  const filtroProveedor = ["nombre_pe", "identificacion", "apellido"];
+  //Opciones por las que se podra filtar en el filter proveedor
+  const filtroProveedor = ['nombre_pe', 'identificacion'];
 
+  //Opciones por las que se podra filtar en el filter producto
   const filtroProducto = ["nombre_pro", "codigo_pro"];
-
-  const guardar = () => {
-    guardarCompra();
-  };
 
   return (
     <div className="conten-compras" id="compra">
+      <ToastContainer/>
       <div className="formularios">
         <div className="conten-form info">
           <form className="form" id="form-info">
@@ -190,7 +206,7 @@ const Compra = () => {
             <MiFilter
               id="producto"
               label="Producto"
-              tamaño={200}
+              tamaño={250}
               data={productos.data}
               value={produ}
               optionesFiltro={filtroProducto}
@@ -211,6 +227,7 @@ const Compra = () => {
                 min: 1,
               }}
               required
+              style={{ maxWidth: 170}}
             />
             <MiInput
               id="precio"
@@ -226,6 +243,7 @@ const Compra = () => {
                 min: 1,
               }}
               required
+              style={{ maxWidth: 170}}
             />
             <MiButton variant="contained" color="primary" type="submit">
               Agregar
@@ -244,7 +262,7 @@ const Compra = () => {
           color="primary"
           disabled={compraVacia}
           onClick={() => {
-            guardar();
+            guardarCompra();
           }}
         >
           Terminar Compra
@@ -261,54 +279,3 @@ const MiButton = withStyles((theme) => ({
     height: "30px",
   },
 }))(Button);
-
-/* const MiInput2 = withStyles({
-  root: {
-    "& .MuiOutlinedInput-inputMarginDense": {
-      padding: "8.5px ",
-    },
-    "& .MuiFormLabel-root": {
-      color: "black",
-    },
-    "& .PrivateNotchedOutline-root-2": {
-      top: "0px",
-    },
-    "& .MuiInputBase-input": {
-      backgroundColor: "rgba(255, 255, 255, 0.25);",
-      borderRadius: "4px",
-      color: "black",
-    },
-    "& .MuiOutlinedInput-multiline": {
-      padding: "0px",
-    },
-    "& .MuiTypography-colorTextSecondary": {
-      color: "rgba(0, 0, 0, 0.6)",
-      fontWeight: "bold",
-    },
-    "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
-      backgroundColor: "rgb(72 147 210)",
-    },
-    "& .MuiAutocomplete-inputRoot": {
-      padding: "0%",
-    },
-    "& .PrivateNotchedOutline-root-3": {
-      top: "0%",
-    },
-  },
-})(TextField);
- */
-
-/* const MiFilter2 = withStyles({
-  root: {
-    "& .MuiFormControl-fullWidth": {
-      backgroundColor: "rgba(255, 255, 255, 0.25)",
-      borderRadius: "4px",
-    },
-    "& .MuiInputBase-input": {
-      backgroundColor: "rgba(0, 0, 0, 0);",
-    },
-    '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"] .MuiAutocomplete-input': {
-      padding: "2.5px",
-    },
-  },
-})(Autocomplete); */

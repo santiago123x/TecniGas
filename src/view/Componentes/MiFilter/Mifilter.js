@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MiInput from '../MiInput/MiInput'
 import { matchSorter } from 'match-sorter';
@@ -16,7 +16,6 @@ export default function MiFilter({ data, optionesFiltro, value, setValue, tamañ
 
   return (
     <Filter
-      getOptionLabel
       id={id}
       style={{ width: tamaño }}
       options={data}
@@ -26,6 +25,7 @@ export default function MiFilter({ data, optionesFiltro, value, setValue, tamañ
       onChange={(event, newValue) => {
         setValue(newValue)
       }}
+      getOptionSelected={(option, value) => option.value === value.value}
       renderInput={params => (
         <MiInput
           {...params}
@@ -33,6 +33,7 @@ export default function MiFilter({ data, optionesFiltro, value, setValue, tamañ
           label={label}
           variant="outlined"
           size="small"
+          required
         />)
       }
     />
