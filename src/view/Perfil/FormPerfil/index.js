@@ -30,7 +30,7 @@ const FormPerfil = ({
 
   const onSubmitAcc = async (data, event) => {
     event.preventDefault();
-    if (validaTodo(data) && contraseñas(data.contraseña, data.contraConf)) {
+    if (validaTodo(data) || contraseñas(data.contraseña, data.contraConf)) {
       return;
     }
     const body = {
@@ -102,7 +102,8 @@ const FormPerfil = ({
                 </span>
                 <span className="span text-danger text-small d-block">
                   {dat == "contraConf" &&
-                    datos.contraConf !== datos.contraseña &&
+                   datos.contraConf.length > 0 &&
+                    datos.contraConf !== datos.contraseña && 
                     "Las contraseñas deben ser igual"}
                 </span>
               </div>

@@ -8,6 +8,7 @@ import Error404 from "../Componentes/Error/Error";
 import { ToastContainer } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import useAuth from "../Hooks/useAuth";
 
 const Perfil = () => {
   const history = useHistory();
@@ -25,6 +26,7 @@ const Perfil = () => {
     direccion: "",
   });
   const { data, loading, error } = useAxios("/usuario/2", recarga);
+  const auth = useAuth()
 
   const labelAcc = ["Nombre de Usuario", "Contraseña", "Confirmar Contraseña"];
   const labelPerf = ["Nombre", "Cedula", "Telefono", "Email", "Dirección"];
