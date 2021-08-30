@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./perfil.css";
 import FormPerfil from "./FormPerfil";
 import Button from "@material-ui/core/Button";
@@ -9,9 +9,12 @@ import { ToastContainer } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import useAuth from "../Hooks/useAuth";
+import UserContext from '../Context/User/UserContext';
 
 const Perfil = () => {
+  const {user} = useContext(UserContext);
   const history = useHistory();
+  const auth = useAuth();
   const [recarga, setRecarga] = useState(false);
   const [datosCuenta, setDatosCuenta] = useState({
     nombre_usr: "",
@@ -25,8 +28,10 @@ const Perfil = () => {
     email: "",
     direccion: "",
   });
-  const { data, loading, error } = useAxios("/usuario/2", recarga);
-  const auth = useAuth()
+  
+  
+  const { data, loading, error } = useAxios(`/usuario/${user.user.usuario_id}`, recarga);
+  
 
   const labelAcc = ["Nombre de Usuario", "Contraseña", "Confirmar Contraseña"];
   const labelPerf = ["Nombre", "Cedula", "Telefono", "Email", "Dirección"];

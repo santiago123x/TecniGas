@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import MiIput from "./MiInput";
 import axios from "axios";
 import { notify } from "../../Componentes/notify/Notify";
+import { FaEye } from "react-icons/fa";
 
 const uri = "http://localhost:5000";
 
@@ -27,6 +28,8 @@ const FormPerfil = ({
 }) => {
   const { register, handleSubmit } = useForm({});
   const [loading, setLoading] = useState(false);
+  const [verContra,setVerContra] = useState('password');
+  
 
   const onSubmitAcc = async (data, event) => {
     event.preventDefault();
@@ -42,6 +45,10 @@ const FormPerfil = ({
     setLoading(false);
     notify(`Se ha actualizado el Usuario: `, data.nombre_usr, "info");
     setRecarga(!recarga);
+  };
+
+  const cambio = () => {
+    verContra === "text" ? setVerContra("password") : setVerContra("text");
   };
 
   const onSubmitPerf = async (data, event) => {
@@ -83,25 +90,33 @@ const FormPerfil = ({
                 <MiIput
                   variant="outlined"
                   size="small"
-                  type={type(dat)}
+                  type={dat === 'contraConf' || dat === 'contraseña' ? verContra : type(dat)}
                   name={dat}
                   value={datos[dat]}
                   label={labels[index]}
                   onChange={onChange}
                   inputRef={register}
                   fullWidth
+                  endAdornment={
+                    (dat === 'contraConf' || dat === 'contraseña') &&
+                    
+                      <>
+                        <FaEye className="iconoboton" onClick={() => cambio()} />
+                      </>
+                    
+                  }
                 />
                 <span className="span text-danger text-small d-block">
-                  {datos[dat].length == 0 && "Campo requerido"}
-                  {dat == "telefono" &&
+                  {datos[dat].length === 0 && "Campo requerido"}
+                  {dat === "telefono" &&
                     validarTelefono(datos[dat]) &&
                     "El telefono debe tener entre 7 y 12 caracteres"}
-                  {dat == "email" &&
+                  {dat === "email" &&
                     validarEmail(datos[dat]) &&
                     "Debe ser un Email valido Ej: ej@ej.com"}
                 </span>
                 <span className="span text-danger text-small d-block">
-                  {dat == "contraConf" &&
+                  {dat === "contraConf" &&
                    datos.contraConf.length > 0 &&
                     datos.contraConf !== datos.contraseña && 
                     "Las contraseñas deben ser igual"}
