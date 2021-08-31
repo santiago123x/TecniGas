@@ -149,7 +149,7 @@ const Nav = ({ tipo }) => {
                 suffix={active.dev}
                 icon={<FcFeedback className="menu-icons" />}
               >
-                Devoluciones <Link to="/" />
+                Devoluciones <Link to="/devolucion" />
               </MenuItem>
             )}
             {validaRol(user.user.rol, "Gestion") && (
