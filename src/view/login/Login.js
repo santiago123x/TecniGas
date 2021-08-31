@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useContext } from "react";
+import React, { useCallback, useState, useEffect, useContext,useLayoutEffect } from "react";
 import UserContext from '../Context/User/UserContext'
 import { makeStyles, withStyles } from "@material-ui/styles";
 import InputBase from "@material-ui/core/InputBase";
@@ -72,11 +72,29 @@ const Login = () => {
   const [verificado, setVerificado] = useState(false);
   const classes = useStyles();
 
-  let {dispatch} = useContext(UserContext);
+  let {dispatch,user} = useContext(UserContext);
   let history = useHistory();
   const cambio = () => {
     verContra === "text" ? setVerContra("password") : setVerContra("text");
   };
+
+  useLayoutEffect(()=>{
+    if(user.user){
+      switch (user.user.rol){
+        case 'Administrador':
+          history.push('/perfil');
+          break;
+        case 'Vendedor':
+          history.push('/ventas');
+          break;
+        case 'Contador':
+          history.push('/informes');
+          break;
+        default:
+          break;
+      }
+    }
+  },[user])
 
   useEffect(() => {
     contraseña.length === 0 && setVerContra("password");
