@@ -72,7 +72,6 @@ const {
   postDevolucion,
 } = require("../controlador/devolucion.js");
 
-const { getCategoria } = require("../controlador/categoria.js");
 
 const { 
   getVenta,

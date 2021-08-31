@@ -16,12 +16,8 @@ import {validaVentas} from "./validador/ValidaVenta";
 import { RiCoinsLine } from "react-icons/ri";
 import axios from 'axios';
 import { object } from "yup/lib/locale";
-
-
-
-
-
-
+import useAuth from "../Hooks/useAuth";
+import UserContext from '../Context/User/UserContext';
 
 
 
@@ -37,6 +33,8 @@ function createRow(codigo, nombre, cantidad, precio, descuento, subtotal) {
 const Ventas = () => {
 
   //Estados iniciales (useState)
+  const auth = useAuth();
+  const {user} = useContext(UserContext);
   const [estado, setEstado] = useState(0);
   const [rows, setRows] = useState([]);
   const [url, setUrl] = useState(`/producto/`);
@@ -67,12 +65,13 @@ const Ventas = () => {
   );
   const [fecha, setFecha] = useState(fechaActu.toISOString().substr(0, 10));
   const dataClientes = useAxios(urlClientes, recarga);
+  
 
   // Constantes iniciales
   const filterOptionsClientes2 = ["nombre_pe", "identificacion"];
   const { iva: { iva } } = useContext(IvaContext);
   const idVentaAnt = useAxios("/lastventa", recarga2).data.max;
-  const usuario = 2;
+  const usuario = user.user.usuario_id;
   
 
 

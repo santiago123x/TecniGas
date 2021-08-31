@@ -29,6 +29,9 @@ const useAuth = () => {
                 case '/proveedores':
                     user.rol === 'Contador' && history.push('/');
                     break;
+                case '/devolucion':
+                    user.rol === 'Contador' && history.push('/');
+                    break;
                 case '/administracioncuentas':
                     user.rol !== 'Administrador' && history.push('/');
                     break;
