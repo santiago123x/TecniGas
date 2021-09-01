@@ -10,21 +10,20 @@ import useAxios from "../Hooks/useAxios";
 import Search from "../Componentes/Search";
 import { ToastContainer } from "react-toastify";
 import Tooltip from "@material-ui/core/Tooltip";
+import useAuth from "../Hooks/useAuth";
 
-const AdminCuentas = ({ tipo = "admin" }) => {
+const AdminCuentas = () => {
+  const auth = useAuth();
   const [valueInp, setValueInp] = useState("");
   const [recarga, setRecarga] = useState(false);
   const history = useHistory();
   const { data, loading, error } = useAxios("/usuario", recarga);
-
+  
   const title = ["Nombre de Usuario", "Nombre - Empresa", "Rol", "Opciones"];
   const titleDetails = ["Cedula - NIT", , "Email", "Contraseña"];
 
-  useEffect(() => {
-    if (tipo !== "admin") {
-      history.push("/");
-    }
-  }, []);
+  
+
   return (
     <div className="conteiner">
       <div className="cont__lista">

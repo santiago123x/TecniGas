@@ -89,7 +89,7 @@ const Perfil = () => {
                 setRecarga={setRecarga}
                 id={data.usuario_id}
               />
-              {data !== [] && data.rol == "Administrador" && (
+              {data !== [] && data.rol === "Administrador" && (
                 <div>
                   <Tooltip title="Administración de cuentas" placement="top">
                     <Button
