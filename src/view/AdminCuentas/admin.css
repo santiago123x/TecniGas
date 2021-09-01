@@ -21,4 +21,9 @@
   justify-content: center;
   width: 100%;
   margin-top: 5%;
+  align-items: center;
+}
+
+.buttonCrear {
+  margin-left: 5%;
 }

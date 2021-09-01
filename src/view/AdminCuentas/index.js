@@ -11,6 +11,7 @@ import Search from "../Componentes/Search";
 import { ToastContainer } from "react-toastify";
 import Tooltip from "@material-ui/core/Tooltip";
 import useAuth from "../Hooks/useAuth";
+import CrearCuenta from "./CrearCuenta"
 
 const AdminCuentas = () => {
   const auth = useAuth();
@@ -53,6 +54,9 @@ const AdminCuentas = () => {
               titulo="Filtrar Usuarios"
               tooltip={`Tipos de Filtro: Nombre Usuario, Nombre - Empresa, Cedula - NIT, Rol`}
             />
+            <div className="buttonCrear">
+              <CrearCuenta/>
+            </div>
           </div>
           <div className="cont__lista-tabla tablaUsu">
             {loading ? (
