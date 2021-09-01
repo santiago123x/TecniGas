@@ -18,6 +18,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import MiInput from '../../Componentes/MiInput/MiInput';
 
+import Tooltip from "@material-ui/core/Tooltip";
+
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -31,7 +33,7 @@ const StyledTableCell = withStyles((theme) => ({
 const StyledTableRow = withStyles((theme) => ({
   root: {
     '&:nth-of-type(odd)': {
-      backgroundColor: "cornflowerblue",
+      backgroundColor: "#9eb9e9",
     },
     '& .MuiIconButton-root': {
       padding: '0%',
@@ -45,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '100%',
   },
   container: {
-    height: '100%',
     backgroundColor: "#dee2e6",
   },
   scrollPaper: {
@@ -115,8 +116,8 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
         <Table className={classes.table} aria-label="customized table" stickyHeader size="small">
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Codigo</StyledTableCell>
-              <StyledTableCell align="center">Producto</StyledTableCell>
+              <StyledTableCell align="center" width="10%">Codigo</StyledTableCell>
+              <StyledTableCell align="center" width="30%">Producto</StyledTableCell>
               <StyledTableCell align="center">Cantidad</StyledTableCell>
               <StyledTableCell align="center">Precio</StyledTableCell>
               <StyledTableCell align="center">Total</StyledTableCell>
@@ -133,7 +134,8 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
                   <StyledTableCell align="center">{moneda(det.precio)}</StyledTableCell>
                   <StyledTableCell align="center">{moneda(det.totalDet)}</StyledTableCell>
                   <StyledTableCell align="center">
-                    <IconButton
+                    <Tooltip title="Editar" placement="top">
+                      <IconButton
                       type="button"
                       aria-label="Editar"
                       onClick={() => {
@@ -142,7 +144,9 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
                     >
                       <FaEdit className="icono" />
                     </IconButton>
-                    <IconButton
+                    </Tooltip>
+                    <Tooltip title="Eliminar" placement="top">
+                      <IconButton
                       type="button"
                       aria-label="Eliminar"
                       onClick={() => {
@@ -151,6 +155,8 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
                     >
                       <FaTrashAlt className="icono iconoDelete" />
                     </IconButton>
+                    </Tooltip>
+                    
                   </StyledTableCell>
                 </StyledTableRow>
               )))}
