@@ -24,7 +24,7 @@ const StyledTableCell = withStyles((theme) => ({
     color: theme.palette.common.white,
   },
   body: {
-    fontSize: 17,
+    fontSize: 16,
   },
 }))(TableCell);
 
@@ -45,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '100%',
   },
   container: {
-    height: '100%',
     backgroundColor: "#dee2e6",
   },
   scrollPaper: {
@@ -115,8 +114,8 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
         <Table className={classes.table} aria-label="customized table" stickyHeader size="small">
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Codigo</StyledTableCell>
-              <StyledTableCell align="center">Producto</StyledTableCell>
+              <StyledTableCell align="center" width='10%'>Codigo</StyledTableCell>
+              <StyledTableCell align="center" width='30%'>Producto</StyledTableCell>
               <StyledTableCell align="center">Cantidad</StyledTableCell>
               <StyledTableCell align="center">Precio</StyledTableCell>
               <StyledTableCell align="center">Total</StyledTableCell>
