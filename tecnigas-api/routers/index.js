@@ -29,6 +29,8 @@ const {
   hideUsuario,
   putRol,
   verifiUsuario,
+  addUsuario,
+  getUsuarioNick,
 } = require("../controlador/usuario.js");
 
 const { getProveedor } = require("../controlador/proveedores");
@@ -62,10 +64,12 @@ const { getCategoria } = require("../controlador/categoria.js");
 
 router.get("/usuario", getUsuario);
 router.get("/usuario/:id", getUsuarioId);
+router.get("/usuarionick/:nick", getUsuarioNick)
 router.put("/usuario/:id", putUsuarioId);
 router.put("/usurol/:id", putRol);
 router.put("/delusuario/:id", hideUsuario);
 router.post("/verifiusu/", verifiUsuario);
+router.post("/usuario", addUsuario)
 
 //Ruta de Iva
 
