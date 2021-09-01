@@ -31,7 +31,7 @@ const StyledTableCell = withStyles((theme) => ({
 const StyledTableRow = withStyles((theme) => ({
   root: {
     '&:nth-of-type(odd)': {
-      backgroundColor: "cornflowerblue",
+      backgroundColor: "#9eb9e9",
     },
     '& .MuiIconButton-root': {
       padding: '0%',
