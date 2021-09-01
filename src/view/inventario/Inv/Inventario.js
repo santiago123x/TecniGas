@@ -6,6 +6,7 @@ import Error404 from "../../Componentes/Error/Error";
 import useAxios from "../../Hooks/useAxios";
 import Search from "../../Componentes/Search";
 import FormularioProd from "../ModalProducto/FormularioProd";
+import useAuth from "../../Hooks/useAuth";
 
 const Inventario = () => {
   const [valueInp, setValueInp] = useState("");
@@ -13,6 +14,7 @@ const Inventario = () => {
   const [recarga, setRecarga] = useState(false);
   const { data, error, loading } = useAxios(url, recarga);
   const dataCategoria = useAxios("/categorias");
+  const auth = useAuth();
 
   const title = [
     "Codigo del Producto",

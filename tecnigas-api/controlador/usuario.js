@@ -36,6 +36,7 @@ const Cipher = {
 
 const getUsuarioId = async (req, res) => {
   try {
+    
     const { id: usuario_id } = req.params;
     const response = await pool.query(
       `select * from usuario natural join persona where usuario_id = ${usuario_id}`

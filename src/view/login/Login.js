@@ -1,4 +1,5 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useContext } from "react";
+import UserContext from '../Context/User/UserContext'
 import { makeStyles, withStyles } from "@material-ui/styles";
 import InputBase from "@material-ui/core/InputBase";
 import Divider from "@material-ui/core/Divider";
@@ -9,6 +10,7 @@ import "./login.css";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import { notify } from "../Componentes/notify/Notify";
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   usuario: {
@@ -70,6 +72,8 @@ const Login = () => {
   const [verificado, setVerificado] = useState(false);
   const classes = useStyles();
 
+  let {dispatch} = useContext(UserContext);
+  let history = useHistory();
   const cambio = () => {
     verContra === "text" ? setVerContra("password") : setVerContra("text");
   };
@@ -92,9 +96,19 @@ const Login = () => {
           if (response.status === 200) {
             const data = response.data;
             if (response.data.isAuth) {
+              dispatch({type:'LOGIN',payload: data});
               const nombre = data.user.nombre_pe;
               setVerificado(true);
               notify("Bienvenido: ", nombre, "info");
+
+              if(data.user.rol == 'Administrador'){
+                history.push('/perfil');
+              }else if(data.user.rol == 'Vendedor'){
+                history.push('/ventas');
+              }else if(data.user.rol == 'Contador'){
+                history.push('/informes');
+              }
+
             }
            else {
             notify("Usuario o contraseña invalida por favor verifique");
