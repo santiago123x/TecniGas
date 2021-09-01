@@ -6,14 +6,17 @@ const MiInput = withStyles({
     "& .MuiOutlinedInput-inputMarginDense": {
       padding: "8.5px 14px ",
     },
-    '& .MuiOutlinedInput-notchedOutline': {
-      top: '0'
-    },
     "& .MuiFormLabel-root": {
       color: "black",
     },
+    "& legend": {
+      float: 'inherit',
+    },
+    "& .MuiOutlinedInput-root": {
+      backgroundColor: "rgba(255, 255, 255, 0.25)",
+    },
     '& .MuiInputBase-input': {
-      backgroundColor: "rgba(255, 255, 255, 0.25);",
+      //backgroundColor: "rgba(255, 255, 255, 0.25)",
       borderRadius: "4px",
       color: 'black',
     },
@@ -25,8 +28,10 @@ const MiInput = withStyles({
       fontWeight: "bold",
     },
     "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
-      backgroundColor: "rgb(72 147 210)",
       fontWeight: "bold",
+    },
+    "& .MuiOutlinedInput-adornedEnd": {
+      paddingRight: "5px",
     },
     "& .MuiAutocomplete-inputRoot": {
       padding: "0",

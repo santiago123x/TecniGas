@@ -41,6 +41,21 @@ const getUsuarioId = async (req, res) => {
     const response = await pool.query(
       `select * from usuario natural join persona where usuario_id = ${usuario_id}`
     );
+    if (response.rows[0])
+    response.rows[0].contraseña = Cipher.desencriptar(response.rows[0].contraseña);
+    res.send(response.rows[0]);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const getUsuarioNick = async (req, res) => {
+  try {
+    const { nick: nombre_usr } = req.params;
+    const response = await pool.query(
+      `select * from usuario natural join persona where nombre_usr = '${nombre_usr}'`
+    );    
+    if (response.rows[0])
     response.rows[0].contraseña = Cipher.desencriptar(response.rows[0].contraseña);
     res.send(response.rows[0]);
   } catch (e) {
@@ -134,13 +149,14 @@ const addUsuario = async (req, res) => {
     const { persona_id, contraseña, nombre_usr, rol } = req.body;
     const contraCipher = Cipher.encriptar(contraseña);
     const response = await pool.query(
-      `INSER INTO usuario (persona_id, nombre_usr, contraseña, rol, estado_usr)
-        VALUES (${persona_id}, ${nombre_usr}, ${contraCipher}, ${rol}, "activado")
+      `INSERT INTO usuario (persona_id, nombre_usr, contraseña, rol, estado_usr)
+        VALUES (${persona_id}, '${nombre_usr}', '${contraCipher}', '${rol}', 'activado')
         returning usuario_id`
     );
     res.status(201).send(response.rows);
   } catch (error) {
     console.error(error);
+    res.status(501).send(error);
   }
 };
 
@@ -151,4 +167,6 @@ module.exports = {
   hideUsuario,
   putRol,
   verifiUsuario,
+  addUsuario,
+  getUsuarioNick,
 };

@@ -43,7 +43,6 @@ export default function MiFilter({ data, optionesFiltro, value, setValue, tamañ
 const Filter = withStyles({
   root: {
     '& .MuiFormControl-fullWidth': {
-      backgroundColor: 'rgba(255, 255, 255, 0.25)',
       borderRadius: '4px',
     },
     '& .MuiInputBase-input': {
