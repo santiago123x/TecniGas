@@ -19,7 +19,7 @@ const AdminCuentas = () => {
   const history = useHistory();
   const { data, loading, error } = useAxios("/usuario", recarga);
   
-  const title = ["Nombre de Usuario", "Nombre - Empresa", "Rol", "Opciones"];
+  const title = ["Nombre de Usuario", "Nombre y Apellido", "Rol", "Opciones"];
   const titleDetails = ["Cedula - NIT", , "Email", "Contraseña"];
 
   

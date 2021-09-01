@@ -5,8 +5,10 @@ import Error404 from "../../Componentes/Error/Error";
 import useAxios from "../../Hooks/useAxios";
 import Search from "../../Componentes/Search";
 import Formulario from "../formulario/formulario";
+import useAuth from "../../Hooks/useAuth";
 
 const Cliente = () => {
+  const auth = useAuth();
   const [valueInp, setValueInp] = useState("");
   const [url, setUrl] = useState(`/clipers/`);
   const [recarga, setRecarga] = useState(false);

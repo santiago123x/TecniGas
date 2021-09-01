@@ -9,31 +9,32 @@ const useAuth = () => {
     useLayoutEffect(()=>{
         !user.isAuth && history.push('/');
         if(user.isAuth){
-
-            switch  (history.location){
+            console.log(user.user.rol)
+            console.log(history.location)
+            switch  (history.location.pathname){
                 case '/ventas':
-                    user.rol === 'Contador' && history.push('/');
+                    user.user.rol === 'Contador' && history.push('/');
                     break;
                 case '/inventario':
-                    user.rol === 'Contador' && history.push('/');
+                    user.user.rol === 'Contador' && history.push('/');
                     break;
                 case '/compra':
-                    user.rol === 'Contador' && history.push('/');
+                    user.user.rol === 'Contador' && history.push('/');
                     break;
                 case '/agenda':
-                    user.rol === 'Contador' && history.push('/');
+                    user.user.rol === 'Contador' && history.push('/');
                     break;
                 case '/clientes':
-                    user.rol === 'Contador' && history.push('/');
+                    user.user.rol === 'Contador' && history.push('/');
                     break;
                 case '/proveedores':
-                    user.rol === 'Contador' && history.push('/');
+                    user.user.rol === 'Contador' && history.push('/');
                     break;
                 case '/devolucion':
-                    user.rol === 'Contador' && history.push('/');
+                    user.user.rol === 'Contador' && history.push('/');
                     break;
                 case '/administracioncuentas':
-                    user.rol !== 'Administrador' && history.push('/');
+                    user.user.rol !== 'Administrador' && history.push('/');
                     break;
                 default:
                     break;

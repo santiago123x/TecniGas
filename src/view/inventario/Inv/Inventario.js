@@ -9,12 +9,13 @@ import FormularioProd from "../ModalProducto/FormularioProd";
 import useAuth from "../../Hooks/useAuth";
 
 const Inventario = () => {
+  const auth = useAuth();
   const [valueInp, setValueInp] = useState("");
   const [url, setUrl] = useState(`/producto/`);
   const [recarga, setRecarga] = useState(false);
   const { data, error, loading } = useAxios(url, recarga);
   const dataCategoria = useAxios("/categorias");
-  const auth = useAuth();
+  
 
   const title = [
     "Codigo del Producto",

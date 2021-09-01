@@ -10,8 +10,10 @@ import MiFilter from "../../Componentes/MiFilter/Mifilter";
 import MiInput from "../../Componentes/MiInput/MiInput";
 import { notify } from "../../Componentes/notify/Notify";
 import { ToastContainer } from "react-toastify";
+import useAuth from "../../Hooks/useAuth";
 
 const Compra = () => {
+  const auth = useAuth();
   const productos = useAxios(`/producto/`);
   const proveedores = useAxios(`/provpers/`);
   const date = new Date();
