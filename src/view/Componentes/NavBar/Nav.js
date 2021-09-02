@@ -56,6 +56,7 @@ const Nav = ({ tipo }) => {
     client: tipo === "cli" ? <RiMapPinUserFill /> : null,
     prov: tipo === "prov" ? <RiMapPinUserFill /> : null,
     info: tipo === "info" ? <RiMapPinUserFill /> : null,
+    cat: tipo === "cat" ? <RiMapPinUserFill /> : null,
   });
 
   const { dispatch, user } = useContext(UserContext);
@@ -127,6 +128,14 @@ const Nav = ({ tipo }) => {
                   suffix={active.compra}
                 >
                   Compra de Prod <Link to="/compra" />
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    setActive({ ...inicial, cat: <RiMapPinUserFill /> });
+                  }}
+                  suffix={active.cat}
+                >
+                  Listado de Categ <Link to="/categorias" />
                 </MenuItem>
               </SubMenu>
             )}

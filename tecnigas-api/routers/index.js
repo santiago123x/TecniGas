@@ -59,7 +59,14 @@ const {
 const { postMovimiento } = require("../controlador/movimiento");
 
 
-const { getCategoria } = require("../controlador/categoria.js");
+const { 
+  getCategoria,
+  hideCategoria,
+  getCategorias,
+  categoriaUp,
+  postCategoria,
+  activarCategoria,
+ } = require("../controlador/categoria.js");
 
 //Ruta de Usuario
 
@@ -110,6 +117,12 @@ router.get("/iva", getIva);
 // Rutas de Categoria
 
 router.get("/categorias", getCategoria);
+router.post("/categoria", postCategoria);
+router.get("/categoriasH", getCategorias);
+router.put("/categorias/:id_categoria",hideCategoria);
+router.put("/categoriaUp/:id_categoria",categoriaUp);
+router.put("/actCategoria/:id_categoria",activarCategoria);
+
 
 //Rutas de iva
 

@@ -40,9 +40,9 @@ const FormularioProd = ({
   // Función de escucha que obtiene el valor de los campos de texto
   const handleInputChange = (event) => {
     //console.log(event.target.value)
-    if (event.target.name == "categoria") {
+    if (event.target.name === "categoria") {
       const productosFilt = idata.data.filter(
-        (prod) => prod.id_categoria == event.target.value
+        (prod) => prod.id_categoria === event.target.value
       );
       const codigo = productosFilt[productosFilt.length - 1].codigo_pro + 1;
       setDatos({
@@ -70,7 +70,7 @@ const FormularioProd = ({
     ) {
       return;
     }
-    console.log("eepa");
+    
     const valida = await validarProducto(
       data.nombre,
       parseInt(datos.codigoPro)
@@ -104,8 +104,12 @@ const FormularioProd = ({
           case "desactivado":
             notify(alertadesact, data.nombre, "error");
             break;
+          default:
+            break;
         }
 
+        break;
+      default:
         break;
     }
   };
@@ -129,7 +133,7 @@ const FormularioProd = ({
   useEffect(() => {
     if (idata.data) {
       const productosFilt = idata.data?.filter(
-        (prod) => prod.id_categoria == 1
+        (prod) => prod.id_categoria === 1
       );
 
       const codigo = productosFilt[productosFilt.length - 1]?.codigo_pro + 1;
@@ -196,7 +200,7 @@ const FormularioProd = ({
                 onChange={handleInputChange}
               />
               <span className="span text-danger text-small d-block">
-                {datos.nombre.length == 0 && "Campo requerido"}
+                {datos.nombre.length === 0 && "Campo requerido"}
               </span>
             </div>
             <div className="row">
@@ -212,7 +216,7 @@ const FormularioProd = ({
                 inputRef={register}
               />
               <span className="span text-danger text-small d-block">
-                {datos.precioUni.length == 0 && "Campo requerido"}
+                {datos.precioUni.length === 0 && "Campo requerido"}
                 {validaMenor0(parseFloat(datos.precioUni)) &&
                   "Debe ser mayor que 0"}
               </span>
@@ -230,7 +234,7 @@ const FormularioProd = ({
                 inputRef={register}
               />
               <span className="span text-danger text-small d-block">
-                {datos.precioMay.length == 0 && "Campo requerido"}
+                {datos.precioMay.length === 0 && "Campo requerido"}
                 {validaMenor0(parseFloat(datos.precioMay)) &&
                   "Debe ser mayor que 0"}
               </span>
@@ -248,7 +252,7 @@ const FormularioProd = ({
                 inputRef={register}
               />
               <span className="span text-danger text-small d-block">
-                {datos.stockMin.length == 0 && "Campo requerido"}
+                {datos.stockMin.length === 0 && "Campo requerido"}
                 {validaMenor0(parseInt(datos.stockMin)) &&
                   "Debe ser mayor que 0"}
               </span>
@@ -281,7 +285,7 @@ const FormularioProd = ({
                 inputRef={register}
               />
               <span className="span text-danger text-small d-block">
-                {datos.cantidadPro.length == 0 && "Campo requerido"}
+                {datos.cantidadPro.length === 0 && "Campo requerido"}
                 {validaMenor0(parseInt(datos.cantidadPro)) &&
                   "Debe ser mayor que 0"}
               </span>

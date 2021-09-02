@@ -49,6 +49,11 @@
   size: 12%;
 }
 
+.subtitulo-form {
+  text-align: center;
+  font-weight: bold;
+}
+
 .row {
   height: 50px;
   margin-bottom: 3.3%;

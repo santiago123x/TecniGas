@@ -14,7 +14,7 @@ import {
   validaTodo,
   validaMenor0,
 } from "./validacionInp";
-import { validaPut, put } from "../formulario/Validacion";
+import { validaPut, put,putCategoria } from "../formulario/Validacion";
 import "react-toastify/dist/ReactToastify.css";
 import { notify } from "../../Componentes/notify/Notify";
 import { MdModeEdit } from "react-icons/md";
@@ -110,11 +110,29 @@ const Control_Form = ({
     }
   };
 
+  const onSubmit3 = async ( data,event)=>{
+    const id_categoria = objeto.id_categoria;
+    const body = {
+      nombre_catg : data.nombre_catg,
+    }
+    console.log(id_categoria)
+    try {
+      await putCategoria(id_categoria, body);
+      reset(event);
+      setRecarga(!recarga);
+      notify(alertaexito, data.nombre_catg, "info");
+    } catch (err) {
+      notify(alertamistake, "error");
+    }
+  }
+
   const onSubmit = async (data, event) => {
     event.preventDefault();
 
-    if (tipo !== "inv") {
+    if (tipo !== "inv" && tipo !== "cat") {
       let tp;
+     
+      
       if (
         validaTodo(data) ||
         validarEmail(data.email) ||
@@ -150,6 +168,9 @@ const Control_Form = ({
       } else if (!validaP) {
         notify("Error al modificar, datos invalidos.", "error");
       }
+    }else if(tipo === "cat"){
+      console.log(data)
+      onSubmit3(data, event);
     } else {
       onSubmit2(data, event);
     }
@@ -160,6 +181,8 @@ const Control_Form = ({
       ? "Se ha actualizado el producto correctamente"
       : tipo === "cli"
       ? "Se ha actualizado el cliente correctamente "
+      : tipo === 'cat'
+      ? "Se ha actualizado la categoria correctamente "
       : "Se ha actualizado el proveedor correctamente ";
   const alertamistake = "Error al intentar modificar, intente de nuevo.";
 
