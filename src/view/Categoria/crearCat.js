@@ -24,7 +24,7 @@ const CrearCat = ({
     })
 
   
-    const alertasucces = "Se ha creado la Categoria: ";
+    const alertasucces = "Se ha creado la Categoría: ";
     const alertaerror = "Ha ocurrido un error";
 
 
@@ -75,7 +75,7 @@ const CrearCat = ({
                 }
                 break
             case 'existe':
-                notify('Existe una categoria con el mismo nombre', "error");
+                notify('Existe una categoría con el mismo nombre', "error");
                 break;
             default:
                 break;
@@ -94,7 +94,7 @@ const CrearCat = ({
             <div className="container mt-5">
                 <div className="focoC">
                     <div className="categoria">
-                        <h4 className="titulo-form">{'Crear Categoria'}</h4>
+                        <h4 className="titulo-form">{'Crear Categoría'}</h4>
                     </div>
                     <form className="form-groupCat" onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
@@ -104,7 +104,7 @@ const CrearCat = ({
                             size="small"
                             type="text"
                             name="nombre_catg"
-                            label="Nombre de la Categoria"
+                            label="Nombre de la Categoría"
                             value={datos.nombre_catg}
                             inputRef={register}
                             onChange={(e)=>setDatos({nombre_catg: e.target.value})}
@@ -150,7 +150,7 @@ const CrearCat = ({
                 color="primary"
                 onClick={() => abrirCerrarModal()}
             >
-                {'Crear Categoria'}
+                {'Crear Categoría'}
             </Button>
             <Modal open={modal} onClose={abrirCerrarModal}>
                 {body}

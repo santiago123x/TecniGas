@@ -23,7 +23,7 @@ const auth = useAuth();
   
 
   const title = [
-    "Categoria",
+    "Categoría",
     "Opciones",
   ];
   
@@ -32,15 +32,15 @@ const auth = useAuth();
         <>
         <div className="conteiner">
         <div className="cont__lista">
-          <h2 className="cont__lista-titulo">Listado de Productos</h2>
+          <h2 className="cont__lista-titulo">Listado de Categorías</h2>
           
           <hr className="linea-h2" />
           <div className='contSearch'>
             <Search
               valueInp={valueInp}
               setValueInp={setValueInp}
-              titulo="Filtrar Categorias"
-              tooltip={`Tipos de Filtro: - Categoria`}
+              titulo="Filtrar Categoría"
+              tooltip={`Tipos de Filtro: - Categoría`}
             />
             <CrearCat 
             recarga={recarga}

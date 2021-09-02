@@ -22,7 +22,16 @@ const Cliente = () => {
       <div className="conteiner">
         <div className="cont__lista">
           <h2 className="cont__lista-titulo">Listado de Clientes</h2>
-          <Formulario
+
+          <hr className="linea-h2" />
+          <div className='contSearch'>
+            <Search
+              valueInp={valueInp}
+              setValueInp={setValueInp}
+              titulo="Filtrar Clientes"
+              tooltip={`Tipos de Filtro:  Nombre - Empresa, Cedula - NIT`}
+            />
+            <Formulario
             recarga={recarga}
             setRecarga={setRecarga}
             tipo="cliente"
@@ -31,16 +40,7 @@ const Cliente = () => {
             imagen="cli"
             tipoButton="true"
           />
-
-          <hr className="linea-h2" />
-
-          <Search
-            valueInp={valueInp}
-            setValueInp={setValueInp}
-            titulo="Filtrar Clientes"
-            tooltip={`Tipos de Filtro:  Nombre - Empresa, Cedula - NIT`}
-          />
-
+          </div>
           <div className="cont__lista-tabla">
             {loading ? (
               <Loading />
