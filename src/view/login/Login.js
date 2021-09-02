@@ -30,44 +30,11 @@ const useStyles = makeStyles((theme) => ({
     height: "20px",
   },
 }));
-/*
-const algoritmo = 'aes-192-cbc';
-const password = 'SBfvAsJqGKKRjDxD2hK7xD58';
-const Crypto = require("crypto");
 
-
-const encriptar = (contra) => {
-  try {
-    const iv = Crypto.randomBytes(8).toString('hex');
-    const cipher = Crypto.createCipheriv(algoritmo, password, iv);
-    cipher.update(contra, 'utf8', "hex");
-    const contraCipher = cipher.final("hex");
-    return iv + contraCipher;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-const desencriptar = (hex) => {
-  try {
-    console.log(hex)
-    const iv = hex.slice(0, 16);
-    const contraCipher = hex.slice(16);
-    let decipher = Crypto.createDecipheriv(algoritmo, password, iv);
-    decipher.update(contraCipher, "hex", 'utf8');
-    return decipher.final('utf8');
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-console.log(desencriptar(encriptar('1234')));
-*/
 const Login = () => {
   const [usuario, setUsuario] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [verContra, setVerContra] = useState("password");
-  const [redo, setRedo] = useState("");
   const [loading, setLoading] = useState(false);
   const [verificado, setVerificado] = useState(false);
   const classes = useStyles();
@@ -131,13 +98,14 @@ const Login = () => {
            else {
             notify("Usuario o contraseña invalida por favor verifique");
             setVerificado(false);
+            document.getElementById("inputUsuario").focus()
           }}
           setLoading(false);
-          //window.location.reload()
         });
     } catch (error) {
       notify("Ha susedido un problema intente mas tarde, error: ", error);
       setLoading(false);
+      document.getElementById("inputUsuario").focus()
     }
   };
 
@@ -148,6 +116,7 @@ const Login = () => {
         <img src={logo} className="logo" alt="logo Tecnigas" />
         <h1>Tecnigas</h1>
         <MiInputB
+          id="inputUsuario"
           placeholder="Usuario"
           className={classes.usuario}
           value={usuario}
@@ -160,6 +129,7 @@ const Login = () => {
           }
         />
         <MiInputB
+          id="inputContra"
           className={classes.contraseña}
           type={verContra}
           placeholder="Contraeña"
@@ -183,8 +153,9 @@ const Login = () => {
           }
         />
         <button
-          className={`boton-login ${redo}`}
+          className={`boton-login`}
           onClick={() => verificarUsu()}
+          id="botonlogin"
         >
           {loading ? (
             <img src={llama} className="llama" alt="llama azul" />

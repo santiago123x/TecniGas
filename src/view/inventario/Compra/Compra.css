@@ -5,7 +5,7 @@
 }
 
 .formularios {
-    width: 80%;
+    width: 85%;
     margin: 1% auto;
     border-radius: 10px;
     display: flexbox;
@@ -77,7 +77,7 @@
 }
 
 .conten-tabla {    
-    margin: 1% 10% 1%;
+    margin: 1% 7% 1%;
     padding: 1%;
     display: flex;
     outline: 0;
@@ -86,7 +86,6 @@
     background-color: rgba(255, 255, 255, 0.25);
     border-radius: 10px;
     height: 57%;
-
 }
 
 .tabla {
