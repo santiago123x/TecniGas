@@ -21,7 +21,7 @@ const AdminCuentas = () => {
   const { data, loading, error } = useAxios("/usuario", recarga);
   
   const title = ["Nombre de Usuario", "Nombre y Apellido", "Rol", "Opciones"];
-  const titleDetails = ["Cedula - NIT", , "Email", "Contraseña"];
+  const titleDetails = ["Cedula", , "Email", "Contraseña"];
 
   
 
@@ -52,7 +52,7 @@ const AdminCuentas = () => {
               valueInp={valueInp}
               setValueInp={setValueInp}
               titulo="Filtrar Usuarios"
-              tooltip={`Tipos de Filtro: Nombre Usuario, Nombre - Empresa, Cedula - NIT, Rol`}
+              tooltip={`Tipos de Filtro: Nombre Usuario, Nombre y Apellido, Cedula, Rol`}
             />
             <div className="buttonCrear">
               <CrearCuenta/>
