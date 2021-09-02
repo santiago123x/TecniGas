@@ -40,6 +40,7 @@ const Proveedores = () => {
               metodo="post"
               titulo="Crear Proveedor"
               imagen="prov"
+              tipoButton="true"
             />
           </div>
           <div className="cont__lista-tabla">
