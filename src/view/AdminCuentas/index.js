@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Button } from "@material-ui/core";
 import { IoArrowBack } from "react-icons/io5";
 import "./admin.css";
@@ -12,17 +12,20 @@ import { ToastContainer } from "react-toastify";
 import Tooltip from "@material-ui/core/Tooltip";
 import useAuth from "../Hooks/useAuth";
 import CrearCuenta from "./CrearCuenta"
+import UserContext from '../Context/User/UserContext';
 
 const AdminCuentas = () => {
   const auth = useAuth();
+  const {user} = useContext(UserContext);
   const [valueInp, setValueInp] = useState("");
   const [recarga, setRecarga] = useState(false);
   const history = useHistory();
-  const { data, loading, error } = useAxios("/usuario", recarga);
+  const { data, loading, error } = useAxios(`/usuarios/${user.user.usuario_id}`, recarga);
   
   const title = ["Nombre de Usuario", "Nombre y Apellido", "Rol", "Opciones"];
   const titleDetails = ["Cedula", , "Email", "Contraseña"];
-
+  
+  
   
 
   return (

@@ -75,6 +75,21 @@ const getUsuario = async (req, res) => {
   }
 };
 
+
+const getUsuarioDifId = async (req, res) => {
+  try {
+    const usuario_id = req.params.usuario_id;
+    const response = await pool.query(
+      `select * from usuario natural join persona where estado_usr = 'activado' and usuario_id != ${usuario_id} order by nombre_pe`
+    );
+    response.rows.forEach(elemento => elemento.contraseña = Cipher.desencriptar(elemento.contraseña) );
+    res.send(response.rows);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+
 const putUsuarioId = async (req, res) => {
   try {
     const { id: usuario_id } = req.params;
@@ -169,4 +184,5 @@ module.exports = {
   verifiUsuario,
   addUsuario,
   getUsuarioNick,
+  getUsuarioDifId,
 };
