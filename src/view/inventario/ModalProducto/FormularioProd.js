@@ -40,11 +40,15 @@ const FormularioProd = ({
   // Función de escucha que obtiene el valor de los campos de texto
   const handleInputChange = (event) => {
     //console.log(event.target.value)
-    if (event.target.name === "categoria") {
-      const productosFilt = idata.data.filter(
-        (prod) => prod.id_categoria === event.target.value
+    if (event.target.name == "categoria") {
+      const productosFilt = idata.data.filter((prod) => {
+        return prod.id_categoria == event.target.value
+      }
       );
-      const codigo = productosFilt[productosFilt.length - 1].codigo_pro + 1;
+      
+      console.log(productosFilt)
+
+      const codigo = productosFilt.length == 0 ? event.target.value * 100 : productosFilt[productosFilt.length - 1].codigo_pro + 1;
       setDatos({
         ...datos,
         categoria: event.target.value,
