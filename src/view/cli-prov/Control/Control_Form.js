@@ -25,6 +25,7 @@ import useAxios from "../../Hooks/useAxios";
 
 const URL = "http://localhost:5000";
 
+
 const Control_Form = ({
   tipo,
   metodo,
@@ -35,7 +36,7 @@ const Control_Form = ({
   objeto,
 }) => {
   const estadoInicial = { ...objeto };
-
+  const productos = useAxios("/productoall");
   const dataCategoria = useAxios("/categorias");
 
   // Asignación de los valores escritos en los campos de texto
@@ -85,6 +86,24 @@ const Control_Form = ({
     }
     const codigoProdOld = objeto.codigo_pro;
     const idProd = objeto.producto_id;
+    let codigo_pro = 201;
+
+    
+
+    if(data.id_categoria == objeto.id_categoria){
+
+      codigo_pro = objeto.codigo_pro;
+    }else{
+      let p = productos.data.filter((prod) => {
+        return prod.id_categoria == data.id_categoria
+      }
+      )      
+      console.log (p)
+      codigo_pro = p.length == 0 ? data.id_categoria * 100 : p[p.length - 1].codigo_pro + 1;
+    }
+
+    //console.log(codigo_pro);
+
     const body = {
       nombre_pro: data.nombre_pro,
       cantidad_pro: data.cantidad_pro,
@@ -92,6 +111,7 @@ const Control_Form = ({
       id_categoria: data.id_categoria,
       precio_may: data.precio_may,
       precio_uni: data.precio_uni,
+      codigo_pro: codigo_pro,
     };
 
     const validar = await validarProd(data.nombre_pro, codigoProdOld);
