@@ -79,17 +79,11 @@
 .conten-tabla {    
     margin: 1% 7% 1%;
     padding: 1%;
-    display: flex;
     outline: 0;
-    position: relative;
     justify-content: center;
     background-color: rgba(255, 255, 255, 0.25);
     border-radius: 10px;
     height: 57%;
-}
-
-.tabla {
-    width: 100%;
 }
 
 .conten-button-compra {
