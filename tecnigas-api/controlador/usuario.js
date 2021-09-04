@@ -53,7 +53,7 @@ const getUsuarioNick = async (req, res) => {
   try {
     const { nick: nombre_usr } = req.params;
     const response = await pool.query(
-      `select * from usuario natural join persona where nombre_usr = '${nombre_usr}'`
+      `select * from usuario natural join persona where nombre_usr = '${nombre_usr}' and estado_usr = 'activado'`
     );    
     if (response.rows[0])
     response.rows[0].contraseña = Cipher.desencriptar(response.rows[0].contraseña);
