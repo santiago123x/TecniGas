@@ -113,13 +113,14 @@ const putProducto = async (req, res) => {
       precio_may,
       cantidad_pro,
       stock_min,
+      codigo_pro,
 
     } = req.body;
     
     const response = await pool.query(
       `UPDATE producto SET id_categoria = ${id_categoria}, nombre_pro  = '${nombre_pro}',
        precio_uni  = ${precio_uni}, precio_may  = ${precio_may}, cantidad_pro  = ${cantidad_pro}, 
-       stock_min  = ${stock_min}
+       stock_min  = ${stock_min}, codigo_pro = ${codigo_pro}
      WHERE producto_id = ${producto_id}`
     );
     res.json("Se Actualizo el Producto");

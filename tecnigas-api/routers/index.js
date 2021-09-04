@@ -31,6 +31,7 @@ const {
   verifiUsuario,
   addUsuario,
   getUsuarioNick,
+  getUsuarioDifId,
 } = require("../controlador/usuario.js");
 
 const { getProveedor } = require("../controlador/proveedores");
@@ -59,11 +60,19 @@ const {
 const { postMovimiento } = require("../controlador/movimiento");
 
 
-const { getCategoria } = require("../controlador/categoria.js");
+const { 
+  getCategoria,
+  hideCategoria,
+  getCategorias,
+  categoriaUp,
+  postCategoria,
+  activarCategoria,
+ } = require("../controlador/categoria.js");
 
 //Ruta de Usuario
 
 router.get("/usuario", getUsuario);
+router.get("/usuarios/:usuario_id", getUsuarioDifId);
 router.get("/usuario/:id", getUsuarioId);
 router.get("/usuarionick/:nick", getUsuarioNick)
 router.put("/usuario/:id", putUsuarioId);
@@ -110,6 +119,12 @@ router.get("/iva", getIva);
 // Rutas de Categoria
 
 router.get("/categorias", getCategoria);
+router.post("/categoria", postCategoria);
+router.get("/categoriasH", getCategorias);
+router.put("/categorias/:id_categoria",hideCategoria);
+router.put("/categoriaUp/:id_categoria",categoriaUp);
+router.put("/actCategoria/:id_categoria",activarCategoria);
+
 
 //Rutas de iva
 

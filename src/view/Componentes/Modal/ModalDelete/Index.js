@@ -12,6 +12,7 @@ import { putCliPro } from "../../../cli-prov/formulario/Validacion";
 import {
   hideProducto,
   hideUsuario,
+  hideCategoria,
 } from "../../../inventario/ModalProducto/ValidaProd";
 import "./style.css";
 
@@ -40,6 +41,10 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
         return `proveedor: ${elemento.nombre_pe}`;
       case "usu":
         return `usuario: ${elemento.nombre_usr}`;
+      case "cat":
+        return `categoria: ${elemento.nombre_catg}`;
+      default:
+        break;
     }
   };
 
@@ -58,6 +63,9 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
     }
     if (tipo === "usu") {
       metodo = "usuario";
+    }
+    if(tipo === 'cat'){
+      metodo = 'categoria'
     }
 
     let idPersona = elemento.persona_id;
@@ -114,6 +122,17 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
         setRecarga(!recarga);
         abrirCerrarModal();
         break;
+      case "categoria":
+        let idCategoria = elemento.id_categoria;
+        const boole = await hideCategoria(idCategoria);
+        if (boole) {
+          notify(alertisdone, metodo, "info");
+        } else {
+          notify(alertisaerror, metodo, "error");
+        }
+        setRecarga(!recarga);
+        abrirCerrarModal();
+        break;
       default:
         notify(alertisaerror, tipo, "error");
         break;
@@ -159,6 +178,7 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
         <h3 className="container-element__text">
           ¿Desea eliminar el {tipoDel()} ?
         </h3>
+        <div  className="cont-buttons">
         <div className="container-element__button">
           <Button
             size="small"
@@ -182,6 +202,7 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
           >
             Cancelar
           </Button>
+        </div>
         </div>
       </div>
     </div>

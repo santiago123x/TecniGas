@@ -9,8 +9,7 @@ const useAuth = () => {
     useLayoutEffect(()=>{
         !user.isAuth && history.push('/');
         if(user.isAuth){
-            console.log(user.user.rol)
-            console.log(history.location)
+            
             switch  (history.location.pathname){
                 case '/ventas':
                     user.user.rol === 'Contador' && history.push('/');
@@ -35,6 +34,9 @@ const useAuth = () => {
                     break;
                 case '/administracioncuentas':
                     user.user.rol !== 'Administrador' && history.push('/');
+                    break;
+                case '/categorias':
+                    user.user.rol === 'Contador' && history.push('/');
                     break;
                 default:
                     break;

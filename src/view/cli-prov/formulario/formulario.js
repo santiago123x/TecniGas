@@ -137,6 +137,8 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
         setRecarga(!recarga);
         notify(alertasucces, data.nombre, "info");
         break;
+      default:
+        break;
     }
   };
 

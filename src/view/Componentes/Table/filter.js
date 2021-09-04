@@ -11,6 +11,8 @@ const Opciones = (objeto, categoria, recarga, setRecarga) => {
     titulo = `Cliente: ${objeto.nombre_pe}`;
   } else if (categoria === "prov") {
     titulo = `Proveedor: ${objeto.nombre_pe}`;
+  } else if (categoria === "cat") {
+    titulo = `Categoria: ${objeto.nombre_catg}`;
   } else {
     titulo = `Producto: ${objeto.nombre_pro} - ${objeto.codigo_pro}`;
   }
@@ -34,12 +36,15 @@ const Opciones = (objeto, categoria, recarga, setRecarga) => {
             setRecarga={setRecarga}
           />
         )}
-        <ModalDelete
-          tipo={categoria}
-          elemento={objeto}
-          recarga={recarga}
-          setRecarga={setRecarga}
-        />
+        {categoria !== 'cat' ?
+          <ModalDelete
+            tipo={categoria}
+            elemento={objeto}
+            recarga={recarga}
+            setRecarga={setRecarga}
+          />
+          : <></>
+        }
       </div>
     </>
   );
@@ -227,6 +232,55 @@ const filter = (
           );
         });
       }
+
+    case 'cat':
+
+      if (filtro !== "") {
+        arreglo = data.filter((dat) => {
+          return (
+            dat.nombre_catg
+              .toLowerCase()
+              .trim()
+              .includes(filtro.toString().toLowerCase().trim()) 
+          );
+        });
+
+        return arreglo.map((row, index) => {
+          const firstData = [
+            row.nombre_catg,
+          ];
+
+          return (
+            <Row
+              key={index}
+              firstData={firstData}
+              secondData={[]}
+              titulosDetalles={[]}
+              opciones={Opciones(row, tipo, recarga, setRecarga)}
+            />
+          );
+        });
+      } else {
+        return data.map((row, index) => {
+          const firstData = [
+            row.nombre_catg,
+          ];
+
+
+          return (
+            <Row
+              key={index}
+              titulosDetalles={[]}
+              firstData={firstData}
+              secondData={[]}
+              opciones={Opciones(row, tipo, recarga, setRecarga)}
+            />
+          );
+        });
+      }
+
+    default:
+      break;
   }
 };
 
