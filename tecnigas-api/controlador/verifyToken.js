@@ -5,12 +5,12 @@ const jwt = require("jsonwebtoken");
 
 const verifyToken = async (req, res, next) => {
   const token = req.headers['token'];
-  console.log(req.headers)
+  
   if (!token) return res.status(401).send({ token: null, isAuth: false });
 
   try {
-    const deco = jwt.verify(token, password);
-    const usuario_id = deco.id;
+    const deco = jwt.verify(token.replace(/["]+/g, ''), password);
+    const usuario_id = deco.usuario_id;
     const response = await pool.query(
       `select * from usuario natural join persona where usuario_id = ${usuario_id}`
     );
@@ -19,6 +19,7 @@ const verifyToken = async (req, res, next) => {
 
     next();
   } catch (error) {
+    console.log('entre al error exta jodido')
     return res.status(401).send({ token: null, isAuth: false });
   }
 }

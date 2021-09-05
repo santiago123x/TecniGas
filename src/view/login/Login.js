@@ -77,7 +77,6 @@ const Login = () => {
       await axios
         .post(`http://localhost:5000/verifiusu/`, body)
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
             const data = response.data;
             if (response.data.isAuth) {

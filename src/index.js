@@ -5,6 +5,18 @@ import Rutas from "./view/Rutas";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ThemeProvider } from "@material-ui/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
+import axios from 'axios'
+
+
+axios.interceptors.request.use(
+  req => {
+    req.headers['token'] = localStorage.getItem('token')
+    return req;
+  },
+  err => {
+    return Promise.reject(err);
+  }
+);
 const theme = createMuiTheme({
   status: {},
 });

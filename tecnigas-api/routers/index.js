@@ -69,11 +69,13 @@ const {
   activarCategoria,
  } = require("../controlador/categoria.js");
 
+const verifyToken = require("../controlador/verifyToken")
+
 //Ruta de Usuario
 
 router.get("/usuario", getUsuario);
 router.get("/usuarios/:usuario_id", getUsuarioDifId);
-router.get("/usuario/:id", getUsuarioId);
+router.get("/usuario/:id", verifyToken, getUsuarioId);
 router.get("/usuarionick/:nick", getUsuarioNick)
 router.put("/usuario/:id", putUsuarioId);
 router.put("/usurol/:id", putRol);
