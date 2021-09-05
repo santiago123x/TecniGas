@@ -9,7 +9,6 @@ const postMovimiento = async (req, res) => {
       fecha,
       tipo,
     } = req.body;
-    console.log(req.body)
     const response = await pool.query(
       `INSERT INTO movimiento (producto_id, cantidad_mv, fecha_movimiento, tipo_mv, observacion_mv)
        VALUES($1, $2, $3, $4, $5)`,[producto_id, cantidad, fecha, tipo, observacion]

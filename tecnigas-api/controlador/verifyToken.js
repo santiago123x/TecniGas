@@ -19,7 +19,6 @@ const verifyToken = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.log('entre al error exta jodido')
     return res.status(401).send({ token: null, isAuth: false });
   }
 }
