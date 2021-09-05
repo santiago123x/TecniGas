@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import Rutas from "./view/Rutas";
@@ -6,7 +6,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ThemeProvider } from "@material-ui/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import axios from 'axios'
-
 
 axios.interceptors.request.use(
   req => {
@@ -17,6 +16,16 @@ axios.interceptors.request.use(
     return Promise.reject(err);
   }
 );
+
+axios.interceptors.response.use(undefined, function valida(err) {
+   
+  if (err.response.status === 401 || err.response.data.isAuth) {
+    localStorage.clear()
+  }
+  
+  return Promise.reject(err);
+})
+
 const theme = createMuiTheme({
   status: {},
 });
