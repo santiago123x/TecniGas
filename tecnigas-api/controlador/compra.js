@@ -25,7 +25,6 @@ const postCompra = async (req, res) => {
        VALUES(${id_usuario}, '${fecha_ent}', '${coment_cpra}', ${total_gral}, ${proveedor_id}) 
        Returning compra_id`
     );
-    console.log(response.rows);
     res.send(response.rows);
   } catch (e) {
     console.error(e);

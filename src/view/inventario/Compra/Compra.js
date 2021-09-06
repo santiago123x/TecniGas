@@ -255,9 +255,8 @@ const Compra = () => {
       </div>
 
       <div className="conten-tabla">
-        <div className="tabla">
           <Tablacompra compraDet={compraDet} setCompraDet={setCompraDet} />
-        </div>
+        
       </div>
 
       <div className="conten-button-compra">

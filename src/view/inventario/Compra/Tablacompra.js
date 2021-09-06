@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     backgroundColor: "#dee2e6",
+    height: "100%",
   },
   scrollPaper: {
     background: "cornflowerblue",
