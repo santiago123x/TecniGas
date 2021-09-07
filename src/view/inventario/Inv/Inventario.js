@@ -6,13 +6,17 @@ import Error404 from "../../Componentes/Error/Error";
 import useAxios from "../../Hooks/useAxios";
 import Search from "../../Componentes/Search";
 import FormularioProd from "../ModalProducto/FormularioProd";
+import useAuth from "../../Hooks/useAuth";
+import '../../cli-prov/Clientes/clientes.css'
 
 const Inventario = () => {
+  const auth = useAuth();
   const [valueInp, setValueInp] = useState("");
   const [url, setUrl] = useState(`/producto/`);
   const [recarga, setRecarga] = useState(false);
   const { data, error, loading } = useAxios(url, recarga);
   const dataCategoria = useAxios("/categorias");
+  
 
   const title = [
     "Codigo del Producto",
@@ -32,22 +36,24 @@ const Inventario = () => {
       <div className="conteiner">
         <div className="cont__lista">
           <h2 className="cont__lista-titulo">Listado de Productos</h2>
-          <FormularioProd
-            recarga={recarga}
-            setRecarga={setRecarga}
-            tipo="Producto"
-            metodo="post"
-            titulo="Crear Producto"
-            dataCategoria={dataCategoria.data}
-          />
+          
           <hr className="linea-h2" />
-
-          <Search
-            valueInp={valueInp}
-            setValueInp={setValueInp}
-            titulo="Filtrar Productos"
-            tooltip={`Tipos de Filtro: - Categoria - Nombre - Codigo`}
-          />
+          <div className='contSearch'>
+            <Search
+              valueInp={valueInp}
+              setValueInp={setValueInp}
+              titulo="Filtrar Productos"
+              tooltip={`Tipos de Filtro: - Categoria - Nombre - Codigo`}
+            />
+            <FormularioProd
+              recarga={recarga}
+              setRecarga={setRecarga}
+              tipo="Producto"
+              metodo="post"
+              titulo="Crear Producto"
+              dataCategoria={dataCategoria.data}
+            />
+          </div>
 
           <div className="cont__lista-tabla">
             {loading ? (

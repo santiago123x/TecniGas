@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { Link, useHistory } from "react-router-dom";
 import {
   SidebarHeader,
   ProSidebar,
@@ -21,11 +21,12 @@ import {
   FcEngineering,
 } from "react-icons/fc";
 import { RiMapPinUserFill } from "react-icons/ri";
-
+import { RiLogoutBoxLine } from "react-icons/ri";
 import "./Nav.scss";
 import Logo from "./log_tecnigas_40x40.ico";
 import Clock from "../Clock/Clock";
-
+import UserContext from "../../Context/User/UserContext";
+import { validaRol } from "./validaMenu";
 const Img = () => {
   return <img src={Logo} />;
 };
@@ -55,7 +56,11 @@ const Nav = ({ tipo }) => {
     client: tipo === "cli" ? <RiMapPinUserFill /> : null,
     prov: tipo === "prov" ? <RiMapPinUserFill /> : null,
     info: tipo === "info" ? <RiMapPinUserFill /> : null,
+    cat: tipo === "cat" ? <RiMapPinUserFill /> : null,
   });
+
+  const { dispatch, user } = useContext(UserContext);
+  const history = useHistory();
 
   useEffect(() => {
     menu = document.getElementById("menu");
@@ -81,16 +86,18 @@ const Nav = ({ tipo }) => {
 
         <SidebarContent>
           <Menu iconShape="circle">
-            <MenuItem
-              suffix={active.ventas}
-              onClick={() => {
-                setActive({ ...inicial, ventas: <RiMapPinUserFill /> });
-              }}
-              icon={<FcShop className="menu-icons" />}
-            >
-              Ventas
-              <Link to="/ventas" />
-            </MenuItem>
+            {validaRol(user.user.rol, "Ventas") && (
+              <MenuItem
+                suffix={active.ventas}
+                onClick={() => {
+                  setActive({ ...inicial, ventas: <RiMapPinUserFill /> });
+                }}
+                icon={<FcShop className="menu-icons" />}
+              >
+                Ventas
+                <Link to="/ventas" />
+              </MenuItem>
+            )}
             <MenuItem
               onClick={() => {
                 setActive({ ...inicial, perfil: <RiMapPinUserFill /> });
@@ -100,47 +107,63 @@ const Nav = ({ tipo }) => {
             >
               Perfil <Link to="/perfil" />
             </MenuItem>
-            <SubMenu
-              title="Inventario"
-              icon={<FcFilingCabinet className="menu-icons" />}
-            >
+
+            {validaRol(user.user.rol, "Inventario") && (
+              <SubMenu
+                title="Inventario"
+                icon={<FcFilingCabinet className="menu-icons" />}
+              >
+                <MenuItem
+                  onClick={() => {
+                    setActive({ ...inicial, inv: <RiMapPinUserFill /> });
+                  }}
+                  suffix={active.inv}
+                >
+                  Listado de Prod <Link to="/inventario" />
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    setActive({ ...inicial, compra: <RiMapPinUserFill /> });
+                  }}
+                  suffix={active.compra}
+                >
+                  Compra de Prod <Link to="/compra" />
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    setActive({ ...inicial, cat: <RiMapPinUserFill /> });
+                  }}
+                  suffix={active.cat}
+                >
+                  Listado de Categ <Link to="/categorias" />
+                </MenuItem>
+              </SubMenu>
+            )}
+            {validaRol(user.user.rol, "Agenda") && (
               <MenuItem
                 onClick={() => {
-                  setActive({ ...inicial, inv: <RiMapPinUserFill /> });
+                  setActive({ ...inicial, agenda: <RiMapPinUserFill /> });
                 }}
-                suffix={active.inv}
+                suffix={active.agenda}
+                icon={<FcCalendar className="menu-icons" />}
               >
-                Listado de Prod <Link to="/inventario" />
+                Agenda <Link to="/" />
               </MenuItem>
+            )}
+            {validaRol(user.user.rol, "Devoluciones") && (
               <MenuItem
                 onClick={() => {
-                  setActive({ ...inicial, compra: <RiMapPinUserFill /> });
+                  setActive({ ...inicial, dev: <RiMapPinUserFill /> });
                 }}
-                suffix={active.compra}
+                suffix={active.dev}
+                icon={<FcFeedback className="menu-icons" />}
               >
-                Compra de Prod <Link to="/compra" />
+                Devoluciones <Link to="/devolucion" />
               </MenuItem>
-            </SubMenu>
-            <MenuItem
-              onClick={() => {
-                setActive({ ...inicial, agenda: <RiMapPinUserFill /> });
-              }}
-              suffix={active.agenda}
-              icon={<FcCalendar className="menu-icons" />}
-            >
-              Agenda <Link to="/" />
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                setActive({ ...inicial, dev: <RiMapPinUserFill /> });
-              }}
-              suffix={active.dev}
-              icon={<FcFeedback className="menu-icons" />}
-            >
-              Devoluciones <Link to="/" />
-            </MenuItem>
+            )}
+            {validaRol(user.user.rol, "Gestion") && (
             <SubMenu
-              title="Gestion"
+              title="Gestión"
               icon={<FcEngineering className="menu-icons" />}
             >
               <MenuItem
@@ -160,6 +183,7 @@ const Nav = ({ tipo }) => {
                 Proveedores <Link to="/proveedores" />
               </MenuItem>
             </SubMenu>
+            )}
             <MenuItem
               onClick={() => {
                 setActive({ ...inicial, info: <RiMapPinUserFill /> });
@@ -168,6 +192,15 @@ const Nav = ({ tipo }) => {
               icon={<FcStatistics className="menu-icons" />}
             >
               Informes <Link to="/ventas" />
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                dispatch({ type: "LOGOUT" });
+                history.push("/");
+              }}
+              icon={<RiLogoutBoxLine className="menu-icons" />}
+            >
+              LogOut
             </MenuItem>
           </Menu>
         </SidebarContent>

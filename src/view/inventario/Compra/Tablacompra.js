@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,8 +15,10 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import TextField from '@material-ui/core/TextField';
 import Button from "@material-ui/core/Button";
+import MiInput from '../../Componentes/MiInput/MiInput';
+
+import Tooltip from "@material-ui/core/Tooltip";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -31,7 +33,7 @@ const StyledTableCell = withStyles((theme) => ({
 const StyledTableRow = withStyles((theme) => ({
   root: {
     '&:nth-of-type(odd)': {
-      backgroundColor: "#5aacf8",
+      backgroundColor: "#9eb9e9",
     },
     '& .MuiIconButton-root': {
       padding: '0%',
@@ -45,18 +47,27 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '100%',
   },
   container: {
-    height: '100%',
     backgroundColor: "#dee2e6",
+    height: "100%",
   },
   scrollPaper: {
-    background: "#2965aa2e",
+    background: "cornflowerblue",
+    '& .MuiDialogActions-root': {
+      justifyContent: "center",
+    },
+    '& .MuiTypography-root': {
+      textAlign: "center",
+      fontWeight: "bold"
+    },
     '& .MuiFormControl-root': {
-      display: "block",
+      display: "flex",
     },
   },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 200,
+    display: "grid",
+    rowGap: "20px"
   },
   button: {
     backgroundColor: "rgb(11 52 91)",
@@ -89,6 +100,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
     const nuevoDet = {
       producto_id: produSelec.producto_id,
       nombre_pro: produSelec.nombre_pro,
+      codigo_pro: produSelec.codigo_pro,
       precio: precio,
       cantidad: cantidad,
       totalDet: totalDet,
@@ -105,7 +117,8 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
         <Table className={classes.table} aria-label="customized table" stickyHeader size="small">
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Producto</StyledTableCell>
+              <StyledTableCell align="center" width="10%">Codigo</StyledTableCell>
+              <StyledTableCell align="center" width="30%">Producto</StyledTableCell>
               <StyledTableCell align="center">Cantidad</StyledTableCell>
               <StyledTableCell align="center">Precio</StyledTableCell>
               <StyledTableCell align="center">Total</StyledTableCell>
@@ -116,12 +129,14 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
             {compraDet.length === 0 ? (<StyledTableRow />) :
               (compraDet.map((det, index) => (
                 <StyledTableRow key={index}>
-                  <StyledTableCell component="th" scope="row">{det.nombre_pro}</StyledTableCell>
-                  <StyledTableCell align="center" fontSize="bold">{det.cantidad}</StyledTableCell>
+                  <StyledTableCell align="center">{det.codigo_pro}</StyledTableCell>
+                  <StyledTableCell align="center">{det.nombre_pro}</StyledTableCell>
+                  <StyledTableCell align="center">{det.cantidad}</StyledTableCell>
                   <StyledTableCell align="center">{moneda(det.precio)}</StyledTableCell>
                   <StyledTableCell align="center">{moneda(det.totalDet)}</StyledTableCell>
                   <StyledTableCell align="center">
-                    <IconButton
+                    <Tooltip title="Editar" placement="top">
+                      <IconButton
                       type="button"
                       aria-label="Editar"
                       onClick={() => {
@@ -130,15 +145,19 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
                     >
                       <FaEdit className="icono" />
                     </IconButton>
-                    <IconButton
+                    </Tooltip>
+                    <Tooltip title="Eliminar" placement="top">
+                      <IconButton
                       type="button"
                       aria-label="Eliminar"
                       onClick={() => {
                         eliminarDet(det);
                       }}
                     >
-                      <FaTrashAlt className="icono" />
+                      <FaTrashAlt className="icono iconoDelete" />
                     </IconButton>
+                    </Tooltip>
+                    
                   </StyledTableCell>
                 </StyledTableRow>
               )))}
@@ -154,15 +173,16 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
       >
         <DialogTitle className={classes.scrollPaper}>{
           produSelec !== null &&
-            produSelec.nombre_pro
-            }</DialogTitle>
+          produSelec.nombre_pro
+        }</DialogTitle>
         <DialogContent className={classes.scrollPaper}>
           <form className={classes.formControl} onSubmit={(e) => editDetalle(e)}>
-            <TextField
+            <MiInput
               id="cantidad"
               label="Cantidad"
               size="small"
               type="number"
+              variant="outlined"
               value={cantidad}
               onChange={(evento) => {
                 setCantidad(parseInt(evento.target.value))
@@ -172,11 +192,12 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
               }}
               required
             />
-            <TextField
+            <MiInput
               id="precio"
               label="Precio"
               size="small"
               type="number"
+              variant="outlined"
               value={precio}
               onChange={(evento) => {
                 setPrecio(parseInt(evento.target.value))
@@ -187,7 +208,7 @@ const Tablacompra = ({ compraDet, setCompraDet }) => {
               required
             />
             <DialogActions >
-              <Button type="submit" color="primary" >
+              <Button type="submit" variant="contained" color="primary" >
                 Terminar
           </Button>
             </DialogActions>

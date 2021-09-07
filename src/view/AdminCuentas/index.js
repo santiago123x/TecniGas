@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Button } from "@material-ui/core";
 import { IoArrowBack } from "react-icons/io5";
 import "./admin.css";
@@ -10,21 +10,24 @@ import useAxios from "../Hooks/useAxios";
 import Search from "../Componentes/Search";
 import { ToastContainer } from "react-toastify";
 import Tooltip from "@material-ui/core/Tooltip";
+import useAuth from "../Hooks/useAuth";
+import CrearCuenta from "./CrearCuenta"
+import UserContext from '../Context/User/UserContext';
 
-const AdminCuentas = ({ tipo = "admin" }) => {
+const AdminCuentas = () => {
+  const auth = useAuth();
+  const {user} = useContext(UserContext);
   const [valueInp, setValueInp] = useState("");
   const [recarga, setRecarga] = useState(false);
   const history = useHistory();
-  const { data, loading, error } = useAxios("/usuario", recarga);
+  const { data, loading, error } = useAxios(`/usuarios/${user.user.usuario_id}`, recarga);
+  
+  const title = ["Nombre de Usuario", "Nombre y Apellido", "Rol", "Opciones"];
+  const titleDetails = ["Cedula", , "Email", "Contraseña"];
+  
+  
+  
 
-  const title = ["Nombre de Usuario", "Nombre - Empresa", "Rol", "Opciones"];
-  const titleDetails = ["Cedula - NIT", , "Email", "Contraseña"];
-
-  useEffect(() => {
-    if (tipo !== "admin") {
-      history.push("/");
-    }
-  }, []);
   return (
     <div className="conteiner">
       <div className="cont__lista">
@@ -52,8 +55,11 @@ const AdminCuentas = ({ tipo = "admin" }) => {
               valueInp={valueInp}
               setValueInp={setValueInp}
               titulo="Filtrar Usuarios"
-              tooltip={`Tipos de Filtro: Nombre Usuario, Nombre - Empresa, Cedula - NIT, Rol`}
+              tooltip={`Tipos de Filtro: Nombre Usuario, Nombre y Apellido, Cedula, Rol`}
             />
+            <div className="buttonCrear">
+              <CrearCuenta/>
+            </div>
           </div>
           <div className="cont__lista-tabla tablaUsu">
             {loading ? (

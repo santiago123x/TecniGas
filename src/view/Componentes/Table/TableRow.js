@@ -34,6 +34,7 @@ function Row({ firstData, secondData, titulosDetalles, opciones }) {
   return (
     <>
       <TableRow className={comparar() ? classes.root2 : classes.root}>
+      {secondData.length !== 0 ? (
         <TableCell size="small">
           {comparar() ? (
             <Tooltip
@@ -58,6 +59,9 @@ function Row({ firstData, secondData, titulosDetalles, opciones }) {
             </IconButton>
           )}
         </TableCell>
+      )
+      : <></>
+      }
 
         {firstData.length !== 0 &&
           firstData.map((dat, index) => {
@@ -79,6 +83,7 @@ function Row({ firstData, secondData, titulosDetalles, opciones }) {
             unmountOnExit
             className={classes2.root}
           >
+            {secondData.length !== 0 ? (
             <Box margin={1}>
               <Typography
                 className={sub.root}
@@ -115,6 +120,9 @@ function Row({ firstData, secondData, titulosDetalles, opciones }) {
                 </TableBody>
               </Table>
             </Box>
+            )
+            : <></>
+            }
           </Collapse>
         </TableCell>
       </TableRow>

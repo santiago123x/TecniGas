@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const useAxios = (API, recarga, validar, metodo, body) => {
-  const uri = "http://localhost:5000";
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -11,7 +10,7 @@ const useAxios = (API, recarga, validar, metodo, body) => {
     try {
       const response = await axios({
         method: metodo,
-        url: uri + API,
+        url: API,
         data: body,
       });
       setData(response.data);

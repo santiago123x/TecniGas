@@ -25,20 +25,31 @@ export default function CollapsibleTable({
   const classes = useRowStyles();
   const noHayDatos = [];
 
-  for (let i = 0; i <= titulos.length; i++) {
-    if (i === 0) {
-      noHayDatos[i] = "No coinciden los datos";
-    } else {
-      noHayDatos[i] = "";
+  if(tipo !== 'cat'){
+    for (let i = 0; i <= titulos.length; i++) {
+      if (i === 0) {
+        noHayDatos[i] = "No coinciden los datos";
+      } else {
+        noHayDatos[i] = "";
+      }
+    }
+  }else{
+    for (let i = 0; i <= titulos.length-1; i++) {
+      if (i === 0) {
+        noHayDatos[i] = "No coinciden los datos";
+      } else {
+        noHayDatos[i] = "";
+      }
     }
   }
+  
   return (
     <div className="table-container">
       <TableContainer component={Paper}>
         <Table size="small" aria-label="collapsible table">
           <TableHead>
             <TableRow className={styleHead.root} selected hover>
-              <TableCell />
+              {titulosDetalles.length !== 0 ? <TableCell /> : <></>}
               {titulos.length !== 0 &&
                 titulos.map((titulo, index) => {
                   return mapTitle(titulo, index);

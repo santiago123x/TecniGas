@@ -36,6 +36,7 @@ const getPersById = async (req, res) => {
   }
 };
 
+
 const postPersona = async (req, res) => {
   try {
     const { nombre_pe, identificacion, email, direccion, telefono } = req.body;

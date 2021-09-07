@@ -5,7 +5,7 @@
 }
 
 .formularios {
-    width: 80%;
+    width: 85%;
     margin: 1% auto;
     border-radius: 10px;
     display: flexbox;
@@ -39,7 +39,7 @@
 }
 
 .MuiInputBase-input::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
 }
 
 .MuiPaper-root::-webkit-scrollbar {
@@ -77,16 +77,13 @@
 }
 
 .conten-tabla {    
-    margin: 1% 10% 1%;
+    margin: 1% 7% 1%;
     padding: 1%;
-    display: flex;
     outline: 0;
-    position: relative;
     justify-content: center;
     background-color: rgba(255, 255, 255, 0.25);
     border-radius: 10px;
     height: 57%;
-
 }
 
 .conten-button-compra {
@@ -94,3 +91,6 @@
     justify-content: center;
 }
 
+.iconoDelete {
+    color: rgba(216, 14, 14, 0.685);
+  }
