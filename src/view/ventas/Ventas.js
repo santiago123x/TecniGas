@@ -243,8 +243,9 @@ const Ventas = () => {
   //Agregar filas a la tabla
 
   const creaFilas = () => {
+    
 
-    if (productos == "" || cantidad <= 0 || precioSel == "" || descuento < 0) {
+    if (productos == "" || cantidad < 1 || precioSel == "" || descuento < 0 || descuento > precioSel.pre) {
       notify("Verfique todos los campos", "", "error");
       return;
     } if (validaProd(productos.codigo_pro)) {
