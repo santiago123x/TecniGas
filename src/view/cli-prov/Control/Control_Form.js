@@ -86,7 +86,7 @@ const Control_Form = ({
     }
     const codigoProdOld = objeto.codigo_pro;
     const idProd = objeto.producto_id;
-    let codigo_pro = 201;
+    let codigo_pro = 0;
 
     
 
