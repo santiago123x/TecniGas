@@ -17,14 +17,14 @@ axios.interceptors.request.use(
   }
 );
 
-axios.interceptors.response.use(undefined, function valida(err) {
+/*axios.interceptors.response.use(undefined, function valida(err) {
    
   if (err.response.status === 401 || err.response.data.isAuth) {
     localStorage.clear()
   }
   
   return Promise.reject(err);
-})
+})*/
 
 const theme = createMuiTheme({
   status: {},
