@@ -126,6 +126,57 @@ const filter = (
         });
       }
 
+    case "dev":
+      if (filtro !== ""){
+        arreglo = data.filter((dat) => {
+          return (
+            dat.devolucion_id
+              .toString()
+              .trim()
+              .includes(filtro.toString().trim()) ||
+            dat.id_venta
+              .toString()
+              .trim()
+              .includes(filtro.toString().trim()) ||
+            dat.fecha_dev
+              .toString()
+              .toLowerCase()
+              .trim()
+              .includes(filtro.toString().toLowerCase().trim())  
+          );
+        });
+
+        return arreglo.map((row, index) => {
+          const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+          const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro];
+
+          return (
+            <Row
+              key={index}
+              firstData={firstData}
+              secondData={secondData}
+              titulosDetalles={titulosDetalle}
+              opciones={Opciones(row, categoria, recarga, setRecarga)}
+            />
+          );
+        });
+      } else {
+        return data.map((row, index) => {
+          const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+          const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro];
+
+          return (
+            <Row
+              key={index}
+              firstData={firstData}
+              secondData={secondData}
+              titulosDetalles={titulosDetalle}
+              opciones={Opciones(row, categoria, recarga, setRecarga)}
+            />
+          );
+        });
+      }
+
     case "clipro":
       if (filtro !== "") {
         arreglo = data.filter((dat) => {

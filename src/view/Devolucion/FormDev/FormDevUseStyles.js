@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiSelect-select": {
       backgroundColor: "rgb(72 147 210)",
       height: "35px",
-      width: "150px"
+      width: "190px"
     },
     "& .MuiSelect-selectMenu": {
       background: "#bbdeef",

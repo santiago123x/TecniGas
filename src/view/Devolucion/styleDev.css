@@ -12,6 +12,20 @@
     padding: 2%;
   }
 
+  .containerList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 75%;
+    height: 95%;
+    min-width: 460px;
+    min-height: 470px;
+    background-color: rgba(114, 183, 230, 0.295);
+    border: solid 2px rgba(176, 196, 222, 0.699);
+    border-radius: 23px;
+    padding: 2%;
+  }  
+
 .miForm {
   display: flex;
   flex-direction: column;
@@ -25,7 +39,15 @@
   flex-direction: column;
   align-items: center;
   color: #eeecee;
-}  
+}
+
+.titulo_list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #eeecee;
+  min-width: 383px;
+} 
 
 .content_one {
   display: flex;
@@ -53,6 +75,14 @@
   min-width: 158px;
 }
 
+.txt02 {
+  display: flex;
+  flex-direction: column;
+  width: 28%;
+  min-width: 158px;
+}
+
+
 .btn_save {
   display: flex;
   align-items: center;
@@ -74,6 +104,7 @@
   width: 90%;
 }
 
+
 .line {
   display: flex;
   flex-direction: column;
@@ -88,23 +119,32 @@
 }
 
 .table {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   width: 90%;
   height: 45%;
-  margin-top: 3%;
   max-height: 208px;
 }
 
-.contePpal {
+.content-table{
   display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 315px;
-  min-width: 315px;
-  min-height: 200px;
-  height: 200px;
-  border-radius: 23px;
-  padding: 2%;
+  flex-direction: column;
+  width: 120%;
+  height: 225%;
+  margin-top: 3%;
+  min-width: 393px;
+  max-height: 225%;
 }
+
+.lista-tabla{
+  width: 73%;
+  height: 220%;
+  margin-top: 12px;
+  min-width: 393px;
+}
+
 
 .titleEdi{
   display: flex;
@@ -144,6 +184,23 @@
 
 .modPr {
   padding: 5%;
+}
+
+.select01 {
+  width: 150px;
+}
+
+.select02 {
+  width: 192px;
+}
+
+.final_form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 400px;
+  margin-left: 2px;
 }
 
 

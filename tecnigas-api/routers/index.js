@@ -51,10 +51,13 @@ const {
   postDevolucion,
   postDetaDev,
   putDevolucion,
-  putDetaDev
+  putDetaDev,
+  getDevoJDetalle
 } = require("../controlador/devolucion.js");
 
-const { getCategoria } = require("../controlador/categoria.js");
+const { 
+  getCategoria,
+  getCategoriabyID } = require("../controlador/categoria.js");
 
 const { 
   getVenta,
@@ -69,6 +72,7 @@ const {
 router.get("/devolucion", getDevolucion);
 router.get("/devolucion/:id_venta", getDev);
 router.get("/detadevo/:devolucion_id/:producto_id", getDetaDev);
+router.get("/listaDev", getDevoJDetalle);
 router.post("/devolucion", postDevolucion);
 router.post("/detadevo", postDetaDev);
 router.put("/devolucion/:devolucion_id", putDevolucion);
@@ -89,6 +93,7 @@ router.get("/iva", getIva);
 // Rutas de Categoria
 
 router.get("/categorias", getCategoria);
+router.get("/categoriaID/:id_categoria", getCategoriabyID);
 
 // Rutas de Proveedores
 

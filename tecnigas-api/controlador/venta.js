@@ -13,7 +13,7 @@ const getDetallebyId = async (req, res) => {
     try {
         const id_venta = req.params.id_venta;
         const response = await pool.query(            
-            `SELECT * FROM producto natural join public."detalle venta" WHERE id_venta = ${id_venta} order by id_detaven`
+            `SELECT * FROM producto natural join public."detalle venta" WHERE id_venta = ${id_venta} and not cantidad_ven = 0 order by id_detaven`
             );
         res.send(response.rows);
     } catch (e) {

@@ -84,7 +84,7 @@ const StyledTableCell = withStyles((theme) => ({
   }));
 
 
-const TablaDev = ({ detaPro, setDetaPro, detaVen }) => {
+const TablaDev = ({ detaPro, setDetaPro, detaVen, orden }) => {
     
     const classes = useStyles();
     const [modal, setModal] = useState(false);
@@ -127,6 +127,7 @@ const TablaDev = ({ detaPro, setDetaPro, detaVen }) => {
     };
     
     const modalEd = (deta, index) => {
+      console.log(deta);
         setPrecio(deta.precio);
         setCantidad(deta.cantidad);
         setCategoria(deta.categoria);
@@ -151,6 +152,7 @@ const TablaDev = ({ detaPro, setDetaPro, detaVen }) => {
           cantidad : true
         });
       } else if (detaVen[indexDe].cantidad_ven < cantidad){
+        console.log(indexDe);
         type = "error";
         notify(error_cant, detaVen[indexDe].cantidad_ven, type);
       } else if (precio === ""){
@@ -254,59 +256,115 @@ const TablaDev = ({ detaPro, setDetaPro, detaVen }) => {
       
     return (
     <>    
+    {orden === "prod" ? 
     <TableContainer component={Paper} className={classes.container}>
-      <Table className={classes.table} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Código</StyledTableCell>
-            <StyledTableCell align="center">Nombre</StyledTableCell>
-            <StyledTableCell align="center">Categoria</StyledTableCell>
-            <StyledTableCell align="center">Cantidad</StyledTableCell>
-            <StyledTableCell align="center">Precio</StyledTableCell>
-            <StyledTableCell align="center">Opciones</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {detaPro.length === 0 ? (<StyledTableRow />) :
-          (detaPro.map((deta, index) => (
-            <StyledTableRow  key={index}>
-              <StyledTableCell component="th" scope="row">
-                {deta.cod_producto}
-              </StyledTableCell>
-              <StyledTableCell align="center">{deta.nombre_pro}</StyledTableCell>
-              <StyledTableCell align="center">{deta.categoria}</StyledTableCell>
-              <StyledTableCell align="center">{deta.cantidad}</StyledTableCell>
-              <StyledTableCell align="center">{moneda(deta.precio)}</StyledTableCell>
-              <StyledTableCell align="center">
-                    <Tooltip title="Editar" placement="top">
-                    <IconButton
-                      type="button"
-                      aria-label="Editar"
-                      onClick={() => {
-                        modalEd(deta, index);
-                      }}
-                    >
-                      <FaEdit className="icono"/>
-                    </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Eliminar" placement="top">
-                    <IconButton
-                      type="button"
-                      aria-label="Eliminar"
-                      onClick={() => {
-                        eliminar(deta);
-                      }}
-                    >
-                      <FaTrashAlt className="icono" />
-                    </IconButton>
-                    </Tooltip>
-                    
-              </StyledTableCell>
-            </StyledTableRow>
-          )))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Table className={classes.table} aria-label="customized table">
+      <TableHead>
+        <TableRow>
+          <StyledTableCell>Código</StyledTableCell>
+          <StyledTableCell align="center">Nombre</StyledTableCell>
+          <StyledTableCell align="center">Categoria</StyledTableCell>
+          <StyledTableCell align="center">Cantidad</StyledTableCell>
+          <StyledTableCell align="center">Precio</StyledTableCell>
+          <StyledTableCell align="center">Opciones</StyledTableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {detaPro.length === 0 ? (<StyledTableRow />) :
+        (detaPro.map((deta, index) => (
+          <StyledTableRow  key={index}>
+            <StyledTableCell component="th" scope="row">
+              {deta.cod_producto}
+            </StyledTableCell>
+            <StyledTableCell align="center">{deta.nombre_pro}</StyledTableCell>
+            <StyledTableCell align="center">{deta.categoria}</StyledTableCell>
+            <StyledTableCell align="center">{deta.cantidad}</StyledTableCell>
+            <StyledTableCell align="center">{moneda(deta.precio)}</StyledTableCell>
+            <StyledTableCell align="center">
+                  <Tooltip title="Editar" placement="top">
+                  <IconButton
+                    type="button"
+                    aria-label="Editar"
+                    onClick={() => {
+                      modalEd(deta, index);
+                    }}
+                  >
+                    <FaEdit className="icono"/>
+                  </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Eliminar" placement="top">
+                  <IconButton
+                    type="button"
+                    aria-label="Eliminar"
+                    onClick={() => {
+                      eliminar(deta);
+                    }}
+                  >
+                    <FaTrashAlt className="icono" />
+                  </IconButton>
+                  </Tooltip>
+                  
+            </StyledTableCell>
+          </StyledTableRow>
+        )))}
+      </TableBody>
+    </Table>
+  </TableContainer> 
+  :
+  <TableContainer component={Paper} className={classes.container}>
+  <Table className={classes.table} aria-label="customized table">
+    <TableHead>
+      <TableRow>
+        <StyledTableCell>Código</StyledTableCell>
+        <StyledTableCell align="center">Nombre_list</StyledTableCell>
+        <StyledTableCell align="center">Categoria</StyledTableCell>
+        <StyledTableCell align="center">Cantidad</StyledTableCell>
+        <StyledTableCell align="center">Precio</StyledTableCell>
+        <StyledTableCell align="center">Opciones</StyledTableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {detaPro.length === 0 ? (<StyledTableRow />) :
+      (detaPro.map((deta, index) => (
+        <StyledTableRow  key={index}>
+          <StyledTableCell component="th" scope="row">
+            {deta.cod_producto}
+          </StyledTableCell>
+          <StyledTableCell align="center">{deta.nombre_pro}</StyledTableCell>
+          <StyledTableCell align="center">{deta.categoria}</StyledTableCell>
+          <StyledTableCell align="center">{deta.cantidad}</StyledTableCell>
+          <StyledTableCell align="center">{moneda(deta.precio)}</StyledTableCell>
+          <StyledTableCell align="center">
+                <Tooltip title="Editar" placement="top">
+                <IconButton
+                  type="button"
+                  aria-label="Editar"
+                  onClick={() => {
+                    modalEd(deta, index);
+                  }}
+                >
+                  <FaEdit className="icono"/>
+                </IconButton>
+                </Tooltip>
+                <Tooltip title="Eliminar" placement="top">
+                <IconButton
+                  type="button"
+                  aria-label="Eliminar"
+                  onClick={() => {
+                    eliminar(deta);
+                  }}
+                >
+                  <FaTrashAlt className="icono" />
+                </IconButton>
+                </Tooltip>
+                
+          </StyledTableCell>
+        </StyledTableRow>
+      )))}
+    </TableBody>
+  </Table>
+</TableContainer>
+  }
     <Modal 
       disableBackdropClick
       open={modal} 

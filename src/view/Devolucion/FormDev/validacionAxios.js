@@ -120,7 +120,7 @@ const devolucion = async (id_venta, body) => {
     try {
         const response = await axios.get(`${URL}devolucion/${id_venta}`);
         dato = response.data;
-        if(dato !== ""){
+        /*if(dato !== ""){
             try {
                 const editar = await axios.put(`${URL}devolucion/${dato.devolucion_id}`, body);
                 dato = editar.data;
@@ -129,7 +129,7 @@ const devolucion = async (id_venta, body) => {
             } catch (error) {
                 console.error(error);
             }
-        } else {
+        } else {*/
             try {
                 const response = await axios.post(`${URL}devolucion`, body);
                 dato = response.data;
@@ -138,7 +138,7 @@ const devolucion = async (id_venta, body) => {
             } catch (error) {
                 console.error(error);
             }
-        }
+        //}
     } catch (error) {
         console.error(error);
          
@@ -159,7 +159,7 @@ const detalleDev = async (producto_id, body) => {
     try {
         const response = await axios.get(`${URL}detadevo/${dev_id.devolucion_id}/${producto_id}`);
         dato = response.data;
-        if(dato !== ""){
+       /* if(dato !== ""){
             try {
                 const editar = await axios.put(`${URL}detadevo/${dato.id_detalle}`, bodyDetalle);
                 respuesta = true;
@@ -170,7 +170,7 @@ const detalleDev = async (producto_id, body) => {
                console.error(error); 
                
             }
-        } else {
+        } else {*/
             try {
                 const post = await axios.post(`${URL}detadevo`, bodyDetalle);
                 respuesta = true;
@@ -181,12 +181,34 @@ const detalleDev = async (producto_id, body) => {
                 console.error(error);
                 
             }
-        }
+        //}
     } catch (error) {
         console.error(error);
         
     }
     return respuesta;
+};
+
+const getCategoria = async (id_categoria) =>{
+    let dato = "";
+    try{
+        const getCat = await axios.get(`${URL}categoriaID/${id_categoria}`);
+        dato = getCat.data;
+    } catch(error) {
+        console.error(error); 
+    }
+    return dato;
+};
+
+const listaDev = async () =>{
+    let dato = "";
+    try{
+        const getList = await axios.get(`${URL}listaDev`);
+        dato = getList.data;
+    }catch(error) {
+        console.error(error);
+    }
+    return dato;
 };
 
 export {
@@ -197,5 +219,7 @@ export {
     putVenta,
     putProducto,
     devolucion,
-    detalleDev
+    detalleDev,
+    getCategoria,
+    listaDev
 };

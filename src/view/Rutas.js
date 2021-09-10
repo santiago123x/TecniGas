@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Ventas from "./ventas/Ventas";
 import Inventario from "./inventario/Inv/Inventario";
 import Devolucion from "./Devolucion/Devolucion";
+import TablaLista from "./Devolucion/FormDev/TablaLista";
 import Clientes from "./cli-prov/Clientes";
 import Proveedores from "./cli-prov/Proveedores";
 import Compra from "./inventario/Compra/Compra";
@@ -37,6 +38,12 @@ function Rutas() {
             <Route path="/devolucion">
             <Layout tipo="dev">
               <Devolucion />
+            </Layout>
+          </Route>
+
+          <Route path="/lista_dev">
+            <Layout tipo="list_dev">
+              <TablaLista />
             </Layout>
           </Route>
 

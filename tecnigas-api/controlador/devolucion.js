@@ -110,6 +110,22 @@ const putDetaDev = async (req, res) => {
   }
 };
 
+const getDevoJDetalle = async (req, res) => {
+  try{
+    const response = await pool.query(
+    `select devolucion.devolucion_id, devolucion.id_venta, devolucion.fecha_dev, devolucion.total_gral_d,
+    "detalle devolucion".producto_id, "detalle devolucion".cantidad_det, "detalle devolucion".precio_uni,
+    producto.codigo_pro
+    from devolucion
+    inner join "detalle devolucion" on "detalle devolucion".devolucion_id = devolucion.devolucion_id
+    inner join producto on producto.producto_id = "detalle devolucion".producto_id`
+    );
+    res.send(response.rows);
+  }catch (e) {
+    console.error(e);
+  }
+};
+
   module.exports = {
     getDevolucion,
     postDevolucion,
@@ -117,5 +133,6 @@ const putDetaDev = async (req, res) => {
     putDevolucion,
     putDetaDev,
     getDev,
-    getDetaDev
+    getDetaDev,
+    getDevoJDetalle
   };
