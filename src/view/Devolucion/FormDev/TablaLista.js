@@ -11,6 +11,7 @@ import useStyles from "./FormDevUseStyles";
 import styleDev from "../styleDev.css";
 import { notify } from "../../Componentes/notify/Notify";
 
+
 const feDa = new Date();
 const fechaAct = new Date(
   feDa.getFullYear(),
@@ -26,6 +27,7 @@ const ListaDev = ({}) => {
   const [recarga, setRecarga] = useState(false);
   const { data, error, loading } = useAxios(url, recarga);
   
+  
 
   const title = ["Código Devolución", "Código Factura", "Fecha Devolución", "Total Devuelto", "Opciones"];
   const titleDetails = ["Cantidad Devuelta", "Precio Unitario", "Código Producto"];
@@ -37,13 +39,14 @@ const ListaDev = ({}) => {
   const formateaFecha = () => {
       let opciones = { year: 'numeric', month: 'short', day: 'numeric' };
       datico.length = 0;
+      let rowsTemp=[];
     for(let i = 0; i<data.length; i++){
       let fecha = new Date(data[i].fecha_dev)
       .toLocaleDateString('es',opciones)
       .replace(/ /g,'-')
       .replace('.','')
       .replace(/-([a-z])/, function (x) {return '-' + x[1].toUpperCase()});
-         let body = {
+         const body = {
           devolucion_id : data[i].devolucion_id,
           id_venta : data[i].id_venta,
           fecha_dev : fecha,
@@ -52,8 +55,10 @@ const ListaDev = ({}) => {
           precio_uni : data[i].precio_uni,
           codigo_pro : data[i].codigo_pro
          };
-         setInfo(...info, body);
+         console.log(body);
+          rowsTemp.push(body);         
        };
+       setInfo(rowsTemp);
   };
 useEffect(()=>{
   if(data){
