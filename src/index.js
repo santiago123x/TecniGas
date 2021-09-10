@@ -26,11 +26,10 @@ axios.interceptors.request.use(
   return Promise.reject(err);
 })*/
 
+
 const theme = createMuiTheme({
   status: {},
 });
-
-
 
 
 ReactDOM.render(
