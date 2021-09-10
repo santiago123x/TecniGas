@@ -34,10 +34,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "server": "npm run servidor --prefix tecnigas-api",
-    "dev": "concurrently -n server,cliente -c bgGreen.bold,bgMagenta.bold \"npm run server\" \"npm run start\"",
-    "heroku-postbuild": "npm install --prefix tecnigas-api && npm run start --prefix tecnigas-api"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -57,5 +54,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000/"
+  "proxy": "https://tecnigas-api.herokuapp.com/"
 }
