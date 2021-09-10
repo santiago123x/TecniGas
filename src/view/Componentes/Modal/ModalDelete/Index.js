@@ -9,7 +9,11 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import React, { useState } from "react";
 import { putCliPro } from "../../../cli-prov/formulario/Validacion";
-import { hideProducto } from "../../../inventario/ModalProducto/ValidaProd";
+import {
+  hideProducto,
+  hideUsuario,
+  hideCategoria,
+} from "../../../inventario/ModalProducto/ValidaProd";
 import "./style.css";
 
 const URL = "http://localhost:5000";
@@ -35,6 +39,12 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
 
       case "prov":
         return `proveedor: ${elemento.nombre_pe}`;
+      case "usu":
+        return `usuario: ${elemento.nombre_usr}`;
+      case "cat":
+        return `categoria: ${elemento.nombre_catg}`;
+      default:
+        break;
     }
   };
 
@@ -50,6 +60,12 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
     }
     if (tipo === "inv") {
       metodo = "inventario";
+    }
+    if (tipo === "usu") {
+      metodo = "usuario";
+    }
+    if(tipo === 'cat'){
+      metodo = 'categoria'
     }
 
     let idPersona = elemento.persona_id;
@@ -91,6 +107,28 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
           notify(alertisdone, tipo, "info");
         } else {
           notify(alertisaerror, tipo, "error");
+        }
+        setRecarga(!recarga);
+        abrirCerrarModal();
+        break;
+      case "usuario":
+        let idUsuario = elemento.usuario_id;
+        const bool = await hideUsuario(idUsuario);
+        if (bool) {
+          notify(alertisdone, metodo, "info");
+        } else {
+          notify(alertisaerror, metodo, "error");
+        }
+        setRecarga(!recarga);
+        abrirCerrarModal();
+        break;
+      case "categoria":
+        let idCategoria = elemento.id_categoria;
+        const boole = await hideCategoria(idCategoria);
+        if (boole) {
+          notify(alertisdone, metodo, "info");
+        } else {
+          notify(alertisaerror, metodo, "error");
         }
         setRecarga(!recarga);
         abrirCerrarModal();
@@ -140,6 +178,7 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
         <h3 className="container-element__text">
           ¿Desea eliminar el {tipoDel()} ?
         </h3>
+        <div  className="cont-buttons">
         <div className="container-element__button">
           <Button
             size="small"
@@ -163,6 +202,7 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
           >
             Cancelar
           </Button>
+        </div>
         </div>
       </div>
     </div>

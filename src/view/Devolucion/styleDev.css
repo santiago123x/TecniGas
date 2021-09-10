@@ -132,8 +132,7 @@
   align-items: center;
   flex-direction: column;
   width: 120%;
-  height: 225%;
-  margin-top: 3%;
+  margin-top: 8%;
   min-width: 393px;
   max-height: 225%;
 }
@@ -141,7 +140,7 @@
 .lista-tabla{
   width: 73%;
   height: 220%;
-  margin-top: 12px;
+  margin-top: 8%;
   min-width: 393px;
 }
 

@@ -1,38 +1,40 @@
-import React, { useEffect, useState } from "react";
 import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 
 const MiInput = withStyles({
   root: {
     "& .MuiOutlinedInput-inputMarginDense": {
-      padding: "8.5px ",
+      padding: "8.5px 14px ",
     },
     "& .MuiFormLabel-root": {
       color: "black",
     },
-    "& .PrivateNotchedOutline-root-2": {
-      top: "0px",
+    "& legend": {
+      float: 'inherit',
+    },
+    "& .MuiOutlinedInput-root": {
+      backgroundColor: "rgba(255, 255, 255, 0.25)",
     },
     '& .MuiInputBase-input': {
-      backgroundColor: "rgba(255, 255, 255, 0.25);",
+      //backgroundColor: "rgba(255, 255, 255, 0.25)",
       borderRadius: "4px",
       color: 'black',
     },
     "& .MuiOutlinedInput-multiline": {
-      padding: "0px",
+      padding: "0",
     },
     "& .MuiTypography-colorTextSecondary": {
       color: "rgba(0, 0, 0, 0.6)",
       fontWeight: "bold",
     },
     "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
-      backgroundColor: "rgb(72 147 210)",
+      fontWeight: "bold",
+    },
+    "& .MuiOutlinedInput-adornedEnd": {
+      paddingRight: "5px",
     },
     "& .MuiAutocomplete-inputRoot": {
-      padding: "0%",
-    },
-    '& .PrivateNotchedOutline-root-3': {
-      top: "0%",
+      padding: "0",
     },
   },
 })(TextField);

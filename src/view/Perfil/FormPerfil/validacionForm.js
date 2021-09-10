@@ -27,11 +27,11 @@ const validaPerf = yup.object().shape({
 });
 
 const type = (dato) => {
-  if (dato == "usu_cedula" || dato == "usu_tel") {
+  if (dato == "identificacion" || dato == "telefono") {
     return "number";
-  } else if (dato == "usu_email") {
+  } else if (dato == "email") {
     return "email";
-  } else if (dato == "contra" || dato == "contraConf") {
+  } else if (dato == "contraseña" || dato == "contraConf") {
     return "password";
   } else {
     return "text";

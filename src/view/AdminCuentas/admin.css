@@ -1,0 +1,29 @@
+.cont__admin {
+  width: 100%;
+  height: 100%;
+  padding: 2%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.buttonAdminBack {
+  width: 100%;
+  justify-self: flex-start;
+}
+
+.tablaUsu {
+  margin-top: 3.5%;
+}
+
+.contSearch {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 5%;
+  align-items: center;
+}
+
+.buttonCrear {
+  margin-left: 5%;
+}

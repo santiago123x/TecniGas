@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../perfil.css";
 import { useForm } from "react-hook-form";
 import {
@@ -10,34 +10,71 @@ import {
 } from "./validacionForm";
 import Button from "@material-ui/core/Button";
 import MiIput from "./MiInput";
+import axios from "axios";
+import { notify } from "../../Componentes/notify/Notify";
+import { FaEye } from "react-icons/fa";
 
-const FormPerfil = ({ titulo, datos, labels, tipo }) => {
-  const [data, setData] = useState({ ...datos });
+const uri = "http://localhost:5000";
+
+const FormPerfil = ({
+  titulo,
+  datos,
+  labels,
+  tipo,
+  onChange,
+  recarga,
+  setRecarga,
+  id,
+}) => {
   const { register, handleSubmit } = useForm({});
-  const handleInputChange = (event) => {
-    setData({
-      ...data,
-      [event.target.name]: event.target.value,
-    });
-  };
-  const onSubmitAcc = (data, event) => {
+  const [loading, setLoading] = useState(false);
+  const [verContra,setVerContra] = useState('password');
+  
+
+  const onSubmitAcc = async (data, event) => {
     event.preventDefault();
-    if (validaTodo(data) && contraseñas(data.contra, data.contraConf)) {
+    if (validaTodo(data) || contraseñas(data.contraseña, data.contraConf)) {
       return;
     }
-    console.log(data);
+    const body = {
+      nombre_usr: data.nombre_usr,
+      contraseña: data.contraseña,
+    };
+    setLoading(true);
+    await axios.put(`${uri}/usuario/${id}`, body);
+    setLoading(false);
+    notify(`Se ha actualizado el Usuario: `, data.nombre_usr, "info");
+    setRecarga(!recarga);
   };
-  const onSubmitPerf = (data, event) => {
+
+  const cambio = () => {
+    verContra === "text" ? setVerContra("password") : setVerContra("text");
+  };
+
+  const onSubmitPerf = async (data, event) => {
     event.preventDefault();
     if (
       validaTodo(data) ||
-      validarEmail(data.usu_email) ||
-      validarTelefono(data.usu_tel)
+      validarEmail(data.email) ||
+      validarTelefono(data.telefono)
     ) {
       return;
     }
-    console.log(data);
+
+    const body = {
+      direccion: data.direccion,
+      email: data.email,
+      identificacion: data.identificacion,
+      nombre_pe: data.nombre_pe,
+      telefono: data.telefono,
+    };
+    setLoading(true);
+    await axios.put(`${uri}/personaid/${id}`, body);
+    setLoading(false);
+    notify(`Se ha actualizado el Perfil: `, data.nombre_pe, "info");
+    setRecarga(!recarga);
   };
+
   return (
     <div className="forms-perfil">
       <h4 className="cont__lista-titulo">{titulo}</h4>
@@ -53,26 +90,35 @@ const FormPerfil = ({ titulo, datos, labels, tipo }) => {
                 <MiIput
                   variant="outlined"
                   size="small"
-                  type={type(dat)}
+                  type={dat === 'contraConf' || dat === 'contraseña' ? verContra : type(dat)}
                   name={dat}
-                  value={data[dat]}
+                  value={datos[dat]}
                   label={labels[index]}
-                  onChange={handleInputChange}
+                  onChange={onChange}
                   inputRef={register}
                   fullWidth
+                  endAdornment={
+                    (dat === 'contraConf' || dat === 'contraseña') &&
+                    
+                      <>
+                        <FaEye className="iconoboton" onClick={() => cambio()} />
+                      </>
+                    
+                  }
                 />
                 <span className="span text-danger text-small d-block">
-                  {data[dat].length == 0 && "Campo requerido"}
-                  {dat == "usu_tel" &&
-                    validarTelefono(data[dat]) &&
+                  {datos[dat].length === 0 && "Campo requerido"}
+                  {dat === "telefono" &&
+                    validarTelefono(datos[dat]) &&
                     "El telefono debe tener entre 7 y 12 caracteres"}
-                  {dat == "usu_email" &&
-                    validarEmail(data[dat]) &&
+                  {dat === "email" &&
+                    validarEmail(datos[dat]) &&
                     "Debe ser un Email valido Ej: ej@ej.com"}
                 </span>
                 <span className="span text-danger text-small d-block">
-                  {dat == "contraConf" &&
-                    data.contraConf !== data.contra &&
+                  {dat === "contraConf" &&
+                   datos.contraConf.length > 0 &&
+                    datos.contraConf !== datos.contraseña && 
                     "Las contraseñas deben ser igual"}
                 </span>
               </div>
@@ -86,6 +132,7 @@ const FormPerfil = ({ titulo, datos, labels, tipo }) => {
             variant="contained"
             color="primary"
             type="submit"
+            disabled={loading}
           >
             Modificar
           </Button>
@@ -96,5 +143,3 @@ const FormPerfil = ({ titulo, datos, labels, tipo }) => {
 };
 
 export default FormPerfil;
-
-//errors[dat]?.message

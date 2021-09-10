@@ -13,87 +13,89 @@
   border-radius: 36px;
 }
 
-.MuiOutlinedInput-root {
-  border-radius: 4px !important;
-}
+  .MuiOutlinedInput-root {
+    border-radius: 15px ;
+  }
 
-.option {
-  background-color: #65b1f367 !important;
-}
-
-.foco {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-  top: 50%;
-  width: 30%;
-  height: 88vh;
-  min-width: 250px;
-  margin: auto;
-  background: #bbdeef;
-  border-radius: 23px;
-}
-
-.cliente {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  align-items: center;
-}
-
-.imagen {
-  padding-top: 1%;
-  width: 130px;
-  height: 130px;
-  border-radius: 10px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.guardar {
-  height: 0px;
-  margin-left: 10px;
-  font-weight: 600px;
-}
-
-.cancelar {
-  margin-left: 120px;
-  font-weight: 600px;
-}
-
-.titulo-form {
-  margin-top: 2%;
-  margin-bottom: 8%;
-  font-weight: bold;
-  size: 12%;
-  text-align: center;
-}
-
-.span {
-  font-size: 10px;
-  font-weight: bold;
-  font-style: italic;
-  height: 5px;
-}
-
-.row {
-  height: 50px;
-  margin-bottom: 3.3%;
-  width: 70%;
-  display: flex;
-  justify-content: center;
-}
-
-.botones {
-  display: flex;
-  width: 60%;
-  justify-content: space-between;
-}
+  .option {
+    
+    background-color: #65b1f367 ;
+  }
+  
+  .foco {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    top: 50%;
+    width: 30%;
+    height: 88vh;
+    min-width: 250px;
+    margin: auto;
+    background: #bbdeef;
+    border-radius: 23px;
+  }
+  
+  .cliente {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+  }
+  
+  .imagen {
+    padding-top: 1%;
+    width: 130px;
+    height: 130px;
+    border-radius: 10px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .guardar {
+    height: 0px;
+    margin-left: 10px;
+    font-weight: 600px;
+  }
+  
+  .cancelar {
+    margin-left: 120px;
+    font-weight: 600px;
+  }
+  
+  .titulo-form {
+    margin-top: 2%;
+    margin-bottom: 8%;
+    font-weight: bold;
+    size: 12%;
+    text-align: center;
+  }
+  
+  .span {
+    font-size: 10px;
+    font-weight: bold;
+    font-style: italic;
+    height: 5px;
+  }
+  
+  .row {
+    height: 50px;
+    margin-bottom: 3.3%;
+    width: 70%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .botones {
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+  }
+  

@@ -1,0 +1,37 @@
+.controlModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.contenedorModal {
+  width: 25%;
+  height: 70vh;
+  min-width: 260px;
+  min-height: 380px;
+  background: #bbdeef;
+  border-radius: 23px;
+  padding: 2%;
+  box-shadow: 2px 4px 2px 2px #89aabb63;
+}
+
+.formModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.botonesUsu {
+  justify-self: flex-end;
+  margin-top: 7%;
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.selectUsu {
+  margin: 8% 0;
+}

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from "@material-ui/core/Tooltip";
+import { FaUserPlus, FaCartPlus } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import style_Form from "./style_Form.css";
 import logoC from "./icono.ico";
@@ -23,7 +26,7 @@ import { setLocale } from "yup";
 
 const URL = "http://localhost:5000";
 
-const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
+const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButton}) => {
   //Cambian el estilo a los elementos de material-ui
 
   // Asignación de los valores escritos en los campos de texto
@@ -135,6 +138,8 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
         reset(e);
         setRecarga(!recarga);
         notify(alertasucces, data.nombre, "info");
+        break;
+      default:
         break;
     }
   };
@@ -264,23 +269,43 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga }) => {
       </div>
     </div>
   );
-
-  return (
-    <div>
-      <Button
-        size="small"
-        variant="contained"
-        color="primary"
-        onClick={() => abrirCerrarModal()}
-      >
-        {titulo}
-      </Button>
-      <Modal open={modal} onClose={abrirCerrarModal}>
-        {body}
-      </Modal>
-      <ToastContainer />
-    </div>
-  );
+    if(tipoButton == "true"){
+      return (
+        <div>
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={() => abrirCerrarModal()}
+          >
+            {titulo}
+          </Button>
+          <Modal open={modal} onClose={abrirCerrarModal}>
+            {body}
+          </Modal>
+          <ToastContainer />
+        </div>
+      );
+    }else{
+      return (
+        <div>
+        <Tooltip title="Crear nuevo Cliente" placement="bottom">
+         <IconButton 
+          aria-label="Agregar Cliente" 
+          className={classes.iconButton}
+          onClick={() => abrirCerrarModal()}          
+          >
+            <FaUserPlus />
+          </IconButton>
+        </Tooltip>
+          <Modal open={modal} onClose={abrirCerrarModal}>
+            {body}
+          </Modal>
+          <ToastContainer />
+        </div>
+      );
+    }
+  
 };
 
 export default Formulario;

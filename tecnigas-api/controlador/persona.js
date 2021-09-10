@@ -66,6 +66,22 @@ const putPersona = async (req, res) => {
   }
 };
 
+const putPersonaId = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { nombre_pe, identificacion, email, direccion, telefono } = req.body;
+    const response = await pool.query(
+      `UPDATE persona SET nombre_pe = '${nombre_pe}', identificacion  = '${identificacion}',
+      email  = '${email}', direccion  = '${direccion}', telefono  = '${telefono}'
+    WHERE persona_id = ${id}`
+    );
+    console.log(response);
+    res.send("persona actualizada");
+  } catch (e) {
+    console.log(e, "Soy actualizar persona");
+  }
+};
+
 const delPersona = async (req, res) => {
   try {
     const id = req.params.id;
@@ -86,4 +102,5 @@ module.exports = {
   postPersona,
   putPersona,
   delPersona,
+  putPersonaId,
 };

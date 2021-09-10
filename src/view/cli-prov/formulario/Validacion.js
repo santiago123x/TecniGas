@@ -91,6 +91,14 @@ const put = async (id, body) => {
   }
 };
 
+const putCategoria = async (id, body) => {
+  try {
+    const response = await axios.put(`${URL}categoriaUp/${id}`, body);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const validaActCliPro = async (cedula, tipo) => {
   let persona = {};
   let cliPro = {};
@@ -145,6 +153,6 @@ const putCliProTipo = async (cedula, body) => {
 };
 
 
-export { validarCliente, post, postCliPro, validaPut, put, putCliPro, validaActCliPro, putCliProTipo};
+export { validarCliente, post, postCliPro, validaPut, put, putCliPro, validaActCliPro, putCliProTipo,putCategoria};
 
 //persona_id

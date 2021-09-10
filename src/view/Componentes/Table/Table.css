@@ -1,5 +1,5 @@
 .MuiTableContainer-root {
-  height: inherit;
+  height: 100%;
   display: flex;
   max-height: 350px;
   border: solid 2px lightsteelblue;

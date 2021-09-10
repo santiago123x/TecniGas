@@ -8,6 +8,7 @@ const {
   postPersona,
   putPersona,
   delPersona,
+  putPersonaId,
 } = require("../controlador/persona");
 
 const {
@@ -21,6 +22,18 @@ const {
 
 const { getIva } = require("../controlador/iva");
 
+const {
+  getUsuarioId,
+  putUsuarioId,
+  getUsuario,
+  hideUsuario,
+  putRol,
+  verifiUsuario,
+  addUsuario,
+  getUsuarioNick,
+  getUsuarioDifId,
+} = require("../controlador/usuario.js");
+
 const { getProveedor } = require("../controlador/proveedores");
 
 const {
@@ -31,6 +44,7 @@ const {
   getProductoCat,
   postProducto,
   putProducto,
+  putCantidadProducto,
   delProducto,
   hideProducto,
   getProductoAll,
@@ -44,6 +58,33 @@ const {
   postCompraDet,
 } = require("../controlador/compra.js");
 
+
+const { postMovimiento } = require("../controlador/movimiento");
+
+
+const { 
+  getCategoria,
+  getCategoriabyID,
+  hideCategoria,
+  getCategorias,
+  categoriaUp,
+  postCategoria,
+  activarCategoria,
+ } = require("../controlador/categoria.js");
+
+const verifyToken = require("../controlador/verifyToken")
+
+//Ruta de Usuario
+
+router.get("/usuario", getUsuario);
+router.get("/usuarios/:usuario_id", getUsuarioDifId);
+router.get("/usuario/:id", verifyToken, getUsuarioId);
+router.get("/usuarionick/:nick", getUsuarioNick)
+router.put("/usuario/:id", putUsuarioId);
+router.put("/usurol/:id", putRol);
+router.put("/delusuario/:id", hideUsuario);
+router.post("/verifiusu/", verifiUsuario);
+router.post("/usuario", addUsuario);
 const {
   getDevolucion,
   getDev,
@@ -55,16 +96,17 @@ const {
   getDevoJDetalle
 } = require("../controlador/devolucion.js");
 
-const { 
-  getCategoria,
-  getCategoriabyID } = require("../controlador/categoria.js");
+
 
 const { 
   getVenta,
   getDetallebyId,
   getDetallebyVP,
   putVenta,
-  putDetaVent
+  putDetaVent,
+  getLastVenta,
+  postVenta,
+  postDetalleVenta,
 } = require("../controlador/venta.js");
 
 // Rutas de devolución
@@ -85,17 +127,34 @@ router.get("/ventadetalle/:id_venta", getDetallebyId);
 router.get("/ventadetalle/:id_venta/:producto_id", getDetallebyVP);
 router.put("/venta/:id_venta", putVenta);
 router.put("/ventadetalle/:id_venta/:producto_id", putDetaVent);
+router.get("/detavenp/:id_venta/:id_producto", getDetaPro);
+router.get("/lastventa",getLastVenta);
+router.post("/postventa", postVenta);
+router.post("/postdetalleventa", postDetalleVenta);
 
 //Ruta de Iva
 
+
 router.get("/iva", getIva);
+
+
 
 // Rutas de Categoria
 
 router.get("/categorias", getCategoria);
 router.get("/categoriaID/:id_categoria", getCategoriabyID);
+router.post("/categoria", postCategoria);
+router.get("/categoriasH", getCategorias);
+router.put("/categorias/:id_categoria",hideCategoria);
+router.put("/categoriaUp/:id_categoria",categoriaUp);
+router.put("/actCategoria/:id_categoria",activarCategoria);
 
-// Rutas de Proveedores
+
+//Rutas de iva
+
+router.get("/iva", getIva);
+
+// Rutas de Proveedor
 
 router.get("/provpers", getProveedor);
 
@@ -110,6 +169,7 @@ router.get("/persona/:id", getPersById);
 router.get("/personac/:cedula", getPersonaCedula);
 router.post("/persona", postPersona);
 router.put("/persona/:id", putPersona);
+router.put("/personaid/:id", putPersonaId);
 router.delete("/persona/:id", delPersona);
 
 // Rutas de clientes-proveedores
@@ -134,6 +194,7 @@ router.get("/producto/cod/:codigo_pro", getProductoCod);
 router.get("/producto/cat/:nombre_catg", getProductoCat);
 router.post("/producto", postProducto);
 router.put("/producto/:producto_id", putProducto);
+router.put("/productocantidad/:producto_id", putCantidadProducto);
 router.delete("/producto/:producto_id", delProducto);
 router.put("/product/:producto_id", hideProducto);
 router.get("/detapro/:id_venta/:id_producto", getDetaPro);
@@ -144,5 +205,9 @@ router.put("/productodev/:producto_id/:cantidad_pro", putProDev);
 //router.get("/compra", getCompra);
 router.post("/compra", postCompra);
 router.post("/compraDet", postCompraDet);
+
+// routes Movimiento
+
+router.post("/movimiento", postMovimiento)
 
 module.exports = router;

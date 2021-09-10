@@ -5,8 +5,11 @@ import Error404 from "../../Componentes/Error/Error";
 import useAxios from "../../Hooks/useAxios";
 import Search from "../../Componentes/Search";
 import Formulario from "../formulario/formulario";
+import useAuth from "../../Hooks/useAuth";
+import '../Clientes/clientes.css'
 
 const Proveedores = () => {
+  const auth = useAuth();
   const [valueInp, setValueInp] = useState("");
   const [url, setUrl] = useState(`/provpers/`);
   const [recarga, setRecarga] = useState(false);
@@ -20,24 +23,26 @@ const Proveedores = () => {
       <div className="conteiner">
         <div className="cont__lista">
           <h2 className="cont__lista-titulo">Listado de Proveedores</h2>
-          <Formulario
-            recarga={recarga}
-            setRecarga={setRecarga}
-            tipo="proveedor"
-            metodo="post"
-            titulo="Crear Proveedor"
-            imagen="prov"
-          />
+          
 
           <hr className="linea-h2" />
-          <div className="cont__lista-input"></div>
-          <Search
-            valueInp={valueInp}
-            setValueInp={setValueInp}
-            titulo="Filtrar Proveedores"
-            tooltip={`Tipos de Filtro:  Nombre - Empresa, Cedula - NIT`}
-          />
-
+          <div className='contSearch'>
+            <Search
+              valueInp={valueInp}
+              setValueInp={setValueInp}
+              titulo="Filtrar Proveedores"
+              tooltip={`Tipos de Filtro:  Nombre - Empresa, Cedula - NIT`}
+            />
+            <Formulario
+              recarga={recarga}
+              setRecarga={setRecarga}
+              tipo="proveedor"
+              metodo="post"
+              titulo="Crear Proveedor"
+              imagen="prov"
+              tipoButton="true"
+            />
+          </div>
           <div className="cont__lista-tabla">
             {loading ? (
               <Loading />

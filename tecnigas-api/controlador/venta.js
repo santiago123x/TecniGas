@@ -9,6 +9,18 @@ const getVenta = async (req, res) => {
     }
 };
 
+
+const getLastVenta = async (req, res) => {
+    try {
+        const response = await pool.query(`SELECT max(id_venta) FROM venta`);
+        //console.log(response.rows[0].max);
+        //res.send(response.rows[0] == null? {max: 0} :  response.rows[0].max);
+        res.send(response.rows[0]);
+    } catch (e){
+        console.error(e);
+    }
+};
+
 const getDetallebyId = async (req, res) => {
     try {
         const id_venta = req.params.id_venta;
@@ -71,11 +83,39 @@ const putDetaVent = async (req, res) => {
         console.error(e);
      }
 };
+const postVenta = async (req, res) => {
+    try {
+      const { cliente_id, usuario_id, fecha_ve, iva, total_iva, sub_total, total_ve, observacion_vta, recibido, cambio, estado_ve } = req.body;
+      const response = await pool.query(
+        "INSERT INTO venta (cliente_id, usuario_id, fecha_ve, iva, total_iva, sub_total, total_ve, observacion_vta, recibido, cambio, estado_ve) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning id_venta",
+        [cliente_id, usuario_id, fecha_ve, iva, total_iva, sub_total, total_ve, observacion_vta, recibido, cambio, estado_ve]
+      );
+      res.send(response.rows[0]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+const postDetalleVenta = async (req, res) => {
+    try {
+      const { id_venta, producto_id, descuento, cantidad_ven, precio_ven, total_ven} = req.body;
+      const response = await pool.query(
+        `INSERT INTO "detalle venta" (id_venta, producto_id, descuento, cantidad_ven, precio_ven, total_ven) VALUES ($1, $2, $3, $4, $5, $6)`,
+        [id_venta, producto_id, descuento, cantidad_ven, precio_ven, total_ven]
+      );
+      res.send(response.rows[0]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
 module.exports = {
     getVenta,
     getDetallebyId,
     putVenta,
     putDetaVent,
-    getDetallebyVP
+    getDetallebyVP,
+    getLastVenta,
+    postVenta,
+    postDetalleVenta,
 };

@@ -81,6 +81,27 @@ const hideProducto = async (producto_id) => {
   }
 };
 
+const hideUsuario = async (usuario_id) => {
+  try {
+    const response = await axios.put(`${URL}delusuario/${usuario_id}`);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+
+const hideCategoria = async (id_categoria) => {
+  try {
+    const response = await axios.put(`${URL}delcategoria/${id_categoria}`);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 const validaTodo = (data) => {
   let bool = false;
   Object.keys(data).forEach((dat) => {
@@ -106,6 +127,8 @@ export {
   validarProducto,
   post,
   hideProducto,
+  hideUsuario,
+  hideCategoria,
   putP,
   validarProd,
   validaTodo,

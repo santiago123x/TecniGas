@@ -5,8 +5,10 @@ import Error404 from "../../Componentes/Error/Error";
 import useAxios from "../../Hooks/useAxios";
 import Search from "../../Componentes/Search";
 import Formulario from "../formulario/formulario";
+import useAuth from "../../Hooks/useAuth";
 
 const Cliente = () => {
+  const auth = useAuth();
   const [valueInp, setValueInp] = useState("");
   const [url, setUrl] = useState(`/clipers/`);
   const [recarga, setRecarga] = useState(false);
@@ -20,24 +22,25 @@ const Cliente = () => {
       <div className="conteiner">
         <div className="cont__lista">
           <h2 className="cont__lista-titulo">Listado de Clientes</h2>
-          <Formulario
+
+          <hr className="linea-h2" />
+          <div className='contSearch'>
+            <Search
+              valueInp={valueInp}
+              setValueInp={setValueInp}
+              titulo="Filtrar Clientes"
+              tooltip={`Tipos de Filtro:  Nombre - Empresa, Cedula - NIT`}
+            />
+            <Formulario
             recarga={recarga}
             setRecarga={setRecarga}
             tipo="cliente"
             metodo="post"
             titulo="Crear Cliente"
             imagen="cli"
+            tipoButton="true"
           />
-
-          <hr className="linea-h2" />
-          <div className="cont__lista-input"></div>
-          <Search
-            valueInp={valueInp}
-            setValueInp={setValueInp}
-            titulo="Filtrar Clientes"
-            tooltip={`Tipos de Filtro:  Nombre - Empresa, Cedula - NIT`}
-          />
-
+          </div>
           <div className="cont__lista-tabla">
             {loading ? (
               <Loading />
