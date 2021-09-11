@@ -75,7 +75,7 @@ const verifyToken = require("../controlador/verifyToken")
 
 router.get("/usuario", getUsuario);
 router.get("/usuarios/:usuario_id", getUsuarioDifId);
-router.get("/usuario/:id", verifyToken, getUsuarioId);
+router.get("/usuario/:id", getUsuarioId);
 router.get("/usuarionick/:nick", getUsuarioNick)
 router.put("/usuario/:id", putUsuarioId);
 router.put("/usurol/:id", putRol);

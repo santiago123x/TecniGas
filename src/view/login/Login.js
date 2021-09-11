@@ -131,7 +131,7 @@ const Login = () => {
           id="inputContra"
           className={classes.contraseña}
           type={verContra}
-          placeholder="Contraeña"
+          placeholder="Contraseña"
           value={contraseña}
           onChange={(e) => setContraseña(e.target.value)}
           inputProps={{
