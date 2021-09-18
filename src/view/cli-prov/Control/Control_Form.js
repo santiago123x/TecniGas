@@ -23,7 +23,7 @@ import Inputs from "./Inputs";
 import { validarProd, putP } from "../../inventario/ModalProducto/ValidaProd";
 import useAxios from "../../Hooks/useAxios";
 
-const URL = "http://localhost:5000";
+const URL = "https://tecnigas-api.herokuapp.com";
 
 
 const Control_Form = ({

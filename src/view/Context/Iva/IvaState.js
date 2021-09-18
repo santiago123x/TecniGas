@@ -4,7 +4,7 @@ import reducer from "./IvaReducer";
 import { SET_IVA } from "../types";
 import axios from "axios";
 
-const uri = "http://localhost:5000";
+const uri = "https://tecnigas-api.herokuapp.com";
 
 const initialState = {
   iva: {},

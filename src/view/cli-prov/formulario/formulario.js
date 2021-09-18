@@ -24,7 +24,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { setLocale } from "yup";
 
-const URL = "http://localhost:5000";
+const URL = "https://tecnigas-api.herokuapp.com";
 
 const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButton}) => {
   //Cambian el estilo a los elementos de material-ui

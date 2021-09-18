@@ -16,7 +16,7 @@ import {
 } from "../../../inventario/ModalProducto/ValidaProd";
 import "./style.css";
 
-const URL = "http://localhost:5000";
+const URL = "https://tecnigas-api.herokuapp.com";
 
 export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
   const [modal, setModal] = useState(false);

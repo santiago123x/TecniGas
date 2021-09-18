@@ -10,7 +10,7 @@ const useAxios = (API, recarga, validar, metodo, body) => {
     try {
       const response = await axios({
         method: metodo,
-        url: API,
+        url: `https://tecnigas-api.herokuapp.com${API}`,
         data: body,
       });
       setData(response.data);
