@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import { useStyles, MiInput, BootstrapInput } from "./FormDevUseStyles";
-import  "../styleDev.css";
+import styleDev from "../styleDev.css"
 import TablaDev from "./TablaDev";
 import Select from "@material-ui/core/Select";
 import useAxios from "../../Hooks/useAxios";
