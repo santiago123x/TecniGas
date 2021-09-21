@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import MiInput from "../../Componentes/MiInput/MiInput";
+import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
-import useStyles from "./FormDevUseStyles";
-import styleDev from "../styleDev.css";
+import { useStyles, MiInput, BootstrapInput } from "./FormDevUseStyles";
+import  "../styleDev.css";
 import TablaDev from "./TablaDev";
 import Select from "@material-ui/core/Select";
 import useAxios from "../../Hooks/useAxios";
 import { notify } from "../../Componentes/notify/Notify";
 import { ToastContainer } from "react-toastify";
+import { IconButton } from '@material-ui/core';
+import { FaEdit } from "react-icons/fa";
+import { Modal } from "@material-ui/core";
 import { 
     validaPro,
     getDetalleVen,
@@ -18,7 +21,9 @@ import {
     putVenta,
     putProducto,
     devolucion,
-    detalleDev} from "./validacionAxios";
+    detalleDev,
+    listaDev,
+  putDetaDevo} from "./validacionAxios";
 
 const feDa = new Date();
 const fechaAct = new Date(
@@ -27,7 +32,7 @@ const fechaAct = new Date(
   feDa.getDate()
 );
 
-const FormularioDev = ({}) => {
+const FormularioDev = ({dev_full, recarga, setRecarga, orden}) => {
 
 // Asignación de los valores escritos en los campos de texto
     const [datos, setDatos] = useState({
@@ -55,52 +60,112 @@ const FormularioDev = ({}) => {
     fecha: false,
     selCodPro: false,
     cantidad: false
-  });    
+  });
+  
+  const [modal, setModal] = useState(false);
+  const [turn, setTurn] = useState(false);
+  const [full, setFull] = useState(true);
+  const [pro, setPro] = useState([]);
+  const [detaVen, setDetaVen] = useState([]);
+  const [detaPro, setDetaPro] = useState([]);
+  const [idDevo, setIdDevo] = useState(0);
 
   //Lista de id de ventas realizadas. Select01
    const listVent = useAxios("/venta");
    const venta = listVent.data;
-
-  //Lista de productos de la venta. Select02
-  const [pro, setPro] = useState([]);
-
-  //Detalles de la venta
-  const [detaVen, setDetaVen] = useState([]);
-
-  //Componentes de la tabla
-  const [detaPro, setDetaPro] = useState([]);
-
   
   //Mensajes para el usuario
   const busca = "¡Ya puedes seleccionar un producto!";
+  const act = "Ya puede modificar los datos de los productos registrados en la devolución";
   const error_cant = "La cantidad máxima para devolver de este producto es de: ";
   const error_list = "!Solo puedes elegir el mismo producto una vez!";
   const error_gral = "¡Ha ocurrido un error! Por favor recarga la página";
-  const error_val = "Rellena correctamente el formulario";
   const success = "¡Usted ha realizado una devolución exitosa!";
+  const update_success = "¡Usted ha realizado una actualización exitosa!";
   let type = "";
-
-  //let fecha_re = new Date();
 
   const classes = useStyles();
   var valida = [];
+  var iden_devo = 0;
+    
+const abrirCerrarModal = async() => {
+  let temp = [];
+  //updateDev();
+  if(turn == false){
+    setTurn(true);
+    setFull(false);
+    const fechita = new Date();
+    fechita.setTime(Date.parse(dev_full.fecha_dev));
+    let num_format =
+    ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20",
+    "21","22","23","24","25","26","27","28","29","30","31"];
+    const f = fechita.getFullYear()+"-"+num_format[fechita.getMonth()]+"-"+num_format[fechita.getDate()-1];
+    for(let ab = 0; ab<venta.length ; ab++){
+      if (venta[ab].id_venta == dev_full.id_venta){
+        setDatos({
+          ...datos,
+          cod_factura: dev_full.id_venta,
+          fecha_dev: f
+        });
+        const cuerpo = {
+          cod_producto : dev_full.codigo_pro,
+          nombre_pro : dev_full.nombre_pro,
+          categoria : dev_full.nombre_catg,
+          cantidad : dev_full.cantidad_det,
+          precio : dev_full.precio_uni
+        };
+        temp.push(cuerpo);
+          ab = venta.length;
+        };
+      }
+      setIdDevo(dev_full.devolucion_id);
+      let listaDet = await listaDev();
+        listaDet.map(element =>{
+          if(element.devolucion_id == dev_full.devolucion_id && element.codigo_pro !== dev_full.codigo_pro){
+            const body = {
+              devolucion_id : element.devolucion_id,
+              producto_id : element.producto_id,
+              cod_producto : element.codigo_pro,
+              nombre_pro : element.nombre_pro,
+              categoria : element.nombre_catg,
+              cantidad : element.cantidad_det,
+              precio : element.precio_uni
+            };
+            temp.push(body)
+          }
+        })
+        setModal(!modal);
+        setDetaPro(temp);
+        valida = await getDetalleVen(dev_full.id_venta);
+        if (valida)
+          {
+            setDetaVen(valida);
+            type = "info";
+            notify(act, "", type)
+          } else {
+           type = "error";
+           notify(error_gral, "", type);
+          }
+    }else {
+        setTurn(false);
+        pro.length = 0;
+        detaPro.length = 0;
+        setDatos({
+          ...datos,
+          codigo_pro : 0,
+          cantidad : "",
+          nota : ""
+        });
+        setModal(!modal);
+    }
+};
+
+    const reset = (e) => {
+      e.target.reset();
+      setModal(!modal);
+    };
 
   //Validaciones del formulario
-
-  /*const validaFechita = () => {
-    const año = fechaAct.getFullYear();
-    const mes = fechaAct.getMonth() + 1;
-    const dia = fechaAct.getDate();
-    const fechaV = año + '-' + mes + '-' + dia;
-    //fecha_re = fechaV;
-    console.log(fechaV)
-    console.log(datos.fecha_dev);
-    if(datos.fecha_dev > fechaV) {
-      return 0;
-    } else {
-      return 1;
-    }
-  }; */
 
   const validaFecha = () => {
     var fecha_venta = new Date();
@@ -115,8 +180,7 @@ const FormularioDev = ({}) => {
     const año = fechaAct.getFullYear();
     const mes = fechaAct.getMonth() + 1;
     const dia = fechaAct.getDate();
-    const fechaV = año + '-' + mes + '-' + dia;
-    //fecha_re = fechaV;
+    //const fechaV = año + '-' + mes + '-' + dia;
     fec = Date.parse(datos.fecha_dev);
     
     if(fec >= fecha_venta){
@@ -159,45 +223,6 @@ const FormularioDev = ({}) => {
       return 1;
   };
 
-  
-
-  const submitFa =  async (e) => {
-    e.preventDefault();
-    pro.length = 0;
-        detaPro.length = 0;
-        setDatos({
-          ...datos,
-          codigo_pro : 0,
-          cantidad : "",
-          nota : ""
-        });
-    const valSelectU = validacionUno();
-    if (valSelectU == 1){
-        
-        const idVenta = datos.cod_factura;
-        valida = await getDetalleVen(idVenta);
-          if (valida)
-          {
-            setPro(...pro, valida);
-            type = "info";
-            notify(busca, "", type)
-          } else {
-           type = "error";
-           notify(error_gral, "", type);
-          }
-          
-          setDetaVen(valida);
-      }
-  };
-
-  const cuentaPro = () => {
-    let conta_producto = 0;
-    pro.forEach((elemento)=>{
-      conta_producto = conta_producto + elemento.cantidad_ven;
-    });
-    return conta_producto;
-  };
-
   const validacionDos = () => {
     if (datos.codigo_pro == 0 && (datos.cantidad == "" || datos.cantidad <= 0)){
       setErrores({
@@ -229,6 +254,44 @@ const FormularioDev = ({}) => {
     }
   };
 
+  const submitFa =  async () => {
+      pro.length = 0;
+        detaPro.length = 0;
+        setDatos({
+          ...datos,
+          codigo_pro : 0,
+          cantidad : "",
+          nota : ""
+        });
+    const valSelectU = validacionUno();
+    if (valSelectU == 1){
+        
+        const idVenta = datos.cod_factura;
+        valida = await getDetalleVen(idVenta);
+          if (valida)
+          {
+              setPro(...pro, valida);
+              type = "info";
+              notify(busca, "", type)
+            
+          } else {
+           type = "error";
+           notify(error_gral, "", type);
+          }
+          
+          setDetaVen(valida);
+      }
+  };
+
+  const cuentaPro = () => {
+    let conta_producto = 0;
+    pro.forEach((elemento)=>{
+      conta_producto = conta_producto + elemento.cantidad_ven;
+    });
+    return conta_producto;
+  };
+
+
   const subtMarca = async (e) => {
     const valSelectD = validacionDos();
       const cod_venta = datos.cod_factura;
@@ -236,7 +299,8 @@ const FormularioDev = ({}) => {
       let producto = {};
       let detap = {};
      if(valSelectD == 1)  {
-       console.log(detaVen);
+      setFull(false);
+      console.log(detaVen);
       setDatos({
         ...datos,
         codigo_pro : 0,
@@ -302,7 +366,7 @@ const FormularioDev = ({}) => {
           }
   };
 
-  const submitDev = async () =>{
+  const submitDev = async (e) =>{
     let testDetaV = true;
     let cantidadPro = 0;
     let total_gral_d = 0;
@@ -420,7 +484,10 @@ const FormularioDev = ({}) => {
                   cantidad: "",
                   nota: ""
                 });
-                //window.location.reload();
+                detaPro.length = 0;
+                if (orden == 1){
+                  setRecarga(!recarga);
+                }
               } else if(detalle == false) {
                 type = "error";
                 notify(error_gral, "", type);
@@ -442,10 +509,53 @@ const FormularioDev = ({}) => {
         notify(error_gral, "", type);
       }
   };
+
+  const updateDev = async() =>{
+    const validaUno = validacionUno();
+      if(validaUno == 1){
+        let resp = false;
+        const listaD = await listaDev();
+        detaPro.map(async (element) =>{
+          listaD.map(async(ele) => {
+            if(ele.codigo_pro == element.cod_producto && ele.devolucion_id == idDevo){
+                let id = ele.devolucion_id;
+                let produ = ele.producto_id; 
+                let bodyDetalle = {
+                  cantidad_det : element.cantidad,
+                  precio_uni : element.precio,
+                  precio_tot : element.cantidad * element.precio
+                  };
+                  
+              const put = await putDetaDevo(id, produ, bodyDetalle);
+              setRecarga(!recarga);
+              console.log(put);
+              if(put == true){
+                resp = true;
+              } else{
+                resp = false;
+              }
+            }
+          })
+        })
+        if(resp == true){
+          type = "info";
+          notify(update_success, "", type);
+        } else if(resp == false){
+          type = "error";
+          notify(error_gral, "", type);
+        } 
+      }
+  };
+
+  const direcciona = () =>{
+    window.location="/devolucion";
+  };
   
   //Formulario
   const body = (
+    <div className = {classes.modal}>
       <div className = "containerPrin">
+      <ToastContainer />
         <form className = "miForm">
           <div className = "titulo">
             <h1> Devolución De Productos </h1>
@@ -455,12 +565,14 @@ const FormularioDev = ({}) => {
                 <Select
                   native
                   className = {classes.select}
+                  input = {<BootstrapInput/>}
                   name = "cod_factura"
                   variant = "outlined"
                   size = "small"
-                  onChange = {handleInputChange}
                   value = {datos.cod_factura}
-                >
+                  disabled = {turn} 
+                  onChange = {handleInputChange}
+                > 
                   <option value={0}>Código Factura</option>
                   {venta.map((elemento) =>(
                     <option key={elemento.id_venta} value={elemento.id_venta}>{elemento.id_venta}</option>
@@ -497,7 +609,8 @@ const FormularioDev = ({}) => {
                   variant ="contained"
                   color ="primary"
                   type = "button"
-                  onClick={(e) => submitFa(e)}
+                  disabled = {turn}
+                  onClick={() => submitFa()}
                 >
                   Buscar
                 </Button>
@@ -511,10 +624,12 @@ const FormularioDev = ({}) => {
                 <Select
                   native
                   className = {classes.select}
+                  input = {<BootstrapInput/>}
                   name = "codigo_pro"
                   variant = "outlined"
                   size = "small"
                   value = {datos.codigo_pro}
+                  disabled = {turn} 
                   onChange = {handleInputChange}
                 >
                   <option value={0}>Producto</option>
@@ -536,6 +651,7 @@ const FormularioDev = ({}) => {
                   label = "Cantidad"
                   name = "cantidad"
                   type = "number"
+                  disabled = {turn}
                   value = {datos.cantidad}
                   onChange = {handleInputChange}
                 />
@@ -583,43 +699,91 @@ const FormularioDev = ({}) => {
                 detaVen = {detaVen}
                 setPro = {setPro}
                 setDatos = {setDatos}
-                orden = "prod"
+                orden = {orden}
               />
             </div>
             <div className = "final_form">
             <div className = "btn_devolver">
+              {orden == 1 ?
               <Button
               size = "small"
               variant ="contained"
               color ="primary"
               type = "button"
+              disabled = {full}
+              onClick={() => updateDev()}
+              >
+                Actualizar Devolución
+              </Button> :
+              <Button
+              size = "small"
+              variant ="contained"
+              color ="primary"
+              type = "button"
+              disabled = {full}
               onClick={() => submitDev()}
               >
                 Devolver Productos
-              </Button>
+              </Button>}
 
             </div>
             <div className = "btn_listar">
+              {orden == 1 ? 
               <Button
               size = "small"
               variant ="contained"
               color ="primary"
               type = "button"
-              onClick={() => submitDev()}
+              onClick={(e) => abrirCerrarModal(e)}
+              >
+                Cerrar Ventana
+              </Button> : 
+              <Button
+              size = "small"
+              variant ="contained"
+              color ="primary"
+              type = "button"
+              onClick={() => direcciona()}
               >
                 Listar Devoluciones
-              </Button>
+              </Button>}
             </div>
             </div>
         </form>
       </div>
+    </div>
   );
-
-    return (
+    if(orden == 1){ 
+      return (
         <>
-          {body}
-          <ToastContainer />
+        <Tooltip title="Editar" placement="top">
+          <IconButton
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={() => abrirCerrarModal()}
+          >
+            <FaEdit className="icono"/>
+          </IconButton>
+        </Tooltip>
+        <Modal
+        disableEscapeKeyDown={true}
+        hideBackdrop 
+        open={modal}
+        onClose={abrirCerrarModal}>
+            {body}
+          </Modal>
         </>
     );
+    } else { 
+      return (
+        <>
+        {body}
+        </>
+      );
+    }
+     
+    
+    
 };
 export default FormularioDev;

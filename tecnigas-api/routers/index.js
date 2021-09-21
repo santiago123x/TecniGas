@@ -93,7 +93,10 @@ const {
   postDetaDev,
   putDevolucion,
   putDetaDev,
-  getDevoJDetalle
+  getDevoJDetalle,
+  eliminaDetaDev,
+  getDetaDevById,
+  deleteDev
 } = require("../controlador/devolucion.js");
 
 
@@ -115,10 +118,13 @@ router.get("/devolucion", getDevolucion);
 router.get("/devolucion/:id_venta", getDev);
 router.get("/detadevo/:devolucion_id/:producto_id", getDetaDev);
 router.get("/listaDev", getDevoJDetalle);
+router.get("/detadevo/:devolucion_id", getDetaDevById);
 router.post("/devolucion", postDevolucion);
 router.post("/detadevo", postDetaDev);
 router.put("/devolucion/:devolucion_id", putDevolucion);
-router.put("/detadevo/:id_detalle", putDetaDev);
+router.put("/detadevo/:devolucion_id/:producto_id", putDetaDev);
+router.delete("/devolucion/:devolucion_id", deleteDev);
+router.delete("/detadevo/:devolucion_id/:producto_id", eliminaDetaDev);
 
 // Rutas de venta
 

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Modal } from "@material-ui/core";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
@@ -13,78 +12,54 @@ import Button from "@material-ui/core/Button";
 import MiInput from "../../Componentes/MiInput/MiInput";
 import { IconButton } from '@material-ui/core';
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
-import { withStyles, makeStyles } from '@material-ui/styles';
 import { notify } from "../../Componentes/notify/Notify";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import styleDev from "../styleDev.css";
-
-const StyledTableCell = withStyles((theme) => ({
-    head: {
-      backgroundColor: theme.palette.info.dark,
-      color: theme.palette.common.white,
-    },
-    body: {
-      fontSize: 17,
-    },
-  }))(TableCell);
-  
-  const StyledTableRow = withStyles((theme) => ({
-    root: {
-      '&:nth-of-type(odd)': {
-        backgroundColor: "#5aacf8",
-      },
-      '& .MuiIconButton-root': {
-        padding: '0%',
-        margin: '0 10%'
-      },
-    },
-  }))(TableRow);
-  
-  const useStyles = makeStyles((theme) => ({
-    modal: {
-      display: "flex",
-      flexWrap: "wrap",
-      width: "400px",
-      backgroundColor: "rgb(72 147 210)",
-      border: "solid 5px rgba(176, 196, 222, 0.699)",
-      borderRadius: "23px",
-      boxShadow: theme.shadows[5],
-      padding: "16px 32px 24px",
-      margin: "20% 40%",
-      top: "50%",
-      left: "50%",
-      transform: "traslate(-50%, -50%)",
-    },
-    table: {
-      minWidth: '100%',
-    },
-    container: {
-      height: '100%',
-      backgroundColor: "#dee2e6",
-      '& .MuiTableRow-root': {
-        verticalAlign : 'top',
-      },
-    },
-    scrollPaper: {
-      background: "#2965aa2e",
-      '& .MuiFormControl-root': {
-        display: "block",
-      },
-    },
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 200,
-    },
-    button: {
-      backgroundColor: "rgb(11 52 91)",
-    }
-  }));
+import "../styleDev.css";
+import { makeStyles } from "@material-ui/styles";
+import { StyledTableCell, StyledTableRow} from "./FormDevUseStyles";
+import { eliminaDetaDev } from "./validacionAxios";
 
 
 const TablaDev = ({ detaPro, setDetaPro, detaVen, orden }) => {
+
+  const useStyles = makeStyles((theme) => ({
+      modal: {
+        display: "flex",
+        flexWrap: "wrap",
+        width: "390px",
+        backgroundColor: "rgb(72 147 210)",
+        border: "solid 5px rgba(176, 196, 222, 0.699)",
+        borderRadius: "23px",
+        boxShadow: theme.shadows[5],
+        padding: "16px 32px 24px",
+        margin: "20% 40%",
+        top: "50%",
+        left: "50%",
+        transform: "traslate(-50%, -50%)",
+      },
+      table: {
+        minWidth: '100%',
+      },
+      container: {
+        height: '100%',
+        backgroundColor: "#dee2e6",
+        '& .MuiTableRow-root': {
+          verticalAlign : 'top',
+        },
+      },
+      scrollPaper: {
+        background: "#2965aa2e",
+        '& .MuiFormControl-root': {
+          display: "block",
+        },
+      },
+      formControl: {
+        margin: theme.spacing(1),
+        minWidth: 200,
+      },
+      button: {
+        backgroundColor: "rgb(11 52 91)",
+      }
+  }));
     
     const classes = useStyles();
     const [modal, setModal] = useState(false);
@@ -98,8 +73,11 @@ const TablaDev = ({ detaPro, setDetaPro, detaVen, orden }) => {
     //Mensajes para el usuario
     const alert = "Está editanto el registro a devolver del producto : "
     const alertfinish = "La fila ha sido modificada satisfactoriamente";
+    const er_limite = "No debe eliminar todos los productos de la devolución en el formulario 'Actualizar Devolución'. Producto no eliminado :";
     const error_cant = "La cantidad máxima para devolver de este producto es de : ";
-    const eliminado = "Se ha eliminado satisfactoriamente la fila con el producto :"
+    const eliminado = "Se ha eliminado satisfactoriamente la fila con el producto :";
+    const elimi_update = "Se ha eliminado satisfactoriamente la fila, si desea devolverlo debe registrarlo en una nueva devolución. Producto :"
+    const er_eliminado = "Se ha producido un error, por favor recargue la página. No eliminado :";
     let type = "";
 
     //Validaciones Modal
@@ -108,12 +86,41 @@ const TablaDev = ({ detaPro, setDetaPro, detaVen, orden }) => {
       precio: false
     });
 
-    const eliminar = deta => {
-        setDetaPro(detaPro.filter(d => d !== deta))
-        const productoInf = deta.cod_producto + "-" + deta.nombre_pro;
-        type = "info";
-        notify(eliminado, productoInf, type);
-      }
+    const cuentaProd = () =>{
+      let num = 0;
+      detaPro.map(element =>{
+        num = num + 1;
+      })
+      return num;
+    };
+
+    const eliminar = async(deta) => {
+        
+        if(orden == 1){
+          if(cuentaProd() - 1 == 0){
+            const productoInf = deta.cod_producto + "-" + deta.nombre_pro;
+            type = "error";
+            notify(er_limite, productoInf, type);
+          } else {
+            const re = await eliminaDetaDev(deta.devolucion_id, deta.producto_id);
+            if(re){
+              setDetaPro(detaPro.filter(d => d !== deta))
+              const productoInf = deta.cod_producto + "-" + deta.nombre_pro;
+              type = "info";
+              notify(elimi_update, productoInf, type);
+            } else {
+              const productoInf = deta.cod_producto + "-" + deta.nombre_pro;
+              type = "error";
+              notify(er_eliminado, productoInf, type);
+            }
+          }
+        } else{
+          setDetaPro(detaPro.filter(d => d !== deta))
+          const productoInf = deta.cod_producto + "-" + deta.nombre_pro;
+          type = "info";
+          notify(eliminado, productoInf, type);
+        }
+      };
 
     const styles = useStyles();
     
@@ -141,44 +148,45 @@ const TablaDev = ({ detaPro, setDetaPro, detaVen, orden }) => {
 
     const submit = (e) => {
       e.preventDefault();
-      if ((cantidad === "" || cantidad <= 0) && precio === ""){
-        setErrores({
-          ...errores,
-          cantidad : true
-        });
-      } else if (cantidad === "" || cantidad <= 0){
-        setErrores({
-          ...errores,
-          cantidad : true
-        });
-      } else if (detaVen[indexDe].cantidad_ven < cantidad){
-        console.log(indexDe);
-        type = "error";
-        notify(error_cant, detaVen[indexDe].cantidad_ven, type);
-      } else if (precio === ""){
-        setErrores({
-          ...errores,
-          precio : true
-        });
-      } else {
-        setErrores({
-          cantidad : false,
-          precio : false
-        });
-        const nuevoDet = {
-          cod_producto: produSelec.cod_producto,
-          nombre_pro: produSelec.nombre_pro,
-          categoria: produSelec.categoria,
-          precio: precio,
-          cantidad: cantidad,
-      };
-      const nuevoDetaPro = detaPro.slice();
-            nuevoDetaPro.splice(indexDe, 1, nuevoDet);
-            setDetaPro(nuevoDetaPro);
-            type = "info"
-            notify(alertfinish, "", type);
-            reset(e);
-      }   
+        if ((cantidad === "" || cantidad <= 0) && precio === ""){
+          setErrores({
+            ...errores,
+            cantidad : true
+          });
+        } else if (cantidad === "" || cantidad <= 0){
+          setErrores({
+            ...errores,
+            cantidad : true
+          });
+        } else if (detaVen[indexDe].cantidad_ven < cantidad){
+          console.log(indexDe);
+          type = "error";
+          notify(error_cant, detaVen[indexDe].cantidad_ven, type);
+        } else if (precio === ""){
+          setErrores({
+            ...errores,
+            precio : true
+          });
+        } else {
+          setErrores({
+            cantidad : false,
+            precio : false
+          });
+          const nuevoDet = {
+            cod_producto: produSelec.cod_producto,
+            nombre_pro: produSelec.nombre_pro,
+            categoria: produSelec.categoria,
+            precio: precio,
+            cantidad: cantidad,
+        };
+        const nuevoDetaPro = detaPro.slice();
+              nuevoDetaPro.splice(indexDe, 1, nuevoDet);
+              setDetaPro(nuevoDetaPro);
+              type = "info"
+              notify(alertfinish, "", type);
+              reset(e);
+        } 
+        
     };
 
     const body = (
@@ -256,7 +264,7 @@ const TablaDev = ({ detaPro, setDetaPro, detaVen, orden }) => {
       
     return (
     <>    
-    {orden === "prod" ? 
+    {orden === 1 ? 
     <TableContainer component={Paper} className={classes.container}>
     <Table className={classes.table} aria-label="customized table">
       <TableHead>
@@ -366,7 +374,7 @@ const TablaDev = ({ detaPro, setDetaPro, detaVen, orden }) => {
 </TableContainer>
   }
     <Modal 
-      disableBackdropClick
+      hideBackdrop
       open={modal} 
       onClose={abrirCerrarModal}>
       {body}

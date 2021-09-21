@@ -12,13 +12,14 @@ import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
 import Tooltip from "@material-ui/core/Tooltip";
 
-function Row({ firstData, secondData, titulosDetalles, opciones }) {
+function Row({ firstData, secondData, thirdData, titulosDetalles, opciones }) {
   const [open, setOpen] = useState(false);
   const classes = useRowStyles();
   const classes2 = useRowStyles2();
   const sub = useSub();
   const cantidad = firstData.length == 4 ? firstData[2] : null;
   const minCantidad = secondData.length == 3 ? secondData[2] : null;
+  let new_index = 0;
   const comparar = () => {
     if (cantidad && minCantidad) {
       if (cantidad < minCantidad) {
@@ -30,6 +31,7 @@ function Row({ firstData, secondData, titulosDetalles, opciones }) {
       return false;
     }
   };
+
 
   return (
     <>
@@ -117,6 +119,38 @@ function Row({ firstData, secondData, titulosDetalles, opciones }) {
                         );
                       })}
                   </TableRow>
+                  {thirdData !== undefined && thirdData.length !== 0 &&
+                   thirdData.map((dat) =>{
+                    new_index = new_index + 1
+                     let a = new_index;
+                     new_index = new_index + 1
+                     let b = new_index;
+                     new_index = new_index + 1
+                     let c = new_index;
+                     new_index = new_index + 1
+                     let d = new_index;
+                     new_index = new_index + 1
+                     let e = new_index;
+                      return (
+                        <TableRow>
+                        <TableCell key={a} align="center">
+                          <strong>{dat[0]}</strong>
+                        </TableCell>
+                        <TableCell key={b} align="center">
+                          <strong>{dat[1]}</strong>
+                        </TableCell>
+                        <TableCell key={c} align="center">
+                          <strong>{dat[2]}</strong>
+                        </TableCell>
+                        <TableCell key={d} align="center">
+                          <strong>{dat[3]}</strong>
+                        </TableCell>
+                        <TableCell key={e} align="center">
+                          <strong>{dat[4]}</strong>
+                        </TableCell>
+                        </TableRow>
+                      );
+                      })}
                 </TableBody>
               </Table>
             </Box>

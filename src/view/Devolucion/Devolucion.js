@@ -1,5 +1,6 @@
 import { useState } from "react";
 import FormularioDev from "./FormDev/FormularioDev";
+import TablaLista from "./FormDev/TablaLista";
 import useAuth from "../Hooks/useAuth";
 
 
@@ -8,7 +9,7 @@ const Devolucion = () => {
   const [recarga, setRecarga] = useState(false);
   return (
     <>
-      <FormularioDev />
+      <TablaLista />
     </>
   );
 };

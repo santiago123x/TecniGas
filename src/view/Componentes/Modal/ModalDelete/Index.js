@@ -9,6 +9,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import React, { useState } from "react";
 import { putCliPro } from "../../../cli-prov/formulario/Validacion";
+import { deleteDev } from "../../../Devolucion/FormDev/validacionAxios";
 import {
   hideProducto,
   hideUsuario,
@@ -43,6 +44,8 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
         return `usuario: ${elemento.nombre_usr}`;
       case "cat":
         return `categoria: ${elemento.nombre_catg}`;
+      case "dev":
+        return `registro de la devolución: ${elemento.devolucion_id}`;
       default:
         break;
     }
@@ -66,6 +69,9 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
     }
     if(tipo === 'cat'){
       metodo = 'categoria'
+    }
+    if(tipo === "dev"){
+      metodo = "devolucion"
     }
 
     let idPersona = elemento.persona_id;
@@ -126,6 +132,17 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
         let idCategoria = elemento.id_categoria;
         const boole = await hideCategoria(idCategoria);
         if (boole) {
+          notify(alertisdone, metodo, "info");
+        } else {
+          notify(alertisaerror, metodo, "error");
+        }
+        setRecarga(!recarga);
+        abrirCerrarModal();
+        break;
+      case "devolucion":
+        let idDev = elemento.devolucion_id;
+        const comprobante = await deleteDev(idDev);
+        if(comprobante){
           notify(alertisdone, metodo, "info");
         } else {
           notify(alertisaerror, metodo, "error");

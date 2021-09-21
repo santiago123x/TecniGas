@@ -94,7 +94,8 @@ const putDevolucion = async (req, res) => {
 
 const putDetaDev = async (req, res) => {
   try {
-    const id_detalle = req.params.id_detalle;
+    const devolucion_id = req.params.devolucion_id;
+    const producto_id = req.params.producto_id;
     const {
     cantidad_det,
     precio_uni,
@@ -102,7 +103,7 @@ const putDetaDev = async (req, res) => {
   } = req.body;
     const response = await pool.query(
       `UPDATE "detalle devolucion" SET cantidad_det = ${cantidad_det}, precio_uni = ${precio_uni}, precio_tot = ${precio_tot}
-       WHERE id_detalle = ${id_detalle}`
+       WHERE devolucion_id = ${devolucion_id} AND producto_id = ${producto_id}`
     );
     res.send(response.rows);
   } catch (e) {
@@ -115,13 +116,51 @@ const getDevoJDetalle = async (req, res) => {
     const response = await pool.query(
     `select devolucion.devolucion_id, devolucion.id_venta, devolucion.fecha_dev, devolucion.total_gral_d,
     "detalle devolucion".producto_id, "detalle devolucion".cantidad_det, "detalle devolucion".precio_uni,
-    producto.codigo_pro
+    producto.codigo_pro, devolucion.comentario_dev, producto.nombre_pro, categoria.nombre_catg
     from devolucion
     inner join "detalle devolucion" on "detalle devolucion".devolucion_id = devolucion.devolucion_id
-    inner join producto on producto.producto_id = "detalle devolucion".producto_id`
+    inner join producto on producto.producto_id = "detalle devolucion".producto_id
+	  inner join categoria on categoria.id_categoria = producto.id_categoria`
     );
     res.send(response.rows);
   }catch (e) {
+    console.error(e);
+  }
+};
+
+const eliminaDetaDev = async(req, res) => {
+  try {
+    const devolucion_id = req.params.devolucion_id;
+    const producto_id = req.params.producto_id;
+    const response = await pool.query(
+      `DELETE FROM "detalle devolucion" WHERE devolucion_id = ${devolucion_id} AND producto_id = ${producto_id}`
+    );
+    res.send(response.rows);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const getDetaDevById = async(req, res) =>{
+  try {
+    const devolucion_id = req.params.devolucion_id;
+    const response = await pool.query(
+      `SELECT * FROM "detalle devolucion" WHERE devolucion_id = ${devolucion_id}`
+    );
+    res.send(response.rows);
+  } catch (error) {
+    console.error(e);
+  }
+};
+
+const deleteDev = async(req, res) =>{
+  try {
+    const devolucion_id = req.params.devolucion_id;
+    const response = await pool.query(
+      `DELETE FROM devolucion WHERE devolucion_id = ${devolucion_id}`
+    );
+    res.send(response.rows);
+  } catch (error) {
     console.error(e);
   }
 };
@@ -134,5 +173,8 @@ const getDevoJDetalle = async (req, res) => {
     putDetaDev,
     getDev,
     getDetaDev,
-    getDevoJDetalle
+    getDevoJDetalle,
+    eliminaDetaDev,
+    getDetaDevById,
+    deleteDev
   };

@@ -7,17 +7,10 @@ import Loading from "../../Componentes/Loading/Loading";
 import Error404 from "../../Componentes/Error/Error";
 import Search from "../../Componentes/Search";
 import Select from "@material-ui/core/Select";
-import useStyles from "./FormDevUseStyles";
+import { useStyles } from "./FormDevUseStyles";
 import styleDev from "../styleDev.css";
 import { notify } from "../../Componentes/notify/Notify";
 
-
-const feDa = new Date();
-const fechaAct = new Date(
-  feDa.getFullYear(),
-  feDa.getMonth(),
-  feDa.getDate()
-);
 
 const ListaDev = ({}) => {
 
@@ -30,7 +23,7 @@ const ListaDev = ({}) => {
   
 
   const title = ["Código Devolución", "Código Factura", "Fecha Devolución", "Total Devuelto", "Opciones"];
-  const titleDetails = ["Cantidad Devuelta", "Precio Unitario", "Código Producto"];
+  const titleDetails = ["Cantidad Devuelta", "Precio Unitario", "Código Producto", "Nombre", "Categoria"];
 
   let devo_cod = "";
   let datico = [{}];
@@ -53,9 +46,10 @@ const ListaDev = ({}) => {
           total_gral_d : data[i].total_gral_d,
           cantidad_det : data[i].cantidad_det,
           precio_uni : data[i].precio_uni,
-          codigo_pro : data[i].codigo_pro
+          codigo_pro : data[i].codigo_pro,
+          nombre_pro : data[i].nombre_pro,
+          nombre_catg : data[i].nombre_catg
          };
-         console.log(body);
           rowsTemp.push(body);         
        };
        setInfo(rowsTemp);
@@ -93,8 +87,8 @@ useEffect(()=>{
                     filtro={valueInp}
                     titulos={title}
                     titulosDetalles={titleDetails}
-                    tipo="dev"
-                    categoria="dev"
+                    tipo='dev'
+                    categoria='dev'
                     recarga={recarga}
                     setRecarga={setRecarga}
                   />

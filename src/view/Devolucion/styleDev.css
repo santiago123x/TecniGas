@@ -2,8 +2,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 70%;
-    height: 95%;
+    width: 100%;
+    height: 100%;
+    max-width: 530px;
     min-width: 460px;
     min-height: 470px;
     background-color: rgba(114, 183, 230, 0.295);
@@ -12,19 +13,19 @@
     padding: 2%;
   }
 
-  .containerList {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 75%;
-    height: 95%;
-    min-width: 460px;
-    min-height: 470px;
-    background-color: rgba(114, 183, 230, 0.295);
-    border: solid 2px rgba(176, 196, 222, 0.699);
-    border-radius: 23px;
-    padding: 2%;
-  }  
+.containerList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 75%;
+  height: 95%;
+  min-width: 460px;
+  min-height: 470px;
+  background-color: rgba(114, 183, 230, 0.295);
+  border: solid 2px rgba(176, 196, 222, 0.699);
+  border-radius: 23px;
+  padding: 2%;
+}
 
 .miForm {
   display: flex;
@@ -122,9 +123,10 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-top: 2%;
   width: 90%;
   height: 45%;
-  max-height: 208px;
+  max-height: 204px;
 }
 
 .content-table{
@@ -149,21 +151,21 @@
   display: flex;
   width: 300px;
   height: 47px;
-  
 }
 
 .formulario {
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 280px;
   min-width: 167px;
+  margin-left: 10px;
 }
 
 .btnesEditar{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-left: 50px;
+  margin-left: 46px;
   width: 200px;
 }
 
@@ -179,6 +181,7 @@
   flex-direction: column;
   align-items: center;
   padding: 3%;
+  margin-left: 12px;
 }
 
 .modPr {
@@ -201,6 +204,8 @@
   width: 400px;
   margin-left: 2px;
 }
+
+
 
 
 

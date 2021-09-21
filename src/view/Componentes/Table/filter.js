@@ -1,12 +1,15 @@
+import React, { useState } from "react";
 import Row from "./TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import { ModalDelete } from "../Modal/ModalDelete/Index";
 import Modificar from "../../cli-prov/Control/Control_Form";
+import FormularioDev from "../../Devolucion/FormDev/FormularioDev";
 import ModalModUsu from "../Modal/ModalModUsu";
 import "./Table.css";
 
 const Opciones = (objeto, categoria, recarga, setRecarga) => {
   let titulo;
+  const orden = 1;
   if (categoria === "cli") {
     titulo = `Cliente: ${objeto.nombre_pe}`;
   } else if (categoria === "prov") {
@@ -16,38 +19,59 @@ const Opciones = (objeto, categoria, recarga, setRecarga) => {
   } else {
     titulo = `Producto: ${objeto.nombre_pro} - ${objeto.codigo_pro}`;
   }
-  return (
-    <>
-      <div className="container-buttons">
-        {categoria == "usu" ? (
-          <ModalModUsu
-            objeto={objeto}
+  if(categoria == 'dev'){
+    return (
+      <>
+        <div className="container-buttons">
+          <FormularioDev
+            dev_full={objeto}
             recarga={recarga}
             setRecarga={setRecarga}
+            orden={orden}
           />
-        ) : (
-          <Modificar
-            objeto={objeto}
-            tipo={categoria}
-            titulo={titulo}
-            metodo="put"
-            imagen={categoria}
-            recarga={recarga}
-            setRecarga={setRecarga}
-          />
-        )}
-        {categoria !== 'cat' ?
           <ModalDelete
-            tipo={categoria}
-            elemento={objeto}
-            recarga={recarga}
-            setRecarga={setRecarga}
-          />
-          : <></>
-        }
-      </div>
-    </>
-  );
+              tipo={categoria}
+              elemento={objeto}
+              recarga={recarga}
+              setRecarga={setRecarga}
+            />
+        </div>
+      </>
+    );
+  }else{
+    return (
+      <>
+        <div className="container-buttons">
+          {categoria == "usu" ? (
+            <ModalModUsu
+              objeto={objeto}
+              recarga={recarga}
+              setRecarga={setRecarga}
+            />
+          ) : (
+            <Modificar
+              objeto={objeto}
+              tipo={categoria}
+              titulo={titulo}
+              metodo="put"
+              imagen={categoria}
+              recarga={recarga}
+              setRecarga={setRecarga}
+            />
+          )}
+          {categoria !== 'cat' ?
+            <ModalDelete
+              tipo={categoria}
+              elemento={objeto}
+              recarga={recarga}
+              setRecarga={setRecarga}
+            />
+            : <></>
+          }
+        </div>
+      </>
+    );
+  }
 };
 
 const filter = (
@@ -150,35 +174,128 @@ const filter = (
               .includes(filtro.toString().toLowerCase().trim())  
           );
         });
-
+        let valida = 0;
         return arreglo.map((row, index) => {
-          const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
-          const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro];
-
-          return (
-            <Row
-              key={index}
-              firstData={firstData}
-              secondData={secondData}
-              titulosDetalles={titulosDetalle}
-              opciones={Opciones(row, categoria, recarga, setRecarga)}
-            />
-          );
-        });
+          const vari = index + 1;
+          if(vari !== arreglo.length && valida !== row.devolucion_id){
+            if( row.devolucion_id == arreglo[vari].devolucion_id){
+              const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+              const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+              let thirdData = [];
+              valida = row.devolucion_id;
+              data.map((rew,ind)=>{
+                if( rew.devolucion_id == row.devolucion_id && rew.codigo_pro !== row.codigo_pro){
+                  thirdData.push([rew.cantidad_det, `$ ${rew.precio_uni}`, rew.codigo_pro,  rew.nombre_pro,  rew.nombre_catg]);   
+                  //thirdData.push(detalle);
+                } 
+              })
+                    return (
+                      <Row
+                        key={index}
+                        firstData={firstData}
+                        secondData={secondData}
+                        thirdData={thirdData}
+                        titulosDetalles={titulosDetalle}
+                        opciones={Opciones(row, categoria, recarga, setRecarga)}
+                      />
+                    );
+              } else {
+                    const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+                    const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+                    return (
+                      <Row
+                        key={index}
+                        firstData={firstData}
+                        secondData={secondData}
+                        titulosDetalles={titulosDetalle}
+                        opciones={Opciones(row, categoria, recarga, setRecarga)}
+                      />
+                    );
+                  }
+          } else {
+            let var_dos = index -1;
+            if(var_dos < 0){
+                const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+                const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+                return (
+                  <Row
+                    key={index}
+                    firstData={firstData}
+                    secondData={secondData}
+                    titulosDetalles={titulosDetalle}
+                    opciones={Opciones(row, categoria, recarga, setRecarga)}
+                  />
+                );
+            } else if(row.devolucion_id !== arreglo[index-1].devolucion_id){
+                const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+                const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+                return (
+                  <Row
+                    key={index}
+                    firstData={firstData}
+                    secondData={secondData}
+                    titulosDetalles={titulosDetalle}
+                    opciones={Opciones(row, categoria, recarga, setRecarga)}
+                  />
+                );
+              }
+            }
+        });//AQUÍ
       } else {
+        let valida = 0;
         return data.map((row, index) => {
-          const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
-          const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro];
-
-          return (
-            <Row
-              key={index}
-              firstData={firstData}
-              secondData={secondData}
-              titulosDetalles={titulosDetalle}
-              opciones={Opciones(row, categoria, recarga, setRecarga)}
-            />
-          );
+          const vari = index + 1;
+          if(vari !== data.length && valida !== row.devolucion_id){
+            if( row.devolucion_id == data[vari].devolucion_id){
+              const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+              const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+              let thirdData = [];
+              valida = row.devolucion_id;
+                data.map((rew,ind)=>{
+                  if( rew.devolucion_id == row.devolucion_id && rew.codigo_pro !== row.codigo_pro){
+                    thirdData.push([rew.cantidad_det, `$ ${rew.precio_uni}`, rew.codigo_pro,  rew.nombre_pro,  rew.nombre_catg]);   
+                    //thirdData.push(detalle);
+                  } 
+                })
+                console.log(data);
+                  return (
+                    <Row
+                      key={index}
+                      firstData={firstData}
+                      secondData={secondData}
+                      thirdData={thirdData}
+                      titulosDetalles={titulosDetalle}
+                      opciones={Opciones(row, categoria, recarga, setRecarga)}
+                    />
+                  );
+                  
+          
+            } else {
+              const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+              const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+              return (
+                <Row
+                  key={index}
+                  firstData={firstData}
+                  secondData={secondData}
+                  titulosDetalles={titulosDetalle}
+                  opciones={Opciones(row, categoria, recarga, setRecarga)}
+                />
+              );
+            }
+          }else if(row.devolucion_id !== data[index-1].devolucion_id){
+                const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+                const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+                return (
+                  <Row
+                    key={index}
+                    firstData={firstData}
+                    secondData={secondData}
+                    titulosDetalles={titulosDetalle}
+                    opciones={Opciones(row, categoria, recarga, setRecarga)}
+                  />
+                );
+            }
         });
       }
 
