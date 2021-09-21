@@ -60,18 +60,32 @@ useEffect(()=>{
   }
 }, [data]);
   
+const direcciona = () =>{
+  window.location="/crea_devolucion";
+};
 
     return (
+      <div className = "contteiner">
       <div className = "containerList">
-      <div className = "titulo_list"><h1> Listado De Devoluciones</h1></div>
+      <div className = "titulo_list"><h1> Listado de Devoluciones</h1></div>
           <hr className="linea-h2" />
-            <div className = "content-table">
+            <div className = "contSearch"> 
             <Search
               valueInp={valueInp}
               setValueInp={setValueInp}
               titulo="Filtrar Devoluciones"
               tooltip={`Tipos de Filtro:  Código Devolución, Código Factura`}
             />
+              <Button
+              size = "medium"
+              variant ="contained"
+              color ="primary"
+              type = "button"
+              onClick={() => direcciona()}
+              > 
+                Ir a crear devolución
+              </Button>
+            </div>
               <div className="lista-tabla">
                 {loading ? (
                   <Loading />
@@ -93,9 +107,9 @@ useEffect(()=>{
                     setRecarga={setRecarga}
                   />
                 )}
-              </div>
             </div>
         </div>
+      </div>
       );
 
 };

@@ -1,30 +1,45 @@
 .containerPrin {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    max-width: 530px;
-    min-width: 460px;
-    min-height: 470px;
-    background-color: rgba(114, 183, 230, 0.295);
-    border: solid 2px rgba(176, 196, 222, 0.699);
-    border-radius: 23px;
-    padding: 2%;
-  }
-
-.containerList {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 75%;
-  height: 95%;
+  width: 100%;
+  height: 100%;
+  max-width: 680px;
   min-width: 460px;
   min-height: 470px;
   background-color: rgba(114, 183, 230, 0.295);
   border: solid 2px rgba(176, 196, 222, 0.699);
   border-radius: 23px;
   padding: 2%;
+}
+
+.contenido_prin{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: 700px;
+  min-width: 460px;
+  min-height: 470px;
+  padding: 2%;
+}  
+
+.contteiner {
+  height: 90%;
+  width: 100%;
+}
+
+.containerList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin: 0 3%;
+  background-color: rgba(114, 183, 230, 0.295);
+  border: solid 2px rgba(176, 196, 222, 0.699);
+  height: 100%;
 }
 
 .miForm {
@@ -139,13 +154,22 @@
   max-height: 225%;
 }
 
+
 .lista-tabla{
-  width: 73%;
-  height: 220%;
-  margin-top: 8%;
-  min-width: 393px;
+  margin-top: 2.5%;
+  margin-bottom: 2%;
+  width: 85%;
 }
 
+.lista-tabla{
+  width: 80%;
+}
+
+.linea-h2{
+  width: 90%;
+  align-items: center;
+  border: solid 2px black;
+}
 
 .titleEdi{
   display: flex;

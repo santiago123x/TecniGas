@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import { useStyles, MiInput, BootstrapInput } from "./FormDevUseStyles";
@@ -50,9 +49,6 @@ const FormularioDev = ({dev_full, recarga, setRecarga, orden}) => {
           [event.target.name]: event.target.value,
         });
       };
-
-  //Realiza validaciones al enviar el formulario
-  const { register, handleSubmit } = useForm();
 
   //Estado de errores
   const [errores, setErrores] = useState({
@@ -159,11 +155,6 @@ const abrirCerrarModal = async() => {
         setModal(!modal);
     }
 };
-
-    const reset = (e) => {
-      e.target.reset();
-      setModal(!modal);
-    };
 
   //Validaciones del formulario
 
@@ -399,8 +390,7 @@ const abrirCerrarModal = async() => {
           total_ven : element.cantidad * element.precio
         };
         total_gral_d = total_gral_d + bodyProducto.total_ven;
-        const putDetalleV = true;
-        //await putDetaVent(id_venta, id_producto, bodyProducto);
+        const putDetalleV = await putDetaVent(id_venta, id_producto, bodyProducto);
         if(putDetalleV !== true){
           testDetaV = false;
           return;
@@ -414,8 +404,7 @@ const abrirCerrarModal = async() => {
           fecha_dev : datos.fecha_dev,
           total_gral_d : total_gral_d 
         };
-        const nuevaDevo = true;
-        //await devolucion(id_venta, bodyDevolucion);
+        const nuevaDevo = await devolucion(id_venta, bodyDevolucion);
         if(nuevaDevo !== false && nuevaDevo !== ""){
           observacion_vta = "Se ha registrado una devolución con el identificador : " + nuevaDevo.devolucion_id;
           venta.forEach((element) =>{
@@ -436,8 +425,7 @@ const abrirCerrarModal = async() => {
               return;
             }
           });
-          const editaVenta = true;
-          //await putVenta(id_venta, bodyVenta);
+          const editaVenta = await putVenta(id_venta, bodyVenta);
           if(editaVenta){
             id_producto = 0;
             detaPro.forEach(async (element) => {
@@ -448,8 +436,7 @@ const abrirCerrarModal = async() => {
                 }
               });
               cantidadPro = element.cantidad;
-              editaPro = true;
-              //await putProducto(id_producto, cantidadPro);
+              editaPro = await putProducto(id_producto, cantidadPro);
               
             });
             if(editaPro){
@@ -466,8 +453,7 @@ const abrirCerrarModal = async() => {
                   precio_uni : element.precio,
                   precio_total : element.cantidad * element.precio
                 };
-                detalle = true;
-                //await detalleDev(id_producto, bodyDetalle);
+                detalle = await detalleDev(id_producto, bodyDetalle);
                 if(detalle == false){
                   testDetalle = false; 
                   return;
@@ -475,8 +461,6 @@ const abrirCerrarModal = async() => {
               });
   
               if(testDetalle){
-                type = "info";
-                notify(success, "", type);
                 setDatos({
                   cod_factura: 0,
                   fecha_dev: fechaAct.toISOString().substr(0, 10),
@@ -484,10 +468,10 @@ const abrirCerrarModal = async() => {
                   cantidad: "",
                   nota: ""
                 });
+                setDetaPro([]);
                 detaPro.length = 0;
-                if (orden == 1){
-                  setRecarga(!recarga);
-                }
+                type = "info";
+                notify(success, "", type);
               } else if(detalle == false) {
                 type = "error";
                 notify(error_gral, "", type);
@@ -553,8 +537,8 @@ const abrirCerrarModal = async() => {
   
   //Formulario
   const body = (
-    <div className = {classes.modal}>
-      <div className = "containerPrin">
+    <div className = {orden == 1 ? classes.modal: "contenido_prin"}>
+      <div className = "containerPrin" >
       <ToastContainer />
         <form className = "miForm">
           <div className = "titulo">
