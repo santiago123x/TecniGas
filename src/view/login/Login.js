@@ -75,7 +75,7 @@ const Login = () => {
       };
       setLoading(true);
       await axios
-        .post(`http://localhost:5000/verifiusu/`, body)
+        .post(`/verifiusu/`, body)
         .then((response) => {
           if (response.status === 200) {
             const data = response.data;
@@ -102,7 +102,7 @@ const Login = () => {
           setLoading(false);
         });
     } catch (error) {
-      notify("Ha susedido un problema intente mas tarde, error: ", error);
+      notify("Ha sucedido un problema intente mas tarde, ", error);
       setLoading(false);
       document.getElementById("inputUsuario").focus()
     }
@@ -131,7 +131,7 @@ const Login = () => {
           id="inputContra"
           className={classes.contraseña}
           type={verContra}
-          placeholder="Contraeña"
+          placeholder="Contraseña"
           value={contraseña}
           onChange={(e) => setContraseña(e.target.value)}
           inputProps={{
