@@ -19,7 +19,7 @@ const getDev = async (req, res) => {
     );
     res.send(response.rows[0]);
   } catch (e) {
-    console.error(error);
+    console.error(e);
   }
 };
 
@@ -88,7 +88,7 @@ const putDevolucion = async (req, res) => {
     );
     res.send(response.rows);
   } catch (e) {
-    console.error(error);
+    console.error(e);
   }
 };
 
@@ -149,7 +149,7 @@ const getDetaDevById = async(req, res) =>{
       `SELECT * FROM "detalle devolucion" WHERE devolucion_id = ${devolucion_id}`
     );
     res.send(response.rows);
-  } catch (error) {
+  } catch (e) {
     console.error(e);
   }
 };
@@ -161,7 +161,7 @@ const deleteDev = async(req, res) =>{
       `DELETE FROM devolucion WHERE devolucion_id = ${devolucion_id}`
     );
     res.send(response.rows);
-  } catch (error) {
+  } catch (e) {
     console.error(e);
   }
 };
