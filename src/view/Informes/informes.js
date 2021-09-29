@@ -1,16 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Button from "@material-ui/core/Button";
-import useAxios from "../../Hooks/useAxios";
-import CollapsibleTable from "../../Componentes/Table/Table";
-import Loading from "../../Componentes/Loading/Loading";
-import Error404 from "../../Componentes/Error/Error";
-import Search from "../../Componentes/Search";
-import { useStyles } from "./FormDevUseStyles";
-import styleDev from "../styleDev.css";
+import { useState } from "react";
+import useAuth from "../Hooks/useAuth";
 
 
-const ListaDev = ({}) => {
-
+const Informes = () => {
+    /*
+  const auth = useAuth();
   const [info, setInfo] = useState([]);
   const [valueInp, setValueInp] = useState("");
   const [url, setUrl] = useState(`/listaDev/`);
@@ -57,31 +51,21 @@ useEffect(()=>{
   }
 }, [data]);
   
-const direcciona = () =>{
+/*const direcciona = () =>{
   window.location="/crea_devolucion";
-};
-
-    return (
+};*/
       <div className = "contteiner">
+    {/*
       <div className = "containerList">
-      <div className = "titulo_list"><h1> Listado de Devoluciones</h1></div>
+      <div className = "titulo_list"><h1> Listado De Ventas</h1></div>
           <hr className="linea-h2" />
             <div className = "contSearch"> 
             <Search
               valueInp={valueInp}
               setValueInp={setValueInp}
               titulo="Filtrar Devoluciones"
-              tooltip={`Tipos de Filtro:  Código Devolución, Código Factura, Fecha Devolución`}
+              tooltip={`Tipos de Filtro:  Código Devolución, Código Factura`}
             />
-              <Button
-              size = "medium"
-              variant ="contained"
-              color ="primary"
-              type = "button"
-              onClick={() => direcciona()}
-              > 
-                Ir a crear devolución
-              </Button>
             </div>
               <div className="lista-tabla">
                 {loading ? (
@@ -105,9 +89,14 @@ const direcciona = () =>{
                   />
                 )}
             </div>
-        </div>
+                    </div>*/}
       </div>
-      );
 
+  return (
+    <>
+      <h1>"¡Hola, soy informes!"</h1>
+    </>
+  );
 };
-export default ListaDev;
+
+export default Informes;

@@ -198,6 +198,7 @@ const Nav = ({ tipo }) => {
               </MenuItem>
             </SubMenu>
             )}
+            {validaRol(user.user.rol, "Informes") && (
             <MenuItem
               onClick={() => {
                 setActive({ ...inicial, info: <RiMapPinUserFill /> });
@@ -205,8 +206,8 @@ const Nav = ({ tipo }) => {
               suffix={active.info}
               icon={<FcStatistics className="menu-icons" />}
             >
-              Informes <Link to="/ventas" />
-            </MenuItem>
+              Informes <Link to="/Informes"/>
+            </MenuItem>)}
             <MenuItem
               onClick={() => {
                 dispatch({ type: "LOGOUT" });

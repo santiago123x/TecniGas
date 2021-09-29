@@ -4,7 +4,7 @@ import Ventas from "./ventas/Ventas";
 import Inventario from "./inventario/Inv/Inventario";
 import Devolucion from "./Devolucion/Devolucion";
 import FormularioDev from "./Devolucion/FormDev/FormularioDev";
-import TablaLista from "./Devolucion/FormDev/TablaLista";
+import Informes from "./Informes/informes";
 import Clientes from "./cli-prov/Clientes";
 import Proveedores from "./cli-prov/Proveedores";
 import Compra from "./inventario/Compra/Compra";
@@ -53,6 +53,12 @@ function Rutas() {
           <Route path="/crea_devolucion">
             <Layout tipo="FormularioDev">
               <FormularioDev />
+            </Layout>
+          </Route>
+
+          <Route path="/informes">
+            <Layout tipo="info">
+              <Informes />
             </Layout>
           </Route>
 

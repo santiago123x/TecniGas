@@ -25,6 +25,12 @@
             }else{
                 return false;
             }
+        case 'Informes':
+            if(rol === 'Administrador' || rol === 'Contador'){
+                return true;
+            }else{
+                return false;
+            }
         case 'Gestion':
             if(rol === 'Administrador' || rol === 'Vendedor'){
                 return true;
