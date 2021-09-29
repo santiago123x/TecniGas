@@ -71,7 +71,7 @@ const direcciona = () =>{
               valueInp={valueInp}
               setValueInp={setValueInp}
               titulo="Filtrar Devoluciones"
-              tooltip={`Tipos de Filtro:  Código Devolución, Código Factura`}
+              tooltip={`Tipos de Filtro:  Código Devolución, Código Factura, Fecha Devolución`}
             />
               <Button
               size = "medium"
