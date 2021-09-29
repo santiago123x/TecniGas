@@ -290,8 +290,6 @@ const abrirCerrarModal = async() => {
       let producto = {};
       let detap = {};
      if(valSelectD == 1)  {
-      setFull(false);
-      console.log(detaVen);
       setDatos({
         ...datos,
         codigo_pro : 0,
@@ -341,6 +339,7 @@ const abrirCerrarModal = async() => {
                           cantidad : datos.cantidad,
                           precio : producto[0].precio_ven
                         };
+                        setFull(false);
                         setDetaPro([
                           ...detaPro,
                           cuerpo]);
@@ -390,6 +389,7 @@ const abrirCerrarModal = async() => {
           total_ven : element.cantidad * element.precio
         };
         total_gral_d = total_gral_d + bodyProducto.total_ven;
+        
         const putDetalleV = await putDetaVent(id_venta, id_producto, bodyProducto);
         if(putDetalleV !== true){
           testDetaV = false;
@@ -416,12 +416,13 @@ const abrirCerrarModal = async() => {
               } else {
                 iva = iva * tool;
               }
-
               bodyVenta = {
                 sub_total : element.sub_total - total_gral_d,
                 total_ve : (element.sub_total - total_gral_d) + iva,
-                observacion_vta : observacion_vta
+                observacion_vta : observacion_vta,
+                total_iva : iva
               };
+
               return;
             }
           });
@@ -469,6 +470,7 @@ const abrirCerrarModal = async() => {
                   nota: ""
                 });
                 setDetaPro([]);
+                setFull(true);
                 detaPro.length = 0;
                 type = "info";
                 notify(success, "", type);

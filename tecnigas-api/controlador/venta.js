@@ -53,10 +53,11 @@ const putVenta = async (req, res) => {
         const {
         sub_total,
         total_ve,
-        observacion_vta
+        observacion_vta,
+        total_iva
         } = req.body;
         const response = await pool.query(
-            `UPDATE venta SET sub_total = ${sub_total}, total_ve = ${total_ve}, observacion_vta = '${observacion_vta}'
+            `UPDATE venta SET sub_total = ${sub_total}, total_ve = ${total_ve}, total_iva = ${total_iva}, observacion_vta = '${observacion_vta}'
             WHERE id_venta = ${id_venta}`
         );
         res.send(response.rows);

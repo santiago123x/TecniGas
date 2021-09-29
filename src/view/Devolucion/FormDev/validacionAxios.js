@@ -199,6 +199,7 @@ const deleteDev = async(devolucion_id) =>{
     try {
         const datos = await axios.get(`${URL}detadevo/${devolucion_id}`);
         dat = datos.data;
+        
         dat.map(async(element) =>{
             const eliminador = await axios.delete(`${URL}detadevo/${devolucion_id}/${element.producto_id}`);
         })
