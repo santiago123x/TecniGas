@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "../perfil.css";
-import { useForm } from "react-hook-form";
 import {
   type,
   validarTelefono,
@@ -26,7 +25,6 @@ const FormPerfil = ({
   setRecarga,
   id,
 }) => {
-  const { register, handleSubmit } = useForm({});
   const [loading, setLoading] = useState(false);
   const [verContra,setVerContra] = useState('password');
   
@@ -81,7 +79,7 @@ const FormPerfil = ({
 
       <form
         className="form-inputs-perfil"
-        onSubmit={handleSubmit(tipo == "acc" ? onSubmitAcc : onSubmitPerf)}
+        onSubmit={ e => tipo == "acc" ? onSubmitAcc(datos, e) : onSubmitPerf(datos, e)}
       >
         <div className="inputs-perfil">
           {Object.keys(datos).map((dat, index) => {
@@ -95,7 +93,6 @@ const FormPerfil = ({
                   value={datos[dat]}
                   label={labels[index]}
                   onChange={onChange}
-                  inputRef={register}
                   fullWidth
                   endAdornment={
                     (dat === 'contraConf' || dat === 'contraseña') &&

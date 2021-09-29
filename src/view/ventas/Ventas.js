@@ -15,7 +15,6 @@ import Formulario from "../cli-prov/formulario/formulario";
 import {validaVentas} from "./validador/ValidaVenta";
 import { RiCoinsLine } from "react-icons/ri";
 import axios from 'axios';
-import { object } from "yup/lib/locale";
 import useAuth from "../Hooks/useAuth";
 import UserContext from '../Context/User/UserContext';
 
