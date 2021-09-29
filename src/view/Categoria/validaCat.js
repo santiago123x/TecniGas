@@ -1,13 +1,9 @@
 import axios from "axios";
   
-  
-  
-  const URL = "http://localhost:5000/";
-
 
     const postCat = async (body) => {
         try {
-          const response = await axios.post(`${URL}categoria`, body);
+          const response = await axios.post(`/categoria`, body);
           return true;
         } catch (error) {
           console.error(error);
@@ -18,7 +14,7 @@ import axios from "axios";
 
     const getCat = async ()=>{
         try {
-            const response = await axios.get(`${URL}categorias`);
+            const response = await axios.get(`/categorias`);
             return response.data;
           } catch (error) {
             console.error(error);
@@ -28,7 +24,7 @@ import axios from "axios";
 
     const activarCar = async (id_categoria) =>{
         try {
-            const response = await axios.put(`${URL}actCategoria/${id_categoria}`);
+            const response = await axios.put(`/actCategoria/${id_categoria}`);
             return true;
           } catch (error) {
             console.error(error);

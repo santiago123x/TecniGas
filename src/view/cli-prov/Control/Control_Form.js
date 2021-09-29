@@ -22,8 +22,6 @@ import Inputs from "./Inputs";
 import { validarProd, putP } from "../../inventario/ModalProducto/ValidaProd";
 import useAxios from "../../Hooks/useAxios";
 
-const URL = "http://localhost:5000";
-
 
 const Control_Form = ({
   tipo,

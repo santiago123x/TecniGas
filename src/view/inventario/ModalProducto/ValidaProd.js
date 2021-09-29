@@ -1,20 +1,19 @@
 import axios from "axios";
 
-const URL = "http://localhost:5000/";
 
 const validarProducto = async (nombre_pro, codigo_pro) => {
   let producto = {};
   let producto2 = {};
 
   try {
-    const response = await axios.get(`${URL}producto/nom/${nombre_pro}`);
+    const response = await axios.get(`/producto/nom/${nombre_pro}`);
     producto = response.data;
   } catch (error) {
     console.error(error);
   }
 
   try {
-    const response = await axios.get(`${URL}producto/cod/${codigo_pro}`);
+    const response = await axios.get(`/producto/cod/${codigo_pro}`);
     producto2 = response.data;
   } catch (error) {
     console.error(error);
@@ -36,7 +35,7 @@ const validarProd = async (nombre, codigo) => {
   let producto = null;
   let resultado = false;
   try {
-    const response = await axios.get(`${URL}producto/nom/${nombre}`);
+    const response = await axios.get(`/producto/nom/${nombre}`);
     producto = response.data[0];
     if (!producto) {
       resultado = false;
@@ -55,7 +54,7 @@ const validarProd = async (nombre, codigo) => {
 
 const post = async (body) => {
   try {
-    const response = await axios.post(`${URL}producto`, body);
+    const response = await axios.post(`/producto`, body);
     return response.data.producto_id;
   } catch (error) {
     console.error(error);
@@ -64,7 +63,7 @@ const post = async (body) => {
 
 const putP = async (idProd, body) => {
   try {
-    const response = await axios.put(`${URL}producto/${idProd}`, body);
+    const response = await axios.put(`/producto/${idProd}`, body);
     return true;
   } catch (err) {
     return false;
@@ -73,7 +72,7 @@ const putP = async (idProd, body) => {
 
 const hideProducto = async (producto_id) => {
   try {
-    const response = await axios.put(`${URL}product/${producto_id}`);
+    const response = await axios.put(`/product/${producto_id}`);
     return true;
   } catch (error) {
     console.error(error);
@@ -83,7 +82,7 @@ const hideProducto = async (producto_id) => {
 
 const hideUsuario = async (usuario_id) => {
   try {
-    const response = await axios.put(`${URL}delusuario/${usuario_id}`);
+    const response = await axios.put(`/delusuario/${usuario_id}`);
     return true;
   } catch (error) {
     console.error(error);
@@ -94,7 +93,7 @@ const hideUsuario = async (usuario_id) => {
 
 const hideCategoria = async (id_categoria) => {
   try {
-    const response = await axios.put(`${URL}delcategoria/${id_categoria}`);
+    const response = await axios.put(`/delcategoria/${id_categoria}`);
     return true;
   } catch (error) {
     console.error(error);

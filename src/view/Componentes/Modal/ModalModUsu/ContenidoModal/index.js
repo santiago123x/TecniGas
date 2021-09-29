@@ -9,7 +9,6 @@ import { rolUsu, rolUsuNum } from "./rol";
 import axios from "axios";
 import { notify } from "../../../notify/Notify";
 
-const uri = "http://localhost:5000";
 
 const ContenidoModal = ({ datos, abrirCerrarModal, recarga, setRecarga }) => {
   const [loading, setLoading] = useState(false);
@@ -24,7 +23,7 @@ const ContenidoModal = ({ datos, abrirCerrarModal, recarga, setRecarga }) => {
       const body = {
         rol: rol,
       };
-      await axios.put(`${uri}/usurol/${datos.usuario_id}`, body);
+      await axios.put(`/usurol/${datos.usuario_id}`, body);
       setLoading(false);
       setRecarga(!recarga);
       notify(`Rol del usuario ${datos.nombre_usr} actualizado`, "", "info");

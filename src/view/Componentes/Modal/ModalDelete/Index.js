@@ -17,8 +17,6 @@ import {
 } from "../../../inventario/ModalProducto/ValidaProd";
 import "./style.css";
 
-const URL = "http://localhost:5000";
-
 export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
   const [modal, setModal] = useState(false);
   const alertisdone = "Se ha eliminado satisfactoriamente el ";

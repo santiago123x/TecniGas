@@ -17,7 +17,6 @@ import {
 import axios from "axios";
 
 import { notify } from "../../Componentes/notify/Notify";
-const uri = "http://localhost:5000";
 
 const Perfil = () => {
   const classes = useStyles();
@@ -76,11 +75,11 @@ const Perfil = () => {
         telefono: datosPerfil.telefono,
       }
   
-      const existeUsuario = await axios.get(`${uri}/usuarionick/${datosCuenta.nombre_usr}`);
+      const existeUsuario = await axios.get(`/usuarionick/${datosCuenta.nombre_usr}`);
   
       if (!existeUsuario.data){
   
-        const persona = await axios.post(`${uri}/persona`, bodyP);
+        const persona = await axios.post(`/persona`, bodyP);
   
         if (persona.status === 200) {
           const persona_id = persona.data;
@@ -90,7 +89,7 @@ const Perfil = () => {
             rol: datosCuenta.rol,
             persona_id: persona_id.persona_id,
           };
-          const response = await axios.post(`${uri}/usuario`, bodyU);
+          const response = await axios.post(`/usuario`, bodyU);
           if (response.status === 201){
             notify(`Se ha agregado el usuario: `, datosCuenta.nombre_usr, "info");
             setDatos();

@@ -13,7 +13,6 @@ import axios from "axios";
 import { notify } from "../../Componentes/notify/Notify";
 import { FaEye } from "react-icons/fa";
 
-const uri = "http://localhost:5000";
 
 const FormPerfil = ({
   titulo,
@@ -39,7 +38,7 @@ const FormPerfil = ({
       contraseña: data.contraseña,
     };
     setLoading(true);
-    await axios.put(`${uri}/usuario/${id}`, body);
+    await axios.put(`/usuario/${id}`, body);
     setLoading(false);
     notify(`Se ha actualizado el Usuario: `, data.nombre_usr, "info");
     setRecarga(!recarga);
@@ -67,7 +66,7 @@ const FormPerfil = ({
       telefono: data.telefono,
     };
     setLoading(true);
-    await axios.put(`${uri}/personaid/${id}`, body);
+    await axios.put(`/personaid/${id}`, body);
     setLoading(false);
     notify(`Se ha actualizado el Perfil: `, data.nombre_pe, "info");
     setRecarga(!recarga);
