@@ -121,7 +121,9 @@ const getDevoJDetalle = async (req, res) => {
     inner join "detalle devolucion" on "detalle devolucion".devolucion_id = devolucion.devolucion_id
     inner join producto on producto.producto_id = "detalle devolucion".producto_id
 	  inner join categoria on categoria.id_categoria = producto.id_categoria
-    order by devolucion.fecha_dev`
+    order by 
+	  devolucion.fecha_dev ASC,
+	  devolucion.devolucion_id ASC`
     );
     res.send(response.rows);
   }catch (e) {

@@ -38,7 +38,7 @@ const Opciones = (objeto, categoria, recarga, setRecarga) => {
         </div>
       </>
     );
-  }else{
+  }else if(categoria !== "info"){
     return (
       <>
         <div className="container-buttons">
@@ -186,7 +186,7 @@ const filter = (
               data.map((rew,ind)=>{
                 if( rew.devolucion_id == row.devolucion_id && rew.codigo_pro !== row.codigo_pro){
                   thirdData.push([rew.cantidad_det, `$ ${rew.precio_uni}`, rew.codigo_pro,  rew.nombre_pro,  rew.nombre_catg]);   
-                  //thirdData.push(detalle);
+                  
                 } 
               })
                     return (
@@ -240,7 +240,7 @@ const filter = (
                 );
               }
             }
-        });//AQUÍ
+        });
       } else {
         let valida = 0;
         return data.map((row, index) => {
@@ -254,10 +254,9 @@ const filter = (
                 data.map((rew,ind)=>{
                   if( rew.devolucion_id == row.devolucion_id && rew.codigo_pro !== row.codigo_pro){
                     thirdData.push([rew.cantidad_det, `$ ${rew.precio_uni}`, rew.codigo_pro,  rew.nombre_pro,  rew.nombre_catg]);   
-                    //thirdData.push(detalle);
+                  
                   } 
                 })
-                console.log(data);
                   return (
                     <Row
                       key={index}
@@ -400,7 +399,155 @@ const filter = (
           );
         });
       }
-
+      case "info":
+        if (filtro !== ""){
+          arreglo = data.filter((dat) => {
+            console.log(dat.id_venta.toString());
+            return (
+              dat.id_venta
+                .toString()
+                .trim()
+                .includes(filtro.toString().trim()) ||
+              dat.fecha_ve
+                .toString()
+                .toLowerCase()
+                .trim()
+                .includes(filtro.toString().toLowerCase().trim()) ||
+              dat.nombre_pro
+                .toLowerCase()
+                .trim()
+                .includes(filtro.toString().toLowerCase().trim()) ||
+              dat.codigo_pro
+                .toString()
+                .toLowerCase()
+                .trim()
+                .includes(filtro.toString().toLowerCase().trim())  
+            );
+          });
+          let valida = 0;
+          return arreglo.map((row, index) => {
+            const vari = index + 1;
+            if(vari !== arreglo.length && valida !== row.id_venta){
+              if( row.id_venta == arreglo[vari].id_venta){
+                const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+                const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                let thirdData = [];
+                valida = row.id_venta;
+                data.map((rew,ind)=>{
+                  if( rew.id_venta == row.id_venta && rew.codigo_pro !== row.codigo_pro){
+                    thirdData.push([rew.nombre_pro, rew.codigo_pro, rew.nombre_catg,`$ ${rew.descuento}`, rew.cantidad_ven, `$ ${rew.precio_ven}`, `$ ${rew.total_ven}`]);   
+                    
+                  } 
+                })
+                      return (
+                        <Row
+                          key={index}
+                          firstData={firstData}
+                          secondData={secondData}
+                          thirdData={thirdData}
+                          titulosDetalles={titulosDetalle}
+                          opciones={Opciones(row, categoria, recarga, setRecarga)}
+                        />
+                      );
+                } else {
+                  const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+                  const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                      return (
+                        <Row
+                          key={index}
+                          firstData={firstData}
+                          secondData={secondData}
+                          titulosDetalles={titulosDetalle}
+                          opciones={Opciones(row, categoria, recarga, setRecarga)}
+                        />
+                      );
+                    }
+            } else {
+              let var_dos = index -1;
+              if(var_dos < 0){
+                const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+                const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                  return (
+                    <Row
+                      key={index}
+                      firstData={firstData}
+                      secondData={secondData}
+                      titulosDetalles={titulosDetalle}
+                      opciones={Opciones(row, categoria, recarga, setRecarga)}
+                    />
+                  );
+              } else if(row.id_venta !== arreglo[index-1].id_venta){
+                const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+                const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                  return (
+                    <Row
+                      key={index}
+                      firstData={firstData}
+                      secondData={secondData}
+                      titulosDetalles={titulosDetalle}
+                      opciones={Opciones(row, categoria, recarga, setRecarga)}
+                    />
+                  );
+                }
+              }
+          });
+        } else {
+          let valida = 0;
+          return data.map((row, index) => {
+            const vari = index + 1;
+            if(vari !== data.length && valida !== row.id_venta){
+              if( row.id_venta == data[vari].id_venta){
+                const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+                const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                let thirdData = [];
+                valida = row.id_venta;
+                  data.map((rew,ind)=>{
+                    if( rew.id_venta == row.id_venta && rew.codigo_pro !== row.codigo_pro){
+                      thirdData.push([rew.nombre_pro, rew.codigo_pro, rew.nombre_catg,`$ ${rew.descuento}`, rew.cantidad_ven, `$ ${rew.precio_ven}`, `$ ${rew.total_ven}`]);   
+                      
+                    } 
+                  })
+                  
+                    return (
+                      <Row
+                        key={index}
+                        firstData={firstData}
+                        secondData={secondData}
+                        thirdData={thirdData}
+                        titulosDetalles={titulosDetalle}
+                        opciones={Opciones(row, categoria, recarga, setRecarga)}
+                      />
+                    );
+                    
+            
+              } else {
+                const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+                const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                return (
+                  <Row
+                    key={index}
+                    firstData={firstData}
+                    secondData={secondData}
+                    titulosDetalles={titulosDetalle}
+                    opciones={Opciones(row, categoria, recarga, setRecarga)}
+                  />
+                );
+              }
+            }else if(row.id_venta !== data[index-1].id_venta){
+              const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+              const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                return (
+                    <Row
+                      key={index}
+                      firstData={firstData}
+                      secondData={secondData}
+                      titulosDetalles={titulosDetalle}
+                      opciones={Opciones(row, categoria, recarga, setRecarga)}
+                    />
+                  );
+              }
+          });
+        }
     case 'cat':
 
       if (filtro !== "") {

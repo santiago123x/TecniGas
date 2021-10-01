@@ -70,7 +70,6 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
   }; 
 
   const validaciones = () =>{
-    console.log(datos);
     if(datos.nombre == "" && datos.identificacion == "" && datos.correo == "" && 
         datos.direccion == "" && datos.telefono == ""){
           setErrores({
@@ -112,7 +111,6 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
             direccion: false,
             telefono: true,
           });
-        console.log(errores)
         return false;
       } else if(!validaEmail()) {
         setErrores({
@@ -131,14 +129,12 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
           direccion: false,
           telefono: false
         });
-        console.log("else")
         return true;
       }
   };
 
   const onSubmit = async () => {
     if(validaciones()){
-      console.log("entra")
       const valida = await validarCliente(datos.identificacion, tipo);
       const validaCliPro = await validaActCliPro(datos.identificacion, tipo);
       const body = {

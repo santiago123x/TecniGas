@@ -9,6 +9,7 @@ const {
   putPersona,
   delPersona,
   putPersonaId,
+  personaVentaInfo,
 } = require("../controlador/persona");
 
 const {
@@ -173,6 +174,7 @@ router.get("/clipers", getClientePer);
 router.get("/persona", getPersona);
 router.get("/persona/:id", getPersById);
 router.get("/personac/:cedula", getPersonaCedula);
+router.get("/listaVpersona", personaVentaInfo);
 router.post("/persona", postPersona);
 router.put("/persona/:id", putPersona);
 router.put("/personaid/:id", putPersonaId);

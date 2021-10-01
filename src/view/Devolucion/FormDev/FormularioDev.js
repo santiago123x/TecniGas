@@ -406,7 +406,7 @@ const abrirCerrarModal = async() => {
         };
         const nuevaDevo = await devolucion(id_venta, bodyDevolucion);
         if(nuevaDevo !== false && nuevaDevo !== ""){
-          observacion_vta = "Se ha registrado una devolución con el identificador : " + nuevaDevo.devolucion_id;
+          observacion_vta = "Devolución: cod-" + nuevaDevo.devolucion_id;
           venta.forEach((element) =>{
             if(element.id_venta == id_venta){
               iva = element.total_iva / cuentaProd;
