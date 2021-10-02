@@ -42,12 +42,54 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 7vh 10vh 0 10vh;
   height: 30px;
 }
 
 .tituloGra{
   color: #eeecee;
+  padding-top: 2vh;
+  padding-left: 60vh;
+  
 }
+
+.graficos{
+  height: 25vh;
+  width: 95%;
+  padding: 3px;
+  margin: 10px;
   
+
+  /* background-color:rgba(40, 176, 255, 0.548); */
+  /* background: linear-gradient(0deg, rgba(40,176,255,0.5) 32%, rgba(255,255,255,0) 87%); */
+  background-color: rgba(114, 183, 230, 0.295);
+  border: 1px solid rgb(0, 153, 255);
+  border-radius: 10px;
+}
+
+.contentGraficos{  
+  height: 60%;
+  width: 30%;
   
+}
+
+.cajaexterior{
+  display: flex;
+  justify-content: center;
+  margin-top: 2%;
+  padding:3%;
+  height: 60vh;
+  width: 95%;
+  background-color: rgba(114, 183, 230, 0.295);
+  border: 1px solid rgb(0, 153, 255);
+  border-radius: 10px;
+}
+.ventasM{
+  
+  height: 25vh;
+  width: 95%;
+}
+
+.titleVentasMes{
+  color: white;
+}

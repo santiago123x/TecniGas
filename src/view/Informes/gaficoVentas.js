@@ -1,59 +1,70 @@
-import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from 'recharts';
+import React, {Component} from 'react';
+import { Pie } from 'react-chartjs-2';
+import useAxios from '../Hooks/useAxios';
 
 
-const graficoVentas = () => {
-    const data01 = [
-        { name: 'Group A', value: 400 },
-        { name: 'Group B', value: 300 },
-        { name: 'Group C', value: 300 },
-        { name: 'Group D', value: 200 },
-        { name: 'Group E', value: 278 },
-        { name: 'Group F', value: 189 },
-    ];
-
-    const data02 = [
-        { name: 'Group A', value: 2400 },
-        { name: 'Group B', value: 4567 },
-        { name: 'Group C', value: 1398 },
-        { name: 'Group D', value: 9800 },
-        { name: 'Group E', value: 3908 },
-        { name: 'Group F', value: 4800 },
-    ];
-
-    colorRamdo() {
-        var randomColor = Math.floor(Math.random() * 16777215).toString(16);
-        randomColor = "#" + ("000000" + randomColor).slice(-6);
-        return randomColor;
+const GraficoVentas = (datos) =>{
+    const arrayDatos = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    
+    const { data } = useAxios("/venta");
+    
+    
+    const calcular = ()=>{
+        
+        data.forEach(venta => {
+            let fechaventa = new Date(venta.fecha_ve);
+            arrayDatos[fechaventa.getMonth()]=arrayDatos[fechaventa.getMonth()] + 1;
+            
+                     
+        });
     }
-
-
-
-    color() {
-        var color = Math.floor(Math.random() * 16777215).toString(16);
-        color = "#" + ("000000" + color).slice(-6);
-        color = `"background-color: ${color};"`;
-        console.log(color);
-        return color;
-    }
-
+    calcular(); 
+    const dat = {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio','Agosto','Septiempre', 'Octubre', 'Noviembre','Diciembre'],
+        datasets: [
+          {
+            label: 'Ventas por mes',
+            data: arrayDatos,
+            backgroundColor: [
+                '#000000','#FFFFFF','#FF0000','#0000FF','#00FF00','#FFFF00','#FF00FF','#00FFFF','#8800FF','#FF8800','#02AC66','#FF689D'         ],
+            borderColor: [
+                '#000000','#FFFFFF','#FF0000','#0000FF','#00FF00','#FFFF00','#FF00FF','#00FFFF','#8800FF','#FF8800','#02AC66','#FF689D' 
+            ],
+            borderWidth: 2,
+          },          
+        ],
+       
+      };
+      const options ={
+    
+            plugins: {
+                legend: {
+                    
+                    labels: {
+                        // This more specific font property overrides the global property
+                        color: 'white',                        
+                        
+                        font: {
+                            
+                            size: 14
+                        }
+                    }
+                }
+            }
+      }
+     
     return (
-        <ResponsiveContainer width="100%" height="100%">
-            <PieChart width={400} height={400}>
-                <Pie
-                    dataKey="value"
-                    isAnimationActive={false}
-                    data={data01}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    fill="#8884d8"
-                    label
-                />
-                <Pie dataKey="value" data={data02} cx={500} cy={200} innerRadius={40} outerRadius={80} fill="#82ca9d" />
-                <Tooltip />
-            </PieChart>
-        </ResponsiveContainer>
+        <>
+        <div className='header'>
+        <h1 className='titleVentasMes'>Ventas por Mes</h1>
+       
+      </div>
+        
+        <Pie data={dat} options={options}/> 
+      
+            
+        </>
     );
 };
 
-export default Informes;
+export default GraficoVentas;
