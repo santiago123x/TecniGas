@@ -36,5 +36,18 @@
 .titulo_list2 {
     color: #eeecee;
  }
+
+.btnsGra {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  height: 30px;
+}
+
+.tituloGra{
+  color: #eeecee;
+}
   
   
