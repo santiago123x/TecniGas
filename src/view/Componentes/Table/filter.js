@@ -79,6 +79,7 @@ const filter = (
   data,
   filtro,
   titulosDetalle,
+  detallesDos,
   categoria,
   recarga,
   setRecarga
@@ -402,7 +403,6 @@ const filter = (
       case "info":
         if (filtro !== ""){
           arreglo = data.filter((dat) => {
-            console.log(dat.id_venta.toString());
             return (
               dat.id_venta
                 .toString()
@@ -429,63 +429,74 @@ const filter = (
             const vari = index + 1;
             if(vari !== arreglo.length && valida !== row.id_venta){
               if( row.id_venta == arreglo[vari].id_venta){
-                const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+                const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
                 const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
                 let thirdData = [];
                 valida = row.id_venta;
                 data.map((rew,ind)=>{
                   if( rew.id_venta == row.id_venta && rew.codigo_pro !== row.codigo_pro){
                     thirdData.push([rew.nombre_pro, rew.codigo_pro, rew.nombre_catg,`$ ${rew.descuento}`, rew.cantidad_ven, `$ ${rew.precio_ven}`, `$ ${rew.total_ven}`]);   
-                    
                   } 
                 })
-                      return (
+                  return (
                         <Row
                           key={index}
                           firstData={firstData}
                           secondData={secondData}
                           thirdData={thirdData}
                           titulosDetalles={titulosDetalle}
-                          opciones={Opciones(row, categoria, recarga, setRecarga)}
+                          detallesDos={detallesDos}
+                          contentDos={contentDos}
+                          opciones={[]}
                         />
                       );
                 } else {
-                  const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+                  const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
                   const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
-                      return (
+                  const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
+                return (
                         <Row
                           key={index}
                           firstData={firstData}
                           secondData={secondData}
                           titulosDetalles={titulosDetalle}
-                          opciones={Opciones(row, categoria, recarga, setRecarga)}
+                          detallesDos={detallesDos}
+                          contentDos={contentDos}
+                          opciones={[]}
                         />
                       );
                     }
             } else {
               let var_dos = index -1;
               if(var_dos < 0){
-                const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+                const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
                 const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
-                  return (
+                const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
+                return (
                     <Row
                       key={index}
                       firstData={firstData}
                       secondData={secondData}
                       titulosDetalles={titulosDetalle}
-                      opciones={Opciones(row, categoria, recarga, setRecarga)}
+                      detallesDos={detallesDos}
+                      contentDos={contentDos}
+                      opciones={[]}
                     />
                   );
               } else if(row.id_venta !== arreglo[index-1].id_venta){
-                const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+                const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
                 const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
-                  return (
+                const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
+                return (
                     <Row
                       key={index}
                       firstData={firstData}
                       secondData={secondData}
                       titulosDetalles={titulosDetalle}
-                      opciones={Opciones(row, categoria, recarga, setRecarga)}
+                      detallesDos={detallesDos}
+                      contentDos={contentDos}
+                      opciones={[]}
                     />
                   );
                 }
@@ -497,8 +508,9 @@ const filter = (
             const vari = index + 1;
             if(vari !== data.length && valida !== row.id_venta){
               if( row.id_venta == data[vari].id_venta){
-                const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+                const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
                 const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
                 let thirdData = [];
                 valida = row.id_venta;
                   data.map((rew,ind)=>{
@@ -515,34 +527,42 @@ const filter = (
                         secondData={secondData}
                         thirdData={thirdData}
                         titulosDetalles={titulosDetalle}
-                        opciones={Opciones(row, categoria, recarga, setRecarga)}
+                        detallesDos={detallesDos}
+                        contentDos={contentDos}
+                        opciones={[]}
                       />
                     );
                     
             
               } else {
-                const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
+                const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
                 const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
                 return (
                   <Row
                     key={index}
                     firstData={firstData}
                     secondData={secondData}
                     titulosDetalles={titulosDetalle}
-                    opciones={Opciones(row, categoria, recarga, setRecarga)}
+                    detallesDos={detallesDos}
+                    contentDos={contentDos}
+                    opciones={[]}
                   />
                 );
               }
             }else if(row.id_venta !== data[index-1].id_venta){
-              const firstData = [row.id_venta, row.nombre_pe, row.tipo_clpr, row.nombre_usr, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.recibido}`, `$ ${row.cambio}`,row.estado_ve, `$ ${row.total_iva}`, row.observacion_vta];
-              const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+              const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
+                const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
                 return (
                     <Row
                       key={index}
                       firstData={firstData}
                       secondData={secondData}
                       titulosDetalles={titulosDetalle}
-                      opciones={Opciones(row, categoria, recarga, setRecarga)}
+                      detallesDos={detallesDos}
+                      contentDos={contentDos}
+                      opciones={[]}
                     />
                   );
               }

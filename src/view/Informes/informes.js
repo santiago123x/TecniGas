@@ -16,17 +16,15 @@ const Informes = () => {
   const [recarga, setRecarga] = useState(false);
   const { data, error, loading } = useAxios(url, recarga);
 
-  const title = ["Código Factura", "Comprador", "Tipo", "Usuario Vendedor", "Fecha Venta", "Subtotal", "Total", "Recibido",
-  "Cambio", "Estado", "Total Iva", "Observación"];
+  const title = ["Código Factura", "Fecha Venta", "Subtotal", "Total", "Total Iva"];
   const titleDetails = ["Nombre Prod", "Código Producto", "Categoria", "Descuento", "Cantidad Vendida", "Precio Unitario" , "Total"];
+  const detalleDos = ["Comprador", "Tipo", "Usuario Vendedor", "Recibido", "Cambio", "Observación", "Estado"];
   let datico = [{}];
 
   const formateaFecha = () => {
       let opciones = { year: 'numeric', month: 'short', day: 'numeric' };
       datico.length = 0;
       let rowsTempo=[];
-      
-      console.log(data);
     for(let i = 0; i<data.length; i++){
       let fecha = new Date(data[i].fecha_ve)
       .toLocaleDateString('es',opciones)
@@ -95,6 +93,7 @@ useEffect(()=>{
                     filtro={valueInp}
                     titulos={title}
                     titulosDetalles={titleDetails}
+                    detallesDos={detalleDos}
                     tipo='info'
                     categoria='info'
                     recarga={recarga}
