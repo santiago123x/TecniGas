@@ -26,9 +26,11 @@ const GraficoVentas = (datos) =>{
             label: 'Ventas por mes',
             data: arrayDatos,
             backgroundColor: [
-                '#000000','#FFFFFF','#FF0000','#0000FF','#00FF00','#FFFF00','#FF00FF','#00FFFF','#8800FF','#FF8800','#02AC66','#FF689D'         ],
+                '#9E7777', '#DEBA9D', '#916BBF', '#C996CC', '#D4ECDD', '#345B63', '#865439', '#38A3A5', 
+                '#57CC99', '#D5EEBB', '#5F7A61', '#A7C4BC'],
             borderColor: [
-                '#000000','#FFFFFF','#FF0000','#0000FF','#00FF00','#FFFF00','#FF00FF','#00FFFF','#8800FF','#FF8800','#02AC66','#FF689D' 
+                '#9E7777', '#DEBA9D', '#916BBF', '#C996CC', '#D4ECDD', '#345B63', '#865439', '#38A3A5', 
+                '#57CC99', '#D5EEBB', '#5F7A61', '#A7C4BC' 
             ],
             borderWidth: 2,
           },          
