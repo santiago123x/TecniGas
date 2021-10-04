@@ -111,6 +111,7 @@ const {
   getLastVenta,
   postVenta,
   postDetalleVenta,
+  getDetalleVenta,
 } = require("../controlador/venta.js");
 
 // Rutas de devolución
@@ -132,6 +133,7 @@ router.delete("/detadevo/:devolucion_id/:producto_id", eliminaDetaDev);
 router.get("/venta", getVenta);
 router.get("/ventadetalle/:id_venta", getDetallebyId);
 router.get("/ventadetalle/:id_venta/:producto_id", getDetallebyVP);
+router.get("/detalleventa", getDetalleVenta);
 router.put("/venta/:id_venta", putVenta);
 router.put("/ventadetalle/:id_venta/:producto_id", putDetaVent);
 router.get("/detavenp/:id_venta/:id_producto", getDetaPro);

@@ -9,6 +9,7 @@ import Search from "../Componentes/Search";
 import "./InformesStyle.css";
 import GraficoVentas from "./gaficoVentas";
 import GraficoVentasAnio from "./graficoVentasA";
+import GraficoVentasProd from "./graficoVentasProd";
 
 
 const Informes = () => {
@@ -120,7 +121,7 @@ const Informes = () => {
                 </div>
               </div>
             </>
-          ) : tipoG=== 2? (
+          ) : tipoG === 2 ? (
             <>
               <div className="cajaexterior">
                 <div className="contentGraficos">
@@ -128,7 +129,14 @@ const Informes = () => {
                 </div>
               </div>
             </>
-          ):<h1>holi</h1>}
+          ) : <>
+            <div className="cajaexterior flex-cajaext">
+              <h1 className='titleVentasMes'>Ventas por Producto</h1>
+              <div className="contentGraficos">
+                <GraficoVentasProd datos={data} />
+              </div>
+            </div>
+          </>}
 
           <div className="graficos">
             <div className="tituloGra">
@@ -187,7 +195,7 @@ const Informes = () => {
         </div>
       </div>
     </>
-  );
+  ); 
 
 
 

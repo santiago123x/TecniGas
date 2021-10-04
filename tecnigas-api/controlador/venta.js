@@ -46,6 +46,17 @@ const getDetallebyVP = async (req, res) => {
     }
 };
 
+const getDetalleVenta = async (req, res) => {
+    try {
+        const response = await pool.query(
+            `SELECT * FROM "detalle venta" natural join producto`
+        );
+        res.send(response.rows);
+    } catch (e) {
+        console.error(e);
+    }
+};
+
 
 const putVenta = async (req, res) => {
     try {
@@ -113,6 +124,7 @@ const postDetalleVenta = async (req, res) => {
 module.exports = {
     getVenta,
     getDetallebyId,
+    getDetalleVenta,
     putVenta,
     putDetaVent,
     getDetallebyVP,
