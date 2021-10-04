@@ -8,6 +8,7 @@ import Error404 from "../Componentes/Error/Error";
 import Search from "../Componentes/Search";
 import "./InformesStyle.css";
 import GraficoVentas from "./gaficoVentas";
+import GraficoVentasAnio from "./graficoVentasA";
 
 
 const Informes = () => {
@@ -119,7 +120,15 @@ const Informes = () => {
                 </div>
               </div>
             </>
-          ) : <h1>holi</h1>}
+          ) : tipoG=== 2? (
+            <>
+              <div className="cajaexterior">
+                <div className="contentGraficos">
+                  <GraficoVentasAnio datos={data} />
+                </div>
+              </div>
+            </>
+          ):<h1>holi</h1>}
 
           <div className="graficos">
             <div className="tituloGra">
