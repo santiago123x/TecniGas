@@ -95,7 +95,7 @@ const Perfil = () => {
                     <Button
                       size="small"
                       variant="contained"
-                      color="default"
+                      color="primary"
                       onClick={() => {
                         history.push("/administracioncuentas");
                       }}

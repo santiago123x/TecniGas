@@ -33,6 +33,7 @@ const {
   addUsuario,
   getUsuarioNick,
   getUsuarioDifId,
+  getUsuarioTodo,
 } = require("../controlador/usuario.js");
 
 const { getProveedor } = require("../controlador/proveedores");
@@ -86,6 +87,8 @@ router.put("/usurol/:id", putRol);
 router.put("/delusuario/:id", hideUsuario);
 router.post("/verifiusu/", verifiUsuario);
 router.post("/usuario", addUsuario);
+router.get("/usuarioTodo/:nick", getUsuarioTodo);
+
 const {
   getDevolucion,
   getDev,

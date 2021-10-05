@@ -19,10 +19,10 @@ import axios from "axios";
 import { notify } from "../../Componentes/notify/Notify";
 const uri = "http://localhost:5000";
 
-const Perfil = () => {
+const Perfil = ({recargaTable, setRecargaTable}) => {
   const classes = useStyles();
-  const [recarga, setRecarga] = useState(false);
   const [modal, setModal] = useState(false);
+  const [recarga, setRecarga] = useState(false);
   const [datosCuenta, setDatosCuenta] = useState({
     nombre_usr: "",
     contraseña: "",
@@ -76,7 +76,7 @@ const Perfil = () => {
         telefono: datosPerfil.telefono,
       }
   
-      const existeUsuario = await axios.get(`${uri}/usuarionick/${datosCuenta.nombre_usr}`);
+      const existeUsuario = await axios.get(`${uri}/usuarioTodo${datosCuenta.nombre_usr}`);
   
       if (!existeUsuario.data){
   
@@ -93,13 +93,14 @@ const Perfil = () => {
           const response = await axios.post(`${uri}/usuario`, bodyU);
           if (response.status === 201){
             notify(`Se ha agregado el usuario: `, datosCuenta.nombre_usr, "info");
+            setRecargaTable(!recargaTable);
             setDatos();
-          }else notify(`Error agregando la Informacion de Usuario`, '', "error");
-        }else notify(`Error agregando la Informacion de Perfil `, '', "error");
+          }else notify(`Error agregando la Información de Usuario`, '', "error");
+        }else notify(`Error agregando la Información de Perfil `, '', "error");
       } else notify(`El nombre de usuario ${datosCuenta.nombre_usr} Ya existe`, '', "error");
       setRecarga(false);
     } catch (error) {
-      notify("Ha susedido un problema intente mas tarde, error: ", error);
+      notify("Ha sucedido un problema intente mas tarde, error: ", error);
       setRecarga(false);
     }
   };

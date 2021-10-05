@@ -38,6 +38,9 @@ const useAuth = () => {
                 case '/categorias':
                     user.user.rol === 'Contador' && history.push('/');
                     break;
+                case '/crea_devolucion':
+                    user.user.rol === 'Contador' && history.push('/');
+                    break;
                 default:
                     break;
             }

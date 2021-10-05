@@ -105,7 +105,7 @@ const Nav = ({ tipo }) => {
                 setActive({ ...inicial, perfil: <RiMapPinUserFill /> });
               }}
               suffix={active.perfil}
-              icon={<FcPortraitMode className="menu-icons" />}
+              icon={<FcEngineering className="menu-icons" />}
             >
               Perfil <Link to="/perfil" />
             </MenuItem>
@@ -178,7 +178,7 @@ const Nav = ({ tipo }) => {
             {validaRol(user.user.rol, "Gestion") && (
             <SubMenu
               title="Gestión"
-              icon={<FcEngineering className="menu-icons" />}
+              icon={<FcPortraitMode className="menu-icons" />}
             >
               <MenuItem
                 onClick={() => {

@@ -63,6 +63,20 @@ const getUsuarioNick = async (req, res) => {
   }
 };
 
+const getUsuarioTodo = async (req, res) => {
+  try {
+    const { nick: nombre_usr } = req.params;
+    const response = await pool.query(
+      `select * from usuario natural join persona where nombre_usr = '${nombre_usr}'`
+    );    
+    if (response.rows[0])
+    response.rows[0].contraseña = Cipher.desencriptar(response.rows[0].contraseña);
+    res.send(response.rows[0]);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 const getUsuario = async (req, res) => {
   try {
     const response = await pool.query(
@@ -185,4 +199,5 @@ module.exports = {
   addUsuario,
   getUsuarioNick,
   getUsuarioDifId,
+  getUsuarioTodo,
 };

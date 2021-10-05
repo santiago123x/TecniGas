@@ -16,6 +16,7 @@ const CreaCuenta = ({
   labels,
   onChange,  
   recarga,
+  setRecarga,
 }) => {
   const { register } = useForm({});
   const [verContra, setVerContra] = useState("password");
@@ -104,7 +105,7 @@ const CreaCuenta = ({
                   {dat === "contraConf" &&
                     datos.contraConf.length > 0 &&
                     datos.contraConf !== datos.contraseña &&
-                    "Las contraseñas deben ser igual"}
+                    "Las contraseñas deben ser iguales"}
                 </span>
               </div>
             );
