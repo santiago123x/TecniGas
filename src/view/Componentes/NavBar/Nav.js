@@ -149,7 +149,7 @@ const Nav = ({ tipo }) => {
                 suffix={active.agenda}
                 icon={<FcCalendar className="menu-icons" />}
               >
-                Agenda <Link to="/" />
+                Agenda <Link to="/agenda" />
               </MenuItem>
             )}
             {validaRol(user.user.rol, "Devoluciones") && (
