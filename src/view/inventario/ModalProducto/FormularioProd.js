@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
 import "./FormularioProdStyle.css";
 import useAxios from "../../Hooks/useAxios";
 import { Modal, TextField } from "@material-ui/core";
@@ -61,7 +60,6 @@ const FormularioProd = ({
   };
 
   //Realiza validaciones al enviar el formulario
-  const { register, handleSubmit } = useForm({});
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
@@ -160,7 +158,7 @@ const FormularioProd = ({
           <div className="producto">
             <h4 className="titulo-form">{titulo}</h4>
           </div>
-          <form className="form-group" onSubmit={handleSubmit(onSubmit)}>
+          <form className="form-group" onSubmit={e => onSubmit(datos, e)}>
             <div className="row">
               <Select
                 native
@@ -170,7 +168,6 @@ const FormularioProd = ({
                 label="Categoria"
                 className={classes.select}
                 name="categoria"
-                inputRef={register}
                 inputProps={{
                   name: "categoria",
                   id: "categoria",
@@ -200,7 +197,6 @@ const FormularioProd = ({
                 name="nombre"
                 label="Nombre Producto"
                 value={datos.nombre}
-                inputRef={register}
                 onChange={handleInputChange}
               />
               <span className="span text-danger text-small d-block">
@@ -217,7 +213,6 @@ const FormularioProd = ({
                 name="precioUni"
                 label="Precio unitario"
                 onChange={handleInputChange}
-                inputRef={register}
               />
               <span className="span text-danger text-small d-block">
                 {datos.precioUni.length === 0 && "Campo requerido"}
@@ -235,7 +230,6 @@ const FormularioProd = ({
                 name="precioMay"
                 label="Precio Mayorista"
                 onChange={handleInputChange}
-                inputRef={register}
               />
               <span className="span text-danger text-small d-block">
                 {datos.precioMay.length === 0 && "Campo requerido"}
@@ -253,7 +247,6 @@ const FormularioProd = ({
                 name="stockMin"
                 label="Stock minimo del producto"
                 onChange={handleInputChange}
-                inputRef={register}
               />
               <span className="span text-danger text-small d-block">
                 {datos.stockMin.length === 0 && "Campo requerido"}
@@ -272,7 +265,6 @@ const FormularioProd = ({
                 name="codigoPro"
                 label="Codigo del producto"
                 onChange={handleInputChange}
-                inputRef={register}
               />
               <span className="span text-danger text-small d-block"></span>
             </div>
@@ -286,7 +278,6 @@ const FormularioProd = ({
                 name="cantidadPro"
                 label="Cantidad del producto"
                 onChange={handleInputChange}
-                inputRef={register}
               />
               <span className="span text-danger text-small d-block">
                 {datos.cantidadPro.length === 0 && "Campo requerido"}

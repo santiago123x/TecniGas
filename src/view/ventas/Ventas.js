@@ -15,7 +15,6 @@ import Formulario from "../cli-prov/formulario/formulario";
 import {validaVentas} from "./validador/ValidaVenta";
 import { RiCoinsLine } from "react-icons/ri";
 import axios from 'axios';
-import { object } from "yup/lib/locale";
 import useAuth from "../Hooks/useAuth";
 import UserContext from '../Context/User/UserContext';
 
@@ -95,7 +94,7 @@ const Ventas = () => {
 
   const postVenta = async (body) => {
     try {
-      const response = await axios.post(`http://localhost:5000/postventa`, body);
+      const response = await axios.post(`/postventa`, body);
       return true;
     } catch (error) {
       return false;
@@ -104,7 +103,7 @@ const Ventas = () => {
 
   const postDetalleVenta = async (body) => {
     try {
-      const response = await axios.post(`http://localhost:5000/postdetalleventa`, body);      
+      const response = await axios.post(`/postdetalleventa`, body);      
     } catch (error) {      
     }
   };
@@ -113,7 +112,7 @@ const Ventas = () => {
   const putDescuentaUnidades = async (idProd, body) => {
     //console.log(idProd, body)
     try {
-      const response = await axios.put(`http://localhost:5000/productocantidad/${idProd}`, body);
+      const response = await axios.put(`/productocantidad/${idProd}`, body);
       return true;
     } catch (err) {
       return false;

@@ -20,8 +20,6 @@ import {
   putCliProTipo,
 } from "./Validacion";
 
-const URL = "http://localhost:5000";
-
 const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButton}) => {
   //Cambian el estilo a los elementos de material-ui
 

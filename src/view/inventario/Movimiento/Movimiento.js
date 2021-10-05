@@ -51,7 +51,7 @@ const Movimiento = () => {
     try {
       const res = await validarStock(produ.producto_id, cantidad);
       if (tipo == "entrada" || res) {
-        await axios.post("http://localhost:5000/movimiento/", nuevoMovi).
+        await axios.post("/movimiento/", nuevoMovi).
           then((response) => {
             if (response.status === 200) {
               seteo();

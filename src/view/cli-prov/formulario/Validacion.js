@@ -1,12 +1,11 @@
 import axios from "axios";
 
-const URL = "http://localhost:5000/";
 
 const validarCliente = async (cedula, tipo) => {
   let persona = {};
   let cliPro = {};
   try {
-    const response = await axios.get(`${URL}personac/${cedula}`);
+    const response = await axios.get(`/personac/${cedula}`);
     persona = response.data;
   } catch (error) {
     console.error(error);
@@ -14,7 +13,7 @@ const validarCliente = async (cedula, tipo) => {
   if (persona.persona_id) {
     try {
       const respuesta = await axios.get(
-        `${URL}cliproidp/${persona.persona_id}/${tipo}`
+        `/cliproidp/${persona.persona_id}/${tipo}`
       );
 
       cliPro = respuesta.data;
@@ -35,7 +34,7 @@ const validarCliente = async (cedula, tipo) => {
 
 const post = async (body) => {
   try {
-    const response = await axios.post(`${URL}persona`, body);
+    const response = await axios.post(`/persona`, body);
     return response.data.persona_id;
   } catch (error) {
     console.error(error);
@@ -45,7 +44,7 @@ const post = async (body) => {
 const postCliPro = async (idp, tipo) => {
   let estado = "activado";
   try {
-    const response = await axios.post(`${URL}listado/${idp}/${tipo}/${estado}`);
+    const response = await axios.post(`/listado/${idp}/${tipo}/${estado}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -56,7 +55,7 @@ const validaPut = async (oldId, newId,  tipo) =>{
   let cliPro = {};
   let persona = {};
   try {
-    const response = await axios.get(`${URL}personac/${newId}`);
+    const response = await axios.get(`/personac/${newId}`);
     persona = response.data;
   } catch (error) {
     console.error(error);
@@ -65,7 +64,7 @@ const validaPut = async (oldId, newId,  tipo) =>{
     if(persona.identificacion == oldId){
       try {
         const respuesta = await axios.get(
-          `${URL}cliproidp/${persona.persona_id}/${tipo}`
+          `/cliproidp/${persona.persona_id}/${tipo}`
         );
         cliPro = respuesta.data;
       } catch (error) {
@@ -85,7 +84,7 @@ const validaPut = async (oldId, newId,  tipo) =>{
 
 const put = async (id, body) => {
   try {
-    const response = await axios.put(`${URL}persona/${id}`, body);
+    const response = await axios.put(`/persona/${id}`, body);
   } catch (error) {
     console.error(error);
   }
@@ -93,7 +92,7 @@ const put = async (id, body) => {
 
 const putCategoria = async (id, body) => {
   try {
-    const response = await axios.put(`${URL}categoriaUp/${id}`, body);
+    const response = await axios.put(`/categoriaUp/${id}`, body);
   } catch (error) {
     console.error(error);
   }
@@ -104,7 +103,7 @@ const validaActCliPro = async (cedula, tipo) => {
   let cliPro = {};
   try {
     
-    const personaPut = await axios.get(`${URL}personac/${cedula}`);
+    const personaPut = await axios.get(`/personac/${cedula}`);
     persona = personaPut.data;
   } catch (error) {
     console.error(error);
@@ -112,7 +111,7 @@ const validaActCliPro = async (cedula, tipo) => {
 
   if (persona !== ""){
     try {
-      const cliproPut = await axios.get(`${URL}cliproidp/${persona.persona_id}/${tipo}`);
+      const cliproPut = await axios.get(`/cliproidp/${persona.persona_id}/${tipo}`);
       cliPro = cliproPut.data;
       if (cliPro !== ""){
         if (cliPro.estado_clpr === "desactivado"){
@@ -133,7 +132,7 @@ const validaActCliPro = async (cedula, tipo) => {
 
 const putCliPro = async (persona_id, tipo_clpr, estado_clpr) => {
   try {
-    await axios.put(`${URL}listado/${persona_id}/${tipo_clpr}/${estado_clpr}`);
+    await axios.put(`/listado/${persona_id}/${tipo_clpr}/${estado_clpr}`);
     return true;
   } catch (error) {
     console.error(error);
@@ -144,9 +143,9 @@ const putCliPro = async (persona_id, tipo_clpr, estado_clpr) => {
 const putCliProTipo = async (cedula, body) => {
   let persona = {};
   try {
-    let response = await axios.get(`${URL}personac/${cedula}`);
+    let response = await axios.get(`/personac/${cedula}`);
     persona = response.data;
-    await axios.put(`${URL}cedulalistclipro/${persona.persona_id}`, body);
+    await axios.put(`/cedulalistclipro/${persona.persona_id}`, body);
   } catch (error) {
     console.error(error);
   }

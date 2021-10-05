@@ -149,7 +149,7 @@ const Nav = ({ tipo }) => {
                 suffix={active.agenda}
                 icon={<FcCalendar className="menu-icons" />}
               >
-                Agenda <Link to="/" />
+                Agenda <Link to="/agenda" />
               </MenuItem>
             )}
             {validaRol(user.user.rol, "Devoluciones") && (
@@ -198,7 +198,7 @@ const Nav = ({ tipo }) => {
               </MenuItem>
             </SubMenu>
             )}
-            {validaRol(user.user.rol, "Informes") && (
+            
             <MenuItem
               onClick={() => {
                 setActive({ ...inicial, info: <RiMapPinUserFill /> });
@@ -207,7 +207,7 @@ const Nav = ({ tipo }) => {
               icon={<FcStatistics className="menu-icons" />}
             >
               Informes <Link to="/Informes"/>
-            </MenuItem>)}
+            </MenuItem>
             <MenuItem
               onClick={() => {
                 dispatch({ type: "LOGOUT" });

@@ -1,6 +1,5 @@
 import {useState} from 'react'
 import { Modal, TextField, Button } from "@material-ui/core";
-import { useForm } from "react-hook-form";
 import { notify } from "../Componentes/notify/Notify";
 import useStyles from "../inventario/ModalProducto/FormularioProdStyles";
 import {
@@ -18,7 +17,6 @@ const CrearCat = ({
     setRecarga,
   }) => {
     const [modal, setModal] = useState(false);
-    const { register, handleSubmit } = useForm({});
     const [datos,setDatos] = useState({
         nombre_catg : '',
     })
@@ -96,7 +94,7 @@ const CrearCat = ({
                     <div className="categoria">
                         <h4 className="titulo-form">{'Crear Categoría'}</h4>
                     </div>
-                    <form className="form-groupCat" onSubmit={handleSubmit(onSubmit)}>
+                    <form className="form-groupCat" onSubmit={e => onSubmit(datos, e)}>
                     <div className="row">
                         <TextField
                             className={classes.textfield}
@@ -106,7 +104,6 @@ const CrearCat = ({
                             name="nombre_catg"
                             label="Nombre de la Categoría"
                             value={datos.nombre_catg}
-                            inputRef={register}
                             onChange={(e)=>setDatos({nombre_catg: e.target.value})}
                         />
                         <span className="span text-danger text-small d-block">

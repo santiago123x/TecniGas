@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+
 import { Modal } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import useStyles from "./modalStyle.js";
@@ -16,8 +16,6 @@ import {
   hideCategoria,
 } from "../../../inventario/ModalProducto/ValidaProd";
 import "./style.css";
-
-const URL = "http://localhost:5000";
 
 export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
   const [modal, setModal] = useState(false);
@@ -50,8 +48,6 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
         break;
     }
   };
-
-  const { handleSubmit } = useForm();
 
   const submit = async () => {
     let metodo = "";

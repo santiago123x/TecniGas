@@ -1,12 +1,11 @@
 import axios from "axios";
 
-const URL = "http://localhost:5000/";
 let dev_id = {};
 
 const getDetalleVen = async (cod_venta) => {
     let detalle = {};
     try {
-        const response = await axios.get(`${URL}ventadetalle/${cod_venta}`);
+        const response = await axios.get(`/ventadetalle/${cod_venta}`);
         detalle = response.data;
         if (detalle !== "" && detalle !== null){
             return detalle;
@@ -21,7 +20,7 @@ const getDetalleVen = async (cod_venta) => {
 const validaPro = async (idPro) => {
     let dato = [];
     try {
-        const response = await axios.get(`${URL}producto/id/${idPro}`);
+        const response = await axios.get(`/producto/id/${idPro}`);
         dato = response.data;
         
         if (dato !== "" && dato !== null){
@@ -38,7 +37,7 @@ const validaPro = async (idPro) => {
 const getProdDeta = async (idVent, idPro) => {
     let info = {};
     try {
-        const response = await axios.get(`${URL}detapro/${idVent}/${idPro}`);
+        const response = await axios.get(`/detapro/${idVent}/${idPro}`);
         info = response.data;
         if (info !== "" && info !== null) {
             return info;
@@ -55,7 +54,7 @@ const putDetaVent = async (id_venta, id_producto, body) => {
     let dato = {};
     let bodyDet = {};
     try {
-        const detalle = await axios.get(`${URL}ventadetalle/${id_venta}/${id_producto}`);
+        const detalle = await axios.get(`/ventadetalle/${id_venta}/${id_producto}`);
         dato = detalle.data;
         bodyDet = {
             cantidad_ven : dato.cantidad_ven - body.cantidad_ven,
@@ -63,7 +62,7 @@ const putDetaVent = async (id_venta, id_producto, body) => {
             total_ven : (dato.cantidad_ven - body.cantidad_ven) * body.total_ven 
         };
         try {
-            const response = await axios.put(`${URL}ventadetalle/${id_venta}/${id_producto}`, bodyDet);
+            const response = await axios.put(`/ventadetalle/${id_venta}/${id_producto}`, bodyDet);
             respuesta = true;
             return respuesta;
         } catch (error) {
@@ -78,7 +77,7 @@ const putDetaVent = async (id_venta, id_producto, body) => {
 const putVenta = async (id_venta, body) => {
     let respuesta = false;
     try {
-        const response = await axios.put(`${URL}venta/${id_venta}`, body);
+        const response = await axios.put(`/venta/${id_venta}`, body);
         respuesta = true;
         return respuesta;
     } catch (error) {
@@ -93,7 +92,7 @@ const putProducto = async (id_producto, cantidad_pro) => {
     let numero = 0;
     let cantidadProducto = 0;
     try {
-        const resp = await axios.get(`${URL}producto/id/${id_producto}`);
+        const resp = await axios.get(`/producto/id/${id_producto}`);
         dato =  resp.data;
         try {
             if(dato[0].estado_pro === "desactivado"){
@@ -102,7 +101,7 @@ const putProducto = async (id_producto, cantidad_pro) => {
                 numero = dato[0].cantidad_pro;
                 cantidadProducto = Number(numero) + Number(cantidad_pro);
             }
-            const response = await axios.put(`${URL}productodev/${id_producto}/${cantidadProducto}`);
+            const response = await axios.put(`/productodev/${id_producto}/${cantidadProducto}`);
             respuesta = true;
             return respuesta;
         } catch (error) {
@@ -118,10 +117,10 @@ const devolucion = async (id_venta, body, orden) => {
     let respuesta = false;
     let dato = {};
     try {
-        const response = await axios.get(`${URL}devolucion/${id_venta}`);
+        const response = await axios.get(`/devolucion/${id_venta}`);
         dato = response.data;
             try {
-                const response = await axios.post(`${URL}devolucion`, body);
+                const response = await axios.post(`/devolucion`, body);
                 dato = response.data;
                 dev_id = dato[0];
                 return dato[0];
@@ -146,7 +145,7 @@ const detalleDev = async (producto_id, body, orden) => {
         precio_tot : body.precio_total
     };
     try {
-        const post = await axios.post(`${URL}detadevo`, bodyDetalle);
+        const post = await axios.post(`/detadevo`, bodyDetalle);
         respuesta = true;
         if(respuesta){
             return respuesta;
@@ -162,7 +161,7 @@ const detalleDev = async (producto_id, body, orden) => {
 const getCategoria = async (id_categoria) =>{
     let dato = "";
     try{
-        const getCat = await axios.get(`${URL}categoriaID/${id_categoria}`);
+        const getCat = await axios.get(`/categoriaID/${id_categoria}`);
         dato = getCat.data;
     } catch(error) {
         console.error(error); 
@@ -173,7 +172,7 @@ const getCategoria = async (id_categoria) =>{
 const listaDev = async() =>{
     let dato = [];
     try{
-        const getList = await axios.get(`${URL}listaDev/`);
+        const getList = await axios.get(`/listaDev/`);
         dato = getList.data;
     }catch(error) {
         console.error(error);
@@ -184,7 +183,7 @@ const listaDev = async() =>{
 const eliminaDetaDev = async(devolucion_id, producto_id) =>{
     let respuesta = false;
     try {
-        const elimina = await axios.delete(`${URL}detadevo/${devolucion_id}/${producto_id}`);
+        const elimina = await axios.delete(`/detadevo/${devolucion_id}/${producto_id}`);
         respuesta = true;
     } catch (error) {
         console.error(error);
@@ -197,12 +196,12 @@ const deleteDev = async(devolucion_id) =>{
     let dat = [];
     let producto_id;
     try {
-        const datos = await axios.get(`${URL}detadevo/${devolucion_id}`);
+        const datos = await axios.get(`/detadevo/${devolucion_id}`);
         dat = datos.data;
         dat.map(async(element) =>{
-            const eliminador = await axios.delete(`${URL}detadevo/${devolucion_id}/${element.producto_id}`);
+            const eliminador = await axios.delete(`/detadevo/${devolucion_id}/${element.producto_id}`);
         })
-        const del = await axios.delete(`${URL}devolucion/${devolucion_id}`);
+        const del = await axios.delete(`/devolucion/${devolucion_id}`);
         respuesta = true;
     } catch (error) {
         console.error(error);
@@ -213,7 +212,7 @@ const deleteDev = async(devolucion_id) =>{
 const putDetaDevo = async(devolucion_id, producto_id, body) =>{
     let respuesta = false;
     try {
-        const put = await axios.put(`${URL}detadevo/${devolucion_id}/${producto_id}`, body);
+        const put = await axios.put(`/detadevo/${devolucion_id}/${producto_id}`, body);
         respuesta = true;
     } catch (error) {
         console.error(error);

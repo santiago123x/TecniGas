@@ -498,8 +498,9 @@ const abrirCerrarModal = async() => {
 
   const updateDev = async() =>{
     const validaUno = validacionUno();
+    let resp = false;
       if(validaUno == 1){
-        let resp = false;
+        
         const listaD = await listaDev();
         detaPro.map(async (element) =>{
           listaD.map(async(ele) => {
@@ -523,13 +524,15 @@ const abrirCerrarModal = async() => {
             }
           })
         })
+        console.log(resp);
         if(resp == true){
           type = "info";
           notify(update_success, "", type);
         } else if(resp == false){
           type = "error";
           notify(error_gral, "", type);
-        } 
+        }
+
       }
   };
 
