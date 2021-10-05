@@ -1,6 +1,7 @@
 .contteiner2 {
-  height: 90%;
+  height: 95%;
   width: 100%;
+  min-width: 725px;
   }
   
 .linea-h22 {
@@ -11,8 +12,11 @@
 
   .lista-tabla2{
     margin-top: 2.5%;
-    margin-bottom: 2%;
+    margin-bottom: 8px;
     width: 85%;
+    min-width: 603px;
+    max-width: 659px;
+    max-height: 290px;
   }
   
   .lista-tabla2{
@@ -35,6 +39,8 @@
   
 .titulo_list2 {
     color: #eeecee;
+    padding-top: 30px;
+    min-width: 280px;
  }
 
 .btnsGra {
@@ -42,19 +48,21 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 7vh 10vh 0 10vh;
-  height: 30px;
+  padding: 0px 10px 10px 10px;
+  height: 50px;
 }
 
 .tituloGra{
   color: #eeecee;
-  padding-top: 2vh;
-  padding-left: 60vh;
+  padding-top: 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   
 }
 
 .graficos{
-  height: 25vh;
+  height: 14vh;
   width: 95%;
   padding: 3px;
   margin: 10px;
@@ -69,8 +77,9 @@
 
 .contentGraficos{  
   height: 60%;
-  width: 30%;
-  
+  width: 40%;
+  min-width: 293px;
+  min-height: 264px;
 }
 
 .cajaexterior{
@@ -78,8 +87,9 @@
   justify-content: center;
   margin-top: 2%;
   padding:3%;
-  height: 60vh;
+  height: 90%;
   width: 95%;
+  min-height: 440px;
   background-color: rgba(114, 183, 230, 0.295);
   border: 1px solid rgb(0, 153, 255);
   border-radius: 10px;
@@ -96,6 +106,7 @@
 .titleVentasAnio{
   color: white;
   margin-bottom: 30%;
+
 }
 
 .flex-cajaext{

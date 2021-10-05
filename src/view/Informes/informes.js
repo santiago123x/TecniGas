@@ -24,7 +24,7 @@ const Informes = () => {
 
   //Datos de la tabla
   const title = ["Código Factura", "Fecha Venta", "Subtotal", "Total", "Total Iva"];
-  const titleDetails = ["Nombre Prod", "Código Producto", "Categoria", "Descuento", "Cantidad Vendida", "Precio Unitario", "Total"];
+  const titleDetails = ["Nombre Producto", "Código Producto", "Categoria", "Descuento", "Cantidad Vendida", "Precio Unitario", "Total"];
   const detalleDos = ["Comprador", "Tipo", "Usuario Vendedor", "Recibido", "Cambio", "Observación", "Estado"];
 
   //Funciones
@@ -140,13 +140,13 @@ const Informes = () => {
 
           <div className="graficos">
             <div className="tituloGra">
-              <h1>Gráficos</h1>
+              <h3>Gráficos</h3>
             </div>
 
             <div className="btnsGra">
 
               <Button
-                size="medium"
+                size="small"
                 variant="contained"
                 color="primary"
                 type="button"
@@ -157,7 +157,7 @@ const Informes = () => {
                 Ventas Por Producto
               </Button>
               <Button
-                size="medium"
+                size="small"
                 variant="contained"
                 color="primary"
                 type="button"
@@ -168,7 +168,7 @@ const Informes = () => {
                 Ventas Por Mes
               </Button>
               <Button
-                size="medium"
+                size="small"
                 variant="contained"
                 color="primary"
                 type="button"
@@ -179,7 +179,7 @@ const Informes = () => {
                 Ventas Por Año
               </Button>
               <Button
-                size="medium"
+                size="small"
                 variant="contained"
                 color="primary"
                 type="button"
