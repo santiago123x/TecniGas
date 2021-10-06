@@ -134,7 +134,6 @@ const TablaDev = ({ detaPro, setDetaPro, detaVen, orden }) => {
     };
     
     const modalEd = (deta, index) => {
-      console.log(deta);
         setPrecio(deta.precio);
         setCantidad(deta.cantidad);
         setCategoria(deta.categoria);
@@ -159,7 +158,6 @@ const TablaDev = ({ detaPro, setDetaPro, detaVen, orden }) => {
             cantidad : true
           });
         } else if (detaVen[indexDe].cantidad_ven < cantidad){
-          console.log(indexDe);
           type = "error";
           notify(error_cant, detaVen[indexDe].cantidad_ven, type);
         } else if (precio === ""){

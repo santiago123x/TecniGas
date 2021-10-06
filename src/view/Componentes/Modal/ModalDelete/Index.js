@@ -158,7 +158,7 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
                 estado_clpr : "desactivado"
             };
             const algo = await delCliPro(idPersona, body);
-            console.log(algo);
+            
             setRecarga(!recarga);
             notify(alertasucces, tipo, "info");
             abrirCerrarModal();
@@ -175,7 +175,7 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
                 codigo_pro : elemento.codigo_pro,
                 estado_pro: "desactivado"
             };
-            console.log(idProducto);
+            
             await hideProducto(idProducto, body);
             setRecarga(!recarga);
             notify(alertasucces, tipo, "info");

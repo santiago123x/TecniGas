@@ -110,7 +110,6 @@ const Ventas = () => {
 
   
   const putDescuentaUnidades = async (idProd, body) => {
-    //console.log(idProd, body)
     try {
       const response = await axios.put(`/productocantidad/${idProd}`, body);
       return true;
@@ -289,7 +288,6 @@ const Ventas = () => {
   }, [rows])
 
   useEffect(() => {
-    console.log();
     
     setSubtotal(isNaN(total.total - (total.total * iva)) ? 0 : total.total - (total.total * iva));
     setTotalIva(isNaN(total.total * iva) ? 0 :total.total * iva );
@@ -297,7 +295,6 @@ const Ventas = () => {
   }, [total.total, iva])
 
   useEffect(() => {
-    //console.log(idVentaAnt);
 
     if(idVentaAnt == null){
       setIdVenta(1);

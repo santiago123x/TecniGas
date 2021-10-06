@@ -26,7 +26,6 @@ const validaTodo = (data) => {
       bool = true;
     }
   });
-  console.log(bool);
   return bool;
 };
 

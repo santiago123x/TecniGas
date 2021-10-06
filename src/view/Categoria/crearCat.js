@@ -51,7 +51,6 @@ const CrearCat = ({
 
         
         const validar = validaCatg(allCategorias, data.nombre_catg )
-        console.log( validar)
         switch(validar){
             case 'activado':
                 reset();

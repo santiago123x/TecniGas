@@ -43,7 +43,6 @@ const Control_Form = ({
 
   // Función de escucha que obtiene el valor de los campos de texto
   const handleInputChange = (event) => {
-    //console.log(event.target.value)
     setDatos({
       ...datos,
       [event.target.name]: event.target.value,
@@ -106,11 +105,9 @@ const Control_Form = ({
           return prod.id_categoria == datos.id_categoria
         }
         )      
-        console.log (p)
+        
         codigo_pro = p.length == 0 ? datos.id_categoria * 100 : p[p.length - 1].codigo_pro + 1;
       }
-  
-      //console.log(codigo_pro);
   
       const body = {
         nombre_pro: datos.nombre_pro,
@@ -147,7 +144,7 @@ const Control_Form = ({
     const body = {
       nombre_catg : datos.nombre_catg,
     }
-    console.log(id_categoria)
+    
     try {
       await putCategoria(id_categoria, body);
       reset();
@@ -166,12 +163,9 @@ const Control_Form = ({
         validarTelefono(datos.telefono.toString())
       ) 
       {
-        console.log(datos)
         setErrores({error:true});
-        console.log(errores)
       } else{
         setErrores({error:false});
-        console.log(errores)
       }
     }else if(tipo === "inv"){
       if (
@@ -183,11 +177,8 @@ const Control_Form = ({
         ) 
       {
         setErrores({error:true});
-        console.log(errores)
-  
       } else{
         setErrores({error:false});
-        console.log(errores)
       }
     }
   };
