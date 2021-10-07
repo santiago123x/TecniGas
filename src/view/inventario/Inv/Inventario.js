@@ -7,6 +7,7 @@ import useAxios from "../../Hooks/useAxios";
 import Search from "../../Componentes/Search";
 import FormularioProd from "../ModalProducto/FormularioProd";
 import useAuth from "../../Hooks/useAuth";
+import Movimiento from "../Movimiento/Movimiento"
 import '../../cli-prov/Clientes/clientes.css'
 
 const Inventario = () => {
@@ -53,6 +54,10 @@ const Inventario = () => {
               titulo="Crear Producto"
               dataCategoria={dataCategoria.data}
             />
+            <Movimiento
+              recarga={recarga}
+              setRecarga={setRecarga}
+              />
           </div>
 
           <div className="cont__lista-tabla">

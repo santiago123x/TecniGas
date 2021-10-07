@@ -42,15 +42,12 @@
   box-shadow: 0 4px 12px 4px rgba(52, 113, 192, 0.76);
 }
 
-.MuiDialog-paperWidthSm {
-  max-width: 800px;
-  min-width: 650px;
-}
-
 .modalperfi{
   padding: 1.8% 0;
-  display: flex;
+  display: grid;
   justify-content: space-around;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 3%;
 }
 
 .form-inputs-perfil {
