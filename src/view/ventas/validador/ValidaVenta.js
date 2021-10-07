@@ -9,7 +9,6 @@ export const validaVentas = (cliente, estado, recibido, total, rows) => {
         && rows.length != 0){
             result=false;
         }
-    //console.log(cliente != "");
     return result;
     
 }

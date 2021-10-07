@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from "@material-ui/core/Tooltip";
 import { FaUserPlus, FaCartPlus } from "react-icons/fa";
-import { useForm } from "react-hook-form";
 import style_Form from "./style_Form.css";
 import logoC from "./icono.ico";
 import logoP from "./proveedor.ico";
@@ -20,11 +19,6 @@ import {
   validaActCliPro,
   putCliProTipo,
 } from "./Validacion";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { setLocale } from "yup";
-
-const URL = "http://localhost:5000";
 
 const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButton}) => {
   //Cambian el estilo a los elementos de material-ui
@@ -35,7 +29,16 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
     identificacion: "",
     correo: "",
     direccion: "",
-    telefono: "",
+    telefono: ""
+  });
+
+  //Estado de errores
+  const [errores, setErrores] = useState({
+    nombre : false,
+    identificacion: false,
+    correo: false,
+    direccion: false,
+    telefono: false
   });
 
   const alertasucces =
@@ -48,105 +51,154 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
       : "Este proveedor ya existe: ";
 
   // Función de escucha que obtiene el valor de los campos de texto
-  const handleInputChange = (prop) => (event) => {
-    //console.log(event.target.value)
+  const handleInputChange = (event) => {
     setDatos({
       ...datos,
-      [prop]: event.target.value,
+      [event.target.name]: event.target.value
     });
   };
 
-  //Diccionario que cambia los mensajes predeterminados de la función schema
-  setLocale({
-    mixed: {
-      notType: "Por favor ingrese datos válidos",
-    },
-    number: {
-      min: "Debe contener más de 9 digitos",
-    },
-  });
-
   //Validaciones en formulario
-  const schema = yup.object().shape({
-    nombre: yup.string().required("Por favor ingrese el nombre"),
-    identificacion: yup
-      .string()
-      .required("Por favor ingrese la identificación o nit"),
-    correo: yup
-      .string()
-      .required("Por favor ingrese el email")
-      .email("Debe ser un Email valido Ej: ej@ej.com"),
-    direccion: yup.string().required("Por favor ingrese la dirección"),
-    telefono: yup
-      .number()
-      .required()
-      .test(
-        "validaTel",
-        "El telefono debe tener entre 7 y 12 caracteres",
-        (valor) => valor.toString().length >= 7 && valor.toString().length <= 12
-      ),
-  });
-
-  //Realiza validaciones al enviar el formulario
-  const { register, errors, handleSubmit } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const onSubmit = async (data, e) => {
-    e.preventDefault();
-    const valida = await validarCliente(data.identificacion, tipo);
-    const validaCliPro = await validaActCliPro(data.identificacion, tipo);
-    const body = {
-      nombre_pe: data.nombre,
-      identificacion: data.identificacion,
-      email: data.correo,
-      direccion: data.direccion,
-      telefono: data.telefono,
-    };
-    const body_CliPro = {
-      tipo_clpr: tipo,
-    };
-
-    if (validaCliPro === true) {
-      metodo = "put";
+  const validaEmail = () =>{
+    if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(datos.correo)){
+      return true;
+    } else {
+      return false;
     }
+  }; 
 
-    switch (metodo) {
-      case "post":
-        if (!valida || (valida > 0 && valida !== true)) {
-          if (!valida === true) {
-            const idPersona = await post(body);
-            await postCliPro(idPersona, tipo);
-            reset(e);
-            setRecarga(!recarga);
-            notify(alertasucces, data.nombre, "info");
-          } else {
-            await postCliPro(valida, tipo);
-            reset(e);
-            setRecarga(!recarga);
-            notify(alertasucces, data.nombre, "info");
-          }
-        } else {
-          notify(alertaerror, data.nombre, "error");
+  const validaciones = () =>{
+    if(datos.nombre == "" && datos.identificacion == "" && datos.correo == "" && 
+        datos.direccion == "" && datos.telefono == ""){
+          setErrores({
+            nombre : true,
+            identificacion: true,
+            correo: true,
+            direccion: true,
+            telefono: true
+          });
+          return false;
         }
-        break;
-      case "put":
-        await put(data.identificacion, body);
-        await putCliProTipo(data.identificacion, body_CliPro);
-        reset(e);
-        setRecarga(!recarga);
-        notify(alertasucces, data.nombre, "info");
-        break;
-      default:
-        break;
+      else if(datos.nombre == "" || datos.identificacion == "" || datos.correo == "" || 
+      datos.direccion == "" || datos.telefono == ""){
+        let a,b,c,d,e = false;
+        if(datos.nombre == ""){
+          a = true;
+        }if(datos.identificacion == ""){
+          b = true;
+        }if(datos.correo == ""){
+          c = true;
+        }if(datos.direccion == ""){
+          d = true;
+        }if(datos.telefono == ""){
+          e = true;
+        }
+        setErrores({
+          nombre : a,
+          identificacion: b,
+          correo: c,
+          direccion: d,
+          telefono: e
+        })
+        return false;
+      }else if(datos.telefono.length < 7 || datos.telefono.length > 12){
+          setErrores({
+            nombre : false,
+            identificacion: false,
+            correo: false,
+            direccion: false,
+            telefono: true,
+          });
+        return false;
+      } else if(!validaEmail()) {
+        setErrores({
+          nombre : false,
+          identificacion: false,
+          correo: true,
+          direccion: false,
+          telefono: false
+        });
+        return false;
+      }else {
+        setErrores({
+          nombre : false,
+          identificacion: false,
+          correo: false,
+          direccion: false,
+          telefono: false
+        });
+        return true;
+      }
+  };
+
+  const onSubmit = async () => {
+    if(validaciones()){
+      const valida = await validarCliente(datos.identificacion, tipo);
+      const validaCliPro = await validaActCliPro(datos.identificacion, tipo);
+      const body = {
+        nombre_pe: datos.nombre,
+        identificacion: datos.identificacion,
+        email: datos.correo,
+        direccion: datos.direccion,
+        telefono: datos.telefono,
+      };
+      const body_CliPro = {
+        tipo_clpr: tipo,
+      };
+
+      if (validaCliPro === true) {
+        metodo = "put";
+      }
+
+      switch (metodo) {
+        case "post":
+          if (!valida || (valida > 0 && valida !== true)) {
+            if (!valida === true) {
+              const idPersona = await post(body);
+              await postCliPro(idPersona, tipo);
+              reset();
+              setRecarga(!recarga);
+              notify(alertasucces, datos.nombre, "info");
+            } else {
+              await postCliPro(valida, tipo);
+              reset();
+              setRecarga(!recarga);
+              notify(alertasucces, datos.nombre, "info");
+            }
+          } else {
+            notify(alertaerror, datos.nombre, "error");
+          }
+          break;
+        case "put":
+          await put(datos.identificacion, body);
+          await putCliProTipo(datos.identificacion, body_CliPro);
+          reset();
+          setRecarga(!recarga);
+          notify(alertasucces, datos.nombre, "info");
+          break;
+        default:
+          break;
+      }
     }
   };
 
   //Control del modal
   //Función que reinicia el modal
-  const reset = (e) => {
-    e.target.reset();
-    setModal(!modal);
+  const reset = () => {
+    setErrores({
+      nombre : false,
+      identificacion: false,
+      correo: false,
+      direccion: false,
+      telefono: false
+    });
+    setDatos({
+      nombre: "",
+      identificacion: "",
+      correo: "",
+      direccion: "",
+      telefono: ""
+    });
   };
 
   //Inicializa el estado del modal en falso
@@ -155,6 +207,20 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
   //Función para cambiar el estado del modal
   const abrirCerrarModal = () => {
     setModal(!modal);
+    setErrores({
+      nombre : false,
+      identificacion: false,
+      correo: false,
+      direccion: false,
+      telefono: false
+    });
+    setDatos({
+      nombre: "",
+      identificacion: "",
+      correo: "",
+      direccion: "",
+      telefono: ""
+    });
   };
 
   const classes = useStyles();
@@ -167,7 +233,7 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
             <img className="imagen" src={imagen === "cli" ? logoC : logoP} />
             <h4 className="titulo-form">{titulo}</h4>
           </div>
-          <form className="form-group" onSubmit={handleSubmit(onSubmit)}>
+          <form className="form-group">
             <div className="row">
               <TextField
                 className={classes.textfield}
@@ -176,12 +242,13 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
                 type="text"
                 name="nombre"
                 label="Nombre - Empresa"
+                value={datos.nombre}
                 onChange={handleInputChange}
-                inputRef={register}
               />
-              <span className="span text-danger text-small d-block">
-                {errors.nombre?.message}
-              </span>
+                {errores && errores.nombre &&
+                <span className="span text-danger text-small d-block">
+                  Campo obligatorio
+                </span>}
             </div>
             <div className="row">
               <TextField
@@ -191,12 +258,13 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
                 type="text"
                 name="identificacion"
                 label="Identificación - NIT"
+                value={datos.identificacion}
                 onChange={handleInputChange}
-                inputRef={register}
               />
-              <span className="span text-danger text-small d-block">
-                {errors.identificacion?.message}
-              </span>
+              {errores && errores.identificacion &&
+                <span className="span text-danger text-small d-block">
+                  Campo obligatorio
+                </span>}
             </div>
             <div className="row">
               <TextField
@@ -206,12 +274,16 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
                 type="email"
                 name="correo"
                 label="Correo Electrónico"
+                value={datos.correo}
                 onChange={handleInputChange}
-                inputRef={register}
               />
-              <span className="span text-danger text-small d-block">
-                {errors.correo?.message}
-              </span>
+              {errores && errores.correo && datos.correo == "" ?
+                <span className="span text-danger text-small d-block">
+                  Campo obligatorio
+                </span>: errores && errores.correo && !validaEmail() &&
+                <span className="span text-danger text-small d-block">
+                Ingrese un correo válido
+              </span>}
             </div>
             <div className="row">
               <TextField
@@ -221,12 +293,13 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
                 type="text"
                 name="direccion"
                 label="Dirección"
+                value={datos.direccion}
                 onChange={handleInputChange}
-                inputRef={register}
               />
-              <span className="span text-danger text-small d-block">
-                {errors.direccion?.message}
-              </span>
+              {errores && errores.direccion &&
+                <span className="span text-danger text-small d-block">
+                  Campo obligatorio
+                </span>}
             </div>
             <div className="row">
               <TextField
@@ -236,19 +309,30 @@ const Formulario = ({ tipo, metodo, titulo, imagen, recarga, setRecarga,tipoButt
                 type="number"
                 name="telefono"
                 label="Teléfono"
+                value={datos.telefono}
                 onChange={handleInputChange}
-                inputRef={register}
               />
-              <span className="span text-danger text-small d-block">
-                {errors.telefono?.message}
-              </span>
+              {errores && errores.telefono && datos.telefono == "" ?
+                <span className="span text-danger text-small d-block">
+                  Campo obligatorio
+                </span> :
+                  errores && errores.telefono && datos.telefono.length < 7 ?
+                  <span className="span text-danger text-small d-block">
+                  Registre entre 7 y 12 dígitos
+                  </span>:
+                  errores && errores.telefono && datos.telefono.length > 12 &&
+                  <span className="span text-danger text-small d-block">
+                  Registre entre 7 y 12 dígitos
+                  </span>
+                }
             </div>
             <div className="botones">
               <Button
                 size="small"
                 variant="contained"
                 color="primary"
-                type="submit"
+                type="button"
+                onClick={()=>onSubmit()}
               >
                 Guardar
               </Button>

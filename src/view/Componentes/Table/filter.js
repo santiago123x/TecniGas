@@ -1,12 +1,15 @@
+import React, { useState } from "react";
 import Row from "./TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import { ModalDelete } from "../Modal/ModalDelete/Index";
 import Modificar from "../../cli-prov/Control/Control_Form";
+import FormularioDev from "../../Devolucion/FormDev/FormularioDev";
 import ModalModUsu from "../Modal/ModalModUsu";
 import "./Table.css";
 
 const Opciones = (objeto, categoria, recarga, setRecarga) => {
   let titulo;
+  const orden = 1;
   if (categoria === "cli") {
     titulo = `Cliente: ${objeto.nombre_pe}`;
   } else if (categoria === "prov") {
@@ -16,38 +19,59 @@ const Opciones = (objeto, categoria, recarga, setRecarga) => {
   } else {
     titulo = `Producto: ${objeto.nombre_pro} - ${objeto.codigo_pro}`;
   }
-  return (
-    <>
-      <div className="container-buttons">
-        {categoria == "usu" ? (
-          <ModalModUsu
-            objeto={objeto}
+  if(categoria == 'dev'){
+    return (
+      <>
+        <div className="container-buttons">
+          <FormularioDev
+            dev_full={objeto}
             recarga={recarga}
             setRecarga={setRecarga}
+            orden={orden}
           />
-        ) : (
-          <Modificar
-            objeto={objeto}
-            tipo={categoria}
-            titulo={titulo}
-            metodo="put"
-            imagen={categoria}
-            recarga={recarga}
-            setRecarga={setRecarga}
-          />
-        )}
-        {categoria !== 'cat' ?
           <ModalDelete
-            tipo={categoria}
-            elemento={objeto}
-            recarga={recarga}
-            setRecarga={setRecarga}
-          />
-          : <></>
-        }
-      </div>
-    </>
-  );
+              tipo={categoria}
+              elemento={objeto}
+              recarga={recarga}
+              setRecarga={setRecarga}
+            />
+        </div>
+      </>
+    );
+  }else if(categoria !== "info"){
+    return (
+      <>
+        <div className="container-buttons">
+          {categoria == "usu" ? (
+            <ModalModUsu
+              objeto={objeto}
+              recarga={recarga}
+              setRecarga={setRecarga}
+            />
+          ) : (
+            <Modificar
+              objeto={objeto}
+              tipo={categoria}
+              titulo={titulo}
+              metodo="put"
+              imagen={categoria}
+              recarga={recarga}
+              setRecarga={setRecarga}
+            />
+          )}
+          {categoria !== 'cat' ?
+            <ModalDelete
+              tipo={categoria}
+              elemento={objeto}
+              recarga={recarga}
+              setRecarga={setRecarga}
+            />
+            : <></>
+          }
+        </div>
+      </>
+    );
+  }
 };
 
 const filter = (
@@ -55,6 +79,7 @@ const filter = (
   data,
   filtro,
   titulosDetalle,
+  detallesDos,
   categoria,
   recarga,
   setRecarga
@@ -128,6 +153,149 @@ const filter = (
               opciones={Opciones(row, tipo, recarga, setRecarga)}
             />
           );
+        });
+      }
+
+    case "dev":
+      if (filtro !== ""){
+        arreglo = data.filter((dat) => {
+          return (
+            dat.devolucion_id
+              .toString()
+              .trim()
+              .includes(filtro.toString().trim()) ||
+            dat.id_venta
+              .toString()
+              .trim()
+              .includes(filtro.toString().trim()) ||
+            dat.fecha_dev
+              .toString()
+              .toLowerCase()
+              .trim()
+              .includes(filtro.toString().toLowerCase().trim())  
+          );
+        });
+        let valida = 0;
+        return arreglo.map((row, index) => {
+          const vari = index + 1;
+          if(vari !== arreglo.length && valida !== row.devolucion_id){
+            if( row.devolucion_id == arreglo[vari].devolucion_id){
+              const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+              const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+              let thirdData = [];
+              valida = row.devolucion_id;
+              data.map((rew,ind)=>{
+                if( rew.devolucion_id == row.devolucion_id && rew.codigo_pro !== row.codigo_pro){
+                  thirdData.push([rew.cantidad_det, `$ ${rew.precio_uni}`, rew.codigo_pro,  rew.nombre_pro,  rew.nombre_catg]);   
+                  
+                } 
+              })
+                    return (
+                      <Row
+                        key={index}
+                        firstData={firstData}
+                        secondData={secondData}
+                        thirdData={thirdData}
+                        titulosDetalles={titulosDetalle}
+                        opciones={Opciones(row, categoria, recarga, setRecarga)}
+                      />
+                    );
+              } else {
+                    const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+                    const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+                    return (
+                      <Row
+                        key={index}
+                        firstData={firstData}
+                        secondData={secondData}
+                        titulosDetalles={titulosDetalle}
+                        opciones={Opciones(row, categoria, recarga, setRecarga)}
+                      />
+                    );
+                  }
+          } else {
+            let var_dos = index -1;
+            if(var_dos < 0){
+                const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+                const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+                return (
+                  <Row
+                    key={index}
+                    firstData={firstData}
+                    secondData={secondData}
+                    titulosDetalles={titulosDetalle}
+                    opciones={Opciones(row, categoria, recarga, setRecarga)}
+                  />
+                );
+            } else if(row.devolucion_id !== arreglo[index-1].devolucion_id){
+                const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+                const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+                return (
+                  <Row
+                    key={index}
+                    firstData={firstData}
+                    secondData={secondData}
+                    titulosDetalles={titulosDetalle}
+                    opciones={Opciones(row, categoria, recarga, setRecarga)}
+                  />
+                );
+              }
+            }
+        });
+      } else {
+        let valida = 0;
+        return data.map((row, index) => {
+          const vari = index + 1;
+          if(vari !== data.length && valida !== row.devolucion_id){
+            if( row.devolucion_id == data[vari].devolucion_id){
+              const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+              const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+              let thirdData = [];
+              valida = row.devolucion_id;
+                data.map((rew,ind)=>{
+                  if( rew.devolucion_id == row.devolucion_id && rew.codigo_pro !== row.codigo_pro){
+                    thirdData.push([rew.cantidad_det, `$ ${rew.precio_uni}`, rew.codigo_pro,  rew.nombre_pro,  rew.nombre_catg]);   
+                  
+                  } 
+                })
+                  return (
+                    <Row
+                      key={index}
+                      firstData={firstData}
+                      secondData={secondData}
+                      thirdData={thirdData}
+                      titulosDetalles={titulosDetalle}
+                      opciones={Opciones(row, categoria, recarga, setRecarga)}
+                    />
+                  );
+                  
+          
+            } else {
+              const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+              const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+              return (
+                <Row
+                  key={index}
+                  firstData={firstData}
+                  secondData={secondData}
+                  titulosDetalles={titulosDetalle}
+                  opciones={Opciones(row, categoria, recarga, setRecarga)}
+                />
+              );
+            }
+          }else if(row.devolucion_id !== data[index-1].devolucion_id){
+                const firstData = [row.devolucion_id, row.id_venta, row.fecha_dev, `$ ${row.total_gral_d}`];
+                const secondData = [row.cantidad_det, `$ ${row.precio_uni}`, row.codigo_pro, row.nombre_pro, row.nombre_catg];
+                return (
+                  <Row
+                    key={index}
+                    firstData={firstData}
+                    secondData={secondData}
+                    titulosDetalles={titulosDetalle}
+                    opciones={Opciones(row, categoria, recarga, setRecarga)}
+                  />
+                );
+            }
         });
       }
 
@@ -232,7 +400,174 @@ const filter = (
           );
         });
       }
-
+      case "info":
+        if (filtro !== ""){
+          arreglo = data.filter((dat) => {
+            return (
+              dat.id_venta
+                .toString()
+                .trim()
+                .includes(filtro.toString().trim()) ||
+              dat.fecha_ve
+                .toString()
+                .toLowerCase()
+                .trim()
+                .includes(filtro.toString().toLowerCase().trim()) ||
+              dat.nombre_pro
+                .toLowerCase()
+                .trim()
+                .includes(filtro.toString().toLowerCase().trim()) ||
+              dat.codigo_pro
+                .toString()
+                .toLowerCase()
+                .trim()
+                .includes(filtro.toString().toLowerCase().trim())  
+            );
+          });
+          let valida = 0;
+          return arreglo.map((row, index) => {
+            const vari = index + 1;
+            if(vari !== arreglo.length && valida !== row.id_venta){
+              if( row.id_venta == arreglo[vari].id_venta){
+                const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
+                const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
+                let thirdData = [];
+                valida = row.id_venta;
+                data.map((rew,ind)=>{
+                  if( rew.id_venta == row.id_venta && rew.codigo_pro !== row.codigo_pro){
+                    thirdData.push([rew.nombre_pro, rew.codigo_pro, rew.nombre_catg,`$ ${rew.descuento}`, rew.cantidad_ven, `$ ${rew.precio_ven}`, `$ ${rew.total_ven}`]);   
+                  } 
+                })
+                  return (
+                        <Row
+                          key={index}
+                          firstData={firstData}
+                          secondData={secondData}
+                          thirdData={thirdData}
+                          titulosDetalles={titulosDetalle}
+                          detallesDos={detallesDos}
+                          contentDos={contentDos}
+                          opciones={[]}
+                        />
+                      );
+                } else {
+                  const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
+                  const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                  const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
+                return (
+                        <Row
+                          key={index}
+                          firstData={firstData}
+                          secondData={secondData}
+                          titulosDetalles={titulosDetalle}
+                          detallesDos={detallesDos}
+                          contentDos={contentDos}
+                          opciones={[]}
+                        />
+                      );
+                    }
+            } else {
+              let var_dos = index -1;
+              if(var_dos < 0){
+                const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
+                const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
+                return (
+                    <Row
+                      key={index}
+                      firstData={firstData}
+                      secondData={secondData}
+                      titulosDetalles={titulosDetalle}
+                      detallesDos={detallesDos}
+                      contentDos={contentDos}
+                      opciones={[]}
+                    />
+                  );
+              } else if(row.id_venta !== arreglo[index-1].id_venta){
+                const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
+                const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
+                return (
+                    <Row
+                      key={index}
+                      firstData={firstData}
+                      secondData={secondData}
+                      titulosDetalles={titulosDetalle}
+                      detallesDos={detallesDos}
+                      contentDos={contentDos}
+                      opciones={[]}
+                    />
+                  );
+                }
+              }
+          });
+        } else {
+          let valida = 0;
+          return data.map((row, index) => {
+            const vari = index + 1;
+            if(vari !== data.length && valida !== row.id_venta){
+              if( row.id_venta == data[vari].id_venta){
+                const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
+                const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
+                let thirdData = [];
+                valida = row.id_venta;
+                  data.map((rew,ind)=>{
+                    if( rew.id_venta == row.id_venta && rew.codigo_pro !== row.codigo_pro){
+                      thirdData.push([rew.nombre_pro, rew.codigo_pro, rew.nombre_catg,`$ ${rew.descuento}`, rew.cantidad_ven, `$ ${rew.precio_ven}`, `$ ${rew.total_ven}`]);   
+                      
+                    } 
+                  })
+                  
+                    return (
+                      <Row
+                        key={index}
+                        firstData={firstData}
+                        secondData={secondData}
+                        thirdData={thirdData}
+                        titulosDetalles={titulosDetalle}
+                        detallesDos={detallesDos}
+                        contentDos={contentDos}
+                        opciones={[]}
+                      />
+                    );
+                    
+            
+              } else {
+                const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
+                const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
+                return (
+                  <Row
+                    key={index}
+                    firstData={firstData}
+                    secondData={secondData}
+                    titulosDetalles={titulosDetalle}
+                    detallesDos={detallesDos}
+                    contentDos={contentDos}
+                    opciones={[]}
+                  />
+                );
+              }
+            }else if(row.id_venta !== data[index-1].id_venta){
+              const firstData = [row.id_venta, row.fecha_ve,`$ ${row.sub_total}`, `$ ${row.total_ve}`, `$ ${row.total_iva}`];
+                const secondData = [row.nombre_pro, row.codigo_pro, row.nombre_catg,`$ ${row.descuento}`, row.cantidad_ven, `$ ${row.precio_ven}`, `$ ${row.total_ven}`];
+                const contentDos =[row.nombre_pe, row.tipo_clpr, row.nombre_usr, `$ ${row.recibido}`, `$ ${row.cambio}`, row.observacion_vta,row.estado_ve];
+                return (
+                    <Row
+                      key={index}
+                      firstData={firstData}
+                      secondData={secondData}
+                      titulosDetalles={titulosDetalle}
+                      detallesDos={detallesDos}
+                      contentDos={contentDos}
+                      opciones={[]}
+                    />
+                  );
+              }
+          });
+        }
     case 'cat':
 
       if (filtro !== "") {

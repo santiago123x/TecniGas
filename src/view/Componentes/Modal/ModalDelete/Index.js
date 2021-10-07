@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+
 import { Modal } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import useStyles from "./modalStyle.js";
@@ -9,14 +9,13 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import React, { useState } from "react";
 import { putCliPro } from "../../../cli-prov/formulario/Validacion";
+import { deleteDev } from "../../../Devolucion/FormDev/validacionAxios";
 import {
   hideProducto,
   hideUsuario,
   hideCategoria,
 } from "../../../inventario/ModalProducto/ValidaProd";
 import "./style.css";
-
-const URL = "http://localhost:5000";
 
 export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
   const [modal, setModal] = useState(false);
@@ -43,12 +42,12 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
         return `usuario: ${elemento.nombre_usr}`;
       case "cat":
         return `categoria: ${elemento.nombre_catg}`;
+      case "dev":
+        return `registro de la devolución: ${elemento.devolucion_id}`;
       default:
         break;
     }
   };
-
-  const { handleSubmit } = useForm();
 
   const submit = async () => {
     let metodo = "";
@@ -66,6 +65,9 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
     }
     if(tipo === 'cat'){
       metodo = 'categoria'
+    }
+    if(tipo === "dev"){
+      metodo = "devolucion"
     }
 
     let idPersona = elemento.persona_id;
@@ -133,6 +135,17 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
         setRecarga(!recarga);
         abrirCerrarModal();
         break;
+      case "devolucion":
+        let idDev = elemento.devolucion_id;
+        const comprobante = await deleteDev(idDev);
+        if(comprobante){
+          notify(alertisdone, metodo, "info");
+        } else {
+          notify(alertisaerror, metodo, "error");
+        }
+        setRecarga(!recarga);
+        abrirCerrarModal();
+        break;
       default:
         notify(alertisaerror, tipo, "error");
         break;
@@ -145,7 +158,7 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
                 estado_clpr : "desactivado"
             };
             const algo = await delCliPro(idPersona, body);
-            console.log(algo);
+            
             setRecarga(!recarga);
             notify(alertasucces, tipo, "info");
             abrirCerrarModal();
@@ -162,7 +175,7 @@ export const ModalDelete = ({ tipo, elemento, recarga, setRecarga }) => {
                 codigo_pro : elemento.codigo_pro,
                 estado_pro: "desactivado"
             };
-            console.log(idProducto);
+            
             await hideProducto(idProducto, body);
             setRecarga(!recarga);
             notify(alertasucces, tipo, "info");

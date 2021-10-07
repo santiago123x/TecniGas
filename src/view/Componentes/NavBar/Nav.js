@@ -38,6 +38,7 @@ const inicial = {
   compra: null,
   agenda: null,
   dev: null,
+  crea_dev: null,
   client: null,
   prov: null,
   info: null,
@@ -53,6 +54,7 @@ const Nav = ({ tipo }) => {
     compra: tipo === "compra" ? <RiMapPinUserFill /> : null,
     agenda: tipo === "agen" ? <RiMapPinUserFill /> : null,
     dev: tipo === "dev" ? <RiMapPinUserFill /> : null,
+    crea_dev: tipo === "crea_dev" ? <RiMapPinUserFill /> : null,
     client: tipo === "cli" ? <RiMapPinUserFill /> : null,
     prov: tipo === "prov" ? <RiMapPinUserFill /> : null,
     info: tipo === "info" ? <RiMapPinUserFill /> : null,
@@ -103,7 +105,7 @@ const Nav = ({ tipo }) => {
                 setActive({ ...inicial, perfil: <RiMapPinUserFill /> });
               }}
               suffix={active.perfil}
-              icon={<FcPortraitMode className="menu-icons" />}
+              icon={<FcEngineering className="menu-icons" />}
             >
               Perfil <Link to="/perfil" />
             </MenuItem>
@@ -147,24 +149,36 @@ const Nav = ({ tipo }) => {
                 suffix={active.agenda}
                 icon={<FcCalendar className="menu-icons" />}
               >
-                Agenda <Link to="/" />
+                Agenda <Link to="/agenda" />
               </MenuItem>
             )}
             {validaRol(user.user.rol, "Devoluciones") && (
+              <SubMenu
+              title="Devoluciones"
+              icon={<FcFeedback className="menu-icons" />}
+              >
               <MenuItem
                 onClick={() => {
                   setActive({ ...inicial, dev: <RiMapPinUserFill /> });
                 }}
                 suffix={active.dev}
-                icon={<FcFeedback className="menu-icons" />}
               >
-                Devoluciones <Link to="/devolucion" />
+                Listado de Dev <Link to="/devolucion" />
               </MenuItem>
+              <MenuItem
+                  onClick={() => {
+                    setActive({ ...inicial, crea_dev: <RiMapPinUserFill /> });
+                  }}
+                  suffix={active.crea_dev}
+                >
+                  Crear Devolución <Link to="/crea_devolucion" />
+                </MenuItem>
+              </SubMenu>
             )}
             {validaRol(user.user.rol, "Gestion") && (
             <SubMenu
               title="Gestión"
-              icon={<FcEngineering className="menu-icons" />}
+              icon={<FcPortraitMode className="menu-icons" />}
             >
               <MenuItem
                 onClick={() => {
@@ -184,6 +198,7 @@ const Nav = ({ tipo }) => {
               </MenuItem>
             </SubMenu>
             )}
+            
             <MenuItem
               onClick={() => {
                 setActive({ ...inicial, info: <RiMapPinUserFill /> });
@@ -191,7 +206,7 @@ const Nav = ({ tipo }) => {
               suffix={active.info}
               icon={<FcStatistics className="menu-icons" />}
             >
-              Informes <Link to="/ventas" />
+              Informes <Link to="/Informes"/>
             </MenuItem>
             <MenuItem
               onClick={() => {

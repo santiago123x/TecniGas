@@ -1,6 +1,5 @@
 import { useState} from "react";
 import "../creacuenta.css";
-import { useForm } from "react-hook-form";
 import {
   type,
   validarTelefono,
@@ -16,8 +15,8 @@ const CreaCuenta = ({
   labels,
   onChange,  
   recarga,
+  setRecarga,
 }) => {
-  const { register } = useForm({});
   const [verContra, setVerContra] = useState("password");
   const [verContraConf, setVerContraConf] = useState("password");
 
@@ -56,7 +55,6 @@ const CreaCuenta = ({
                   value={datos[dat]}
                   label={labels[index]}
                   onChange={onChange}
-                  inputRef={register}
                   type={
                     dat === "contraConf"
                       ? verContraConf
@@ -104,7 +102,7 @@ const CreaCuenta = ({
                   {dat === "contraConf" &&
                     datos.contraConf.length > 0 &&
                     datos.contraConf !== datos.contraseña &&
-                    "Las contraseñas deben ser igual"}
+                    "Las contraseñas deben ser iguales"}
                 </span>
               </div>
             );

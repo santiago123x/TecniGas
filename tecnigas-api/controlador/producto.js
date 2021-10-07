@@ -170,7 +170,35 @@ const hideProducto = async (req, res) => {
   } catch (e) {
     console.error(e);
   }
-}
+};
+
+const getDetaPro = async (req, res) => {
+  const id_venta = req.params.id_venta;
+  const id_producto = req.params.id_producto;
+  try {
+      const response = await pool.query(
+          `SELECT * FROM "detalle venta" WHERE id_venta = ${id_venta} AND producto_id = ${id_producto}`
+          );
+      res.send(response.rows);
+  } catch (e) {
+      console.error(e);
+  }
+};
+
+const putProDev = async (req, res) => {
+  const producto_id = req.params.producto_id;
+  const cantidad_pro = req.params.cantidad_pro;
+
+  try {
+    const response = await pool.query(
+      `UPDATE producto SET estado_pro = 'activado' , cantidad_pro = ${cantidad_pro}
+      WHERE producto_id = ${producto_id}`
+    );
+    res.send(response.rows);
+  } catch (e) {
+    console.error(e);
+  }
+}; 
 
 module.exports = {
   getProducto,
@@ -184,4 +212,6 @@ module.exports = {
   delProducto,
   hideProducto,
   getProductoAll,
+  getDetaPro,
+  putProDev
 };

@@ -20,7 +20,7 @@ import validarStock from "../../utilidades/validaInventario";
 import axios from "axios";
 import { notify } from "../../Componentes/notify/Notify";
 
-const Movimiento = () => {
+const Movimiento = ({ recarga, setRecarga }) => {
   const productos = useAxios(`/producto/`);
 
   const date = new Date();
@@ -51,23 +51,22 @@ const Movimiento = () => {
     try {
       const res = await validarStock(produ.producto_id, cantidad);
       if (tipo == "entrada" || res) {
-        await axios.post("http://localhost:5000/movimiento/", nuevoMovi).
-          then((response) => {
-            if (response.status === 200) {
-              seteo();
-              notify('Movimiento realizado con exito', '', "info");
-            } else {
-              seteo();
-              notify("Ha susedido un problema intente mas tarde", '', 'error');
-            }
-          });
-      } else
-        notify('No hay stock suficiente de:', produ.nombre_pro, "error");
+        await axios.post("/movimiento/", nuevoMovi).then((response) => {
+          console.log(response)
+          if (response.status === 200) {
+            setRecarga(!recarga);
+            seteo();
+            notify("Movimiento realizado con exito", "", "info");
+          } else {
+            seteo();
+            notify("Ha susedido un problema intente mas tarde", "", "error");
+          }
+        });
+      } else notify("No hay stock suficiente de:", produ.nombre_pro, "error");
     } catch (err) {
       seteo();
-      notify("Ha susedido un problema intente mas tarde, error", err, 'error');
+      notify("Ha susedido un problema intente mas tarde, error", err, "error");
     }
-
   };
 
   /** Setea todos los campos y cierra el modal */
@@ -102,7 +101,8 @@ const Movimiento = () => {
           disableBackdropClick
           disableEscapeKeyDown
           open={modal}
-          className={classes.conte}>
+          className={classes.conte}
+        >
           <DialogTitle className={classes.scrollPaper}>
             Movimiento Producto
           </DialogTitle>
@@ -129,6 +129,7 @@ const Movimiento = () => {
                 size="small"
                 type="number"
                 value={cantidad}
+                style={{ maxWidth: 250 }}
                 onChange={(evento) => {
                   setCantidad(parseInt(evento.target.value));
                 }}
@@ -142,6 +143,7 @@ const Movimiento = () => {
                 label="Fecha"
                 type="date"
                 value={fecha}
+                style={{ maxWidth: 250 }}
                 variant="outlined"
                 size="small"
                 InputLabelProps={{
@@ -157,6 +159,7 @@ const Movimiento = () => {
                   id="select"
                   required
                   value={tipo}
+                  style={{ maxWidth: 250 }}
                   onChange={(e) => setTipo(e.target.value)}
                   input={<BootstrapInput />}
                 >
@@ -172,6 +175,7 @@ const Movimiento = () => {
                 multiline
                 rows={4}
                 value={observacion}
+                style={{ maxWidth: 250 }}
                 variant="outlined"
                 size="small"
                 onChange={(evento) => {
@@ -185,7 +189,11 @@ const Movimiento = () => {
                 <Button variant="contained" type="submit" color="primary">
                   Terminar
                 </Button>
-                <Button variant="contained" color="secondary" onClick={() => seteo()} >
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => seteo()}
+                >
                   Cancelar
                 </Button>
               </DialogActions>
@@ -207,16 +215,16 @@ const MiButton = withStyles((theme) => ({
 
 const useStyles = makeStyles((theme) => ({
   conte: {
-    '& .MuiDialog-paperWidthSm': {
+    "& .MuiDialog-paperWidthSm": {
       borderRadius: "23px",
-    }
+    },
   },
   scrollPaper: {
     background: "#bbdeef",
-    '& .MuiDialogActions-root': {
+    "& .MuiDialogActions-root": {
       justifyContent: "center",
     },
-    '& .MuiTypography-root': {
+    "& .MuiTypography-root": {
       textAlign: "center",
     },
   },
@@ -235,7 +243,7 @@ const useStyles = makeStyles((theme) => ({
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
-    '& .MuiSelect-icon': {
+    "& .MuiSelect-icon": {
       marginRight: "7px",
     },
   },
@@ -247,7 +255,7 @@ const BootstrapInput = withStyles((theme) => ({
     borderRadius: "4px",
     border: "solid 1px #342e2e71",
     paddingLeft: "14px",
-    '&:hover': {
+    "&:hover": {
       borderColor: "rgba(0, 0, 0, 0.87)",
     },
     "&:focus": {

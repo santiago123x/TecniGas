@@ -31,7 +31,6 @@ export default function Modal({ filtro, setFiltro, value, setValue, options }) {
                 value={value}
                 onChange={(e) => {
                   setValue(e.target.value);
-                  console.log(value);
                 }}
               >
                 {options.map((op, index) => {
@@ -78,7 +77,6 @@ const useDialog = makeStyles((theme) => ({
                 value={value}
                 onChange={(e) => {
                   setValue(e.target.value);
-                  console.log(value);
                 }}
               >
                 <option

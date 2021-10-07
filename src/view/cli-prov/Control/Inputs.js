@@ -5,7 +5,6 @@ import { validarTelefono, validarEmail, validaMenor0 } from "./validacionInp";
 
 const Inputs = ({
   classes,
-  register,
   handleInputChange,
   datos,
   tipo,
@@ -23,7 +22,6 @@ const Inputs = ({
             label="Categoria"
             className={classes.select}
             name="id_categoria"
-            inputRef={register}
             inputProps={{
               name: "id_categoria",
               id: "id_categoria",
@@ -59,7 +57,6 @@ const Inputs = ({
       value={datos.nombre_catg}
       label={"Categoria"}
       onChange={handleInputChange}
-      inputRef={register}
       />
       <span className="span text-danger text-small d-block">
         {tipo === "cat"
@@ -81,7 +78,6 @@ const Inputs = ({
           value={tipo === "inv" ? datos.nombre_pro : datos.nombre_pe}
           label={tipo === "inv" ? "Nombre del Producto" : "Nombre - Empresa"}
           onChange={handleInputChange}
-          inputRef={register}
         />
         <span className="span text-danger text-small d-block">
           {tipo === "inv"
@@ -99,7 +95,6 @@ const Inputs = ({
           value={tipo === "inv" ? datos.stock_min : datos.identificacion}
           label={tipo === "inv" ? "Cantidad Minima" : "Identificación - NIT"}
           onChange={handleInputChange}
-          inputRef={register}
         />
         <span className="span text-danger text-small d-block">
           {tipo === "inv"
@@ -120,7 +115,6 @@ const Inputs = ({
           label={tipo === "inv" ? "Cantidad" : "Correo Electrónico"}
           value={tipo === "inv" ? datos.cantidad_pro : datos.email}
           onChange={handleInputChange}
-          inputRef={register}
         />
         <span className="span text-danger text-small d-block">
           {tipo === "inv"
@@ -145,7 +139,6 @@ const Inputs = ({
           label={tipo === "inv" ? "Precio Mayorista" : "Dirección"}
           value={tipo === "inv" ? datos.precio_may : datos.direccion}
           onChange={handleInputChange}
-          inputRef={register}
         />
         <span className="span text-danger text-small d-block">
           {tipo === "inv"
@@ -166,7 +159,6 @@ const Inputs = ({
           label={tipo === "inv" ? "Precio Publico" : "Teléfono"}
           value={tipo === "inv" ? datos.precio_uni : datos.telefono}
           onChange={handleInputChange}
-          inputRef={register}
         />
         <span className="span text-danger text-small d-block">
           {tipo === "inv"

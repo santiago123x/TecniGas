@@ -91,7 +91,7 @@ const Compra = () => {
         total_gral: totalCompra,
         proveedor_id: proveedor.id_clipro,
       };
-      await axios.post("http://localhost:5000/compra/", body).
+      await axios.post("/compra/", body).
         then((response) => {
           if (response.status === 200) {
             const id = response.data[0].compra_id;
@@ -116,7 +116,7 @@ const Compra = () => {
         total_pd: det.totalDet,
         compra_id: id,
       };
-      const response = await axios.post("http://localhost:5000/compraDet/", nuevoBodyDet);
+      const response = await axios.post("/compraDet/", nuevoBodyDet);
     });
   };
 

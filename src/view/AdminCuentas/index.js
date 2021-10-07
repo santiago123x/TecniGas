@@ -58,7 +58,7 @@ const AdminCuentas = () => {
               tooltip={`Tipos de Filtro: Nombre Usuario, Nombre y Apellido, Cedula, Rol`}
             />
             <div className="buttonCrear">
-              <CrearCuenta/>
+              <CrearCuenta recargaTable={recarga} setRecargaTable={setRecarga}/>
             </div>
           </div>
           <div className="cont__lista-tabla tablaUsu">

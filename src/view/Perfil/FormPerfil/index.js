@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "../perfil.css";
-import { useForm } from "react-hook-form";
 import {
   type,
   validarTelefono,
@@ -14,7 +13,6 @@ import axios from "axios";
 import { notify } from "../../Componentes/notify/Notify";
 import { FaEye } from "react-icons/fa";
 
-const uri = "http://localhost:5000";
 
 const FormPerfil = ({
   titulo,
@@ -26,7 +24,6 @@ const FormPerfil = ({
   setRecarga,
   id,
 }) => {
-  const { register, handleSubmit } = useForm({});
   const [loading, setLoading] = useState(false);
   const [verContra,setVerContra] = useState('password');
   
@@ -41,7 +38,7 @@ const FormPerfil = ({
       contraseña: data.contraseña,
     };
     setLoading(true);
-    await axios.put(`${uri}/usuario/${id}`, body);
+    await axios.put(`/usuario/${id}`, body);
     setLoading(false);
     notify(`Se ha actualizado el Usuario: `, data.nombre_usr, "info");
     setRecarga(!recarga);
@@ -69,7 +66,7 @@ const FormPerfil = ({
       telefono: data.telefono,
     };
     setLoading(true);
-    await axios.put(`${uri}/personaid/${id}`, body);
+    await axios.put(`/personaid/${id}`, body);
     setLoading(false);
     notify(`Se ha actualizado el Perfil: `, data.nombre_pe, "info");
     setRecarga(!recarga);
@@ -81,7 +78,7 @@ const FormPerfil = ({
 
       <form
         className="form-inputs-perfil"
-        onSubmit={handleSubmit(tipo == "acc" ? onSubmitAcc : onSubmitPerf)}
+        onSubmit={ e => tipo == "acc" ? onSubmitAcc(datos, e) : onSubmitPerf(datos, e)}
       >
         <div className="inputs-perfil">
           {Object.keys(datos).map((dat, index) => {
@@ -95,7 +92,6 @@ const FormPerfil = ({
                   value={datos[dat]}
                   label={labels[index]}
                   onChange={onChange}
-                  inputRef={register}
                   fullWidth
                   endAdornment={
                     (dat === 'contraConf' || dat === 'contraseña') &&

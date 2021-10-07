@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import Rutas from "./view/Rutas";
@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ThemeProvider } from "@material-ui/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import axios from 'axios'
+import {apiURI} from './keys/keys'
 
 axios.interceptors.request.use(
   req => {
@@ -17,7 +18,6 @@ axios.interceptors.request.use(
     return Promise.reject(err);
   }
 );
-
 
 const theme = createMuiTheme({
   status: {},

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
 import Control from "./Control.css";
 import logoC from "../formulario/icono.ico";
 import logoP from "../formulario/proveedor.ico";
@@ -23,8 +22,6 @@ import Inputs from "./Inputs";
 import { validarProd, putP } from "../../inventario/ModalProducto/ValidaProd";
 import useAxios from "../../Hooks/useAxios";
 
-const URL = "http://localhost:5000";
-
 
 const Control_Form = ({
   tipo,
@@ -46,7 +43,6 @@ const Control_Form = ({
 
   // Función de escucha que obtiene el valor de los campos de texto
   const handleInputChange = (event) => {
-    //console.log(event.target.value)
     setDatos({
       ...datos,
       [event.target.name]: event.target.value,
@@ -55,9 +51,30 @@ const Control_Form = ({
 
   //Control del modal
   //Función que reinicia el modal
-  const reset = (e) => {
-    e.target.reset();
-    setModal(!modal);
+  const reset = () => {
+    if(tipo === "cli" || tipo === "pro"){
+      setDatos({
+        nombre_pe: "",
+        identificacion: "",
+        email: "",
+        direccion: "",
+        telefono: "",
+      });
+      setModal(!modal);
+      setErrores({error:false});
+    } else if(tipo === "inv"){
+      setDatos({
+        nombre_pro: "",
+        cantidad_pro: "",
+        stock_min: "",
+        id_categoria: 0,
+        precio_may: "",
+        precio_uni: ""
+      });
+      setModal(!modal);
+      setErrores({error:false});
+    }
+    
   };
 
   //Inicializa el estado del modal en falso
@@ -66,134 +83,155 @@ const Control_Form = ({
   //Función para cambiar el estado del modal
   const abrirCerrarModal = () => {
     setModal(!modal);
+    setErrores({error:false});
     setDatos({ ...estadoInicial });
   };
 
-  //Diccionario que cambia los mensajes predeterminados de la función schema
+  const [errores, setErrores] = useState({
+    error: false
+  });
 
-  //Realiza validaciones al enviar el formulario
-  const { register, handleSubmit } = useForm({});
-
-  const onSubmit2 = async (data, event) => {
-    if (
-      validaTodo(data) ||
-      validaMenor0(parseFloat(data.precio_uni)) ||
-      validaMenor0(parseFloat(data.precio_may)) ||
-      validaMenor0(parseInt(data.stock_min)) ||
-      validaMenor0(parseInt(data.cantidad_pro))
-    ) {
-      return;
+  const onSubmit2 = async () => {
+    if(errores.error !== true){
+      const codigoProdOld = objeto.codigo_pro;
+      const idProd = objeto.producto_id;
+      let codigo_pro = 0;
+  
+      if(datos.id_categoria == objeto.id_categoria){
+  
+        codigo_pro = objeto.codigo_pro;
+      }else{
+        let p = productos.data.filter((prod) => {
+          return prod.id_categoria == datos.id_categoria
+        }
+        )      
+        
+        codigo_pro = p.length == 0 ? datos.id_categoria * 100 : p[p.length - 1].codigo_pro + 1;
+      }
+  
+      const body = {
+        nombre_pro: datos.nombre_pro,
+        cantidad_pro: datos.cantidad_pro,
+        stock_min: datos.stock_min,
+        id_categoria: datos.id_categoria,
+        precio_may: datos.precio_may,
+        precio_uni: datos.precio_uni,
+        codigo_pro: codigo_pro,
+      };
+  
+      const validar = await validarProd(datos.nombre_pro, codigoProdOld);
+  
+      if (!validar) {
+        try {
+          await putP(idProd, body);
+          reset();
+          setRecarga(!recarga);
+          notify(alertaexito, datos.nombre_pro + " " + objeto.codigo_pro, "info");
+        } catch (err) {
+          notify(alertamistake, "error");
+        }
+      } else if (!validar) {
+        notify("Error al modificar, datos invalidos.", "error");
+      }
+    } else {
+      notify("Datos inválidos, por favor rellene correctamente el fórmulario.", "error");
     }
-    const codigoProdOld = objeto.codigo_pro;
-    const idProd = objeto.producto_id;
-    let codigo_pro = 0;
-
     
-
-    if(data.id_categoria == objeto.id_categoria){
-
-      codigo_pro = objeto.codigo_pro;
-    }else{
-      let p = productos.data.filter((prod) => {
-        return prod.id_categoria == data.id_categoria
-      }
-      )      
-      console.log (p)
-      codigo_pro = p.length == 0 ? data.id_categoria * 100 : p[p.length - 1].codigo_pro + 1;
-    }
-
-    //console.log(codigo_pro);
-
-    const body = {
-      nombre_pro: data.nombre_pro,
-      cantidad_pro: data.cantidad_pro,
-      stock_min: data.stock_min,
-      id_categoria: data.id_categoria,
-      precio_may: data.precio_may,
-      precio_uni: data.precio_uni,
-      codigo_pro: codigo_pro,
-    };
-
-    const validar = await validarProd(data.nombre_pro, codigoProdOld);
-
-    if (!validar) {
-      try {
-        await putP(idProd, body);
-        reset(event);
-        setRecarga(!recarga);
-        notify(alertaexito, data.nombre_pro + " " + objeto.codigo_pro, "info");
-      } catch (err) {
-        notify(alertamistake, "error");
-      }
-    } else if (!validar) {
-      notify("Error al modificar, datos invalidos.", "error");
-    }
   };
 
-  const onSubmit3 = async ( data,event)=>{
+  const onSubmit3 = async ()=>{
     const id_categoria = objeto.id_categoria;
     const body = {
-      nombre_catg : data.nombre_catg,
+      nombre_catg : datos.nombre_catg,
     }
-    console.log(id_categoria)
+    
     try {
       await putCategoria(id_categoria, body);
-      reset(event);
+      reset();
       setRecarga(!recarga);
-      notify(alertaexito, data.nombre_catg, "info");
+      notify(alertaexito, datos.nombre_catg, "info");
     } catch (err) {
       notify(alertamistake, "error");
     }
   }
 
-  const onSubmit = async (data, event) => {
-    event.preventDefault();
-
-    if (tipo !== "inv" && tipo !== "cat") {
-      let tp;
-     
-      
+  const validacion = () => {
+    if(tipo === "cli" || tipo === "pro"){
       if (
-        validaTodo(data) ||
-        validarEmail(data.email) ||
-        validarTelefono(data.telefono.toString())
-      ) {
-        return;
+        validaTodo(datos) ||
+        validarEmail(datos.email) ||
+        validarTelefono(datos.telefono.toString())
+      ) 
+      {
+        setErrores({error:true});
+      } else{
+        setErrores({error:false});
       }
-      if (tipo === "cli") {
-        tp = "cliente";
-      } else {
-        tp = "proveedor";
+    }else if(tipo === "inv"){
+      if (
+        validaTodo(datos) ||
+        validaMenor0(parseFloat(datos.precio_uni)) ||
+        validaMenor0(parseFloat(datos.precio_may)) ||
+        validaMenor0(parseInt(datos.stock_min)) ||
+        validaMenor0(parseInt(datos.cantidad_pro))
+        ) 
+      {
+        setErrores({error:true});
+      } else{
+        setErrores({error:false});
       }
-
-      const idCliPro = objeto.identificacion;
-      const body = {
-        nombre_pe: data.nombre_pe,
-        identificacion: data.identificacion,
-        email: data.email,
-        direccion: data.direccion,
-        telefono: data.telefono.toString(),
-      };
-      const validaP = await validaPut(idCliPro, data.identificacion, tp);
-
-      if (validaP) {
-        try {
-          await put(idCliPro, body);
-          reset(event);
-          setRecarga(!recarga);
-          notify(alertaexito, data.identificacion, "info");
-        } catch (err) {
-          notify(alertamistake, "error");
-        }
-      } else if (!validaP) {
-        notify("Error al modificar, datos invalidos.", "error");
-      }
-    }else if(tipo === "cat"){
-      console.log(data)
-      onSubmit3(data, event);
-    } else {
-      onSubmit2(data, event);
     }
+  };
+
+  useEffect(()=>{
+    if(datos){
+      validacion();;
+    }
+  }, [datos]);
+  const onSubmit = async () => {
+    if(errores.error !== true){
+
+      if (tipo !== "inv" && tipo !== "cat") {
+        let tp;
+  
+        if (tipo === "cli") {
+          tp = "cliente";
+        } else {
+          tp = "proveedor";
+        }
+  
+        const idCliPro = objeto.identificacion;
+        const body = {
+          nombre_pe: datos.nombre_pe,
+          identificacion: datos.identificacion,
+          email: datos.email,
+          direccion: datos.direccion,
+          telefono: datos.telefono.toString(),
+        };
+        const validaP = await validaPut(idCliPro, datos.identificacion, tp);
+  
+        if (validaP) {
+          try {
+            await put(idCliPro, body);
+            reset();
+            setRecarga(!recarga);
+            notify(alertaexito, datos.identificacion, "info");
+          } catch (err) {
+            notify(alertamistake, "error");
+          }
+        } else if (!validaP) {
+          notify("Error al modificar, datos invalidos.", "error");
+        }
+      }else if(tipo === "cat"){
+        onSubmit3();
+      } else {
+        onSubmit2();
+      }
+    } else{
+      setErrores({error:false});
+      notify("Datos inválidos, por favor rellene correctamente el fórmulario.","", "error");
+    }
+    
   };
 
   const alertaexito =
@@ -228,14 +266,14 @@ const Control_Form = ({
             <form
               id="formPut"
               className="form-group_btn"
-              onSubmit={handleSubmit(onSubmit)}
             >
               <div className="conten-btn">
                 <Button
                   size="small"
                   variant="contained"
                   color="primary"
-                  type="submit"
+                  type="button"
+                  onClick={()=>onSubmit()}
                 >
                   Actualizar
                 </Button>
@@ -255,11 +293,9 @@ const Control_Form = ({
               <form
                 id="formPut"
                 className="form-group_control"
-                onSubmit={handleSubmit(onSubmit)}
               >
                 <Inputs
                   classes={classes}
-                  register={register}
                   handleInputChange={handleInputChange}
                   datos={datos}
                   tipo={tipo}

@@ -16,6 +16,7 @@ export default function CollapsibleTable({
   filtro,
   titulos,
   titulosDetalles,
+  detallesDos,
   tipo,
   categoria,
   recarga,
@@ -62,6 +63,7 @@ export default function CollapsibleTable({
               data,
               filtro,
               titulosDetalles,
+              detallesDos,
               categoria,
               recarga,
               setRecarga
@@ -71,6 +73,7 @@ export default function CollapsibleTable({
                 data,
                 filtro,
                 titulosDetalles,
+                detallesDos,
                 categoria,
                 recarga,
                 setRecarga
