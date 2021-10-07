@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ThemeProvider } from "@material-ui/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import axios from 'axios'
-import {apiURI} from './keys/keys'
+
 
 axios.interceptors.request.use(
   req => {
