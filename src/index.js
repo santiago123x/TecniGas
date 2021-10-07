@@ -10,6 +10,7 @@ import axios from 'axios'
 axios.interceptors.request.use(
   req => {
     req.headers['token'] = localStorage.getItem('token')
+    req.url = 'https://tecnigas-api.herokuapp.com'+req.url;
     return req;
   },
   err => {
