@@ -76,6 +76,7 @@ const FormularioDev = ({dev_full, recarga, setRecarga, orden}) => {
   const error_cant = "La cantidad máxima para devolver de este producto es de: ";
   const error_list = "!Solo puedes elegir el mismo producto una vez!";
   const error_gral = "¡Ha ocurrido un error! Por favor recarga la página";
+  const error_form = "Rellene correctamente el formulario";
   const success = "¡Usted ha realizado una devolución exitosa!";
   const update_success = "¡Usted ha realizado una actualización exitosa!";
   let type = "";
@@ -374,6 +375,8 @@ const abrirCerrarModal = async() => {
     let cuentaProdDev = 0;
     let tool = 0;
     const id_venta = datos.cod_factura;
+    const validaUno = validacionUno();
+    if(validaUno == 1 && detaPro.lenght !== 0){
       detaPro.forEach(async(element) => {
         pro.forEach((elemento) => {
         if(elemento.codigo_pro == element.cod_producto){
@@ -494,13 +497,18 @@ const abrirCerrarModal = async() => {
         type = "error";
         notify(error_gral, "", type);
       }
+    } else {
+      type = "error";
+      notify(error_form, "", type);
+    }
+      
   };
 
   let respNoti = false;
   const updateDev = async() =>{
     const validaUno = validacionUno();
     
-      if(validaUno == 1){
+      if(validaUno == 1 && detaPro.length !== 0){
         let numeroit = detaPro.length-1;
         const listaD = await listaDev();
         detaPro.map(async (element) =>{
@@ -530,6 +538,9 @@ const abrirCerrarModal = async() => {
             }
           })
         })
+      } else {
+        type = "error";
+        notify(error_form, "", type);
       }
 
   };
