@@ -7,6 +7,7 @@ import Error404 from "../../Componentes/Error/Error";
 import Search from "../../Componentes/Search";
 import { useStyles } from "./FormDevUseStyles";
 import styleDev from "../styleDev.css";
+import { useHistory } from "react-router-dom";
 
 
 const ListaDev = ({}) => {
@@ -16,6 +17,7 @@ const ListaDev = ({}) => {
   const [url, setUrl] = useState(`/listaDev/`);
   const [recarga, setRecarga] = useState(false);
   const { data, error, loading } = useAxios(url, recarga);
+  const history = useHistory();
   
   
 
@@ -58,7 +60,7 @@ useEffect(()=>{
 }, [data]);
   
 const direcciona = () =>{
-  window.location="/crea_devolucion";
+  history.push("/crea_devolucion");  
 };
 
     return (
